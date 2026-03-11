@@ -16,11 +16,11 @@ The Gym Tracker is a comprehensive web application designed to help fitness enth
 5. As an Admin, I want to log-in securely so that I can authenticate myself and ensure only authorized staff can alter the master exercise database.
 
 **User User Stories:**
-6. As a User, I want to use list views on public pages to browse available workout templates and the master exercise list before I commit to a workout.
-7. As a User, I want to authenticate myself so that I can access my private dashboard, log my personal workout sessions, and track my confidential body metrics.
-8. **(Progress & Export)** As a User, I want to track my progress over time and export my logged data (workouts and body metrics) into a PDF or CSV file for personal record-keeping or sharing with a coach.
-9. **(Save Plans)** As a User, I want to save my own customized workout routines based on the master exercise list, so I don't have to rebuild my workout from scratch every time.
-10. **(Suggest Exercises)** As a User, I want to be able to request a new exercise to be added to the platform, so that I can track specific movements not currently in the master list.
+1. As a User, I want to use list views on public pages to browse available workout templates and the master exercise list before I commit to a workout.
+2. As a User, I want to authenticate myself so that I can access my private dashboard, log my personal workout sessions, and track my confidential body metrics.
+3. **(Progress & Export)** As a User, I want to track my progress over time and export my logged data (workouts and body metrics) into a PDF or CSV file for personal record-keeping or sharing with a coach.
+4. **(Save Plans)** As a User, I want to save my own customized workout routines based on the master exercise list, so I don't have to rebuild my workout from scratch every time.
+5. **(Suggest Exercises)** As a User, I want to be able to request a new exercise to be added to the platform, so that I can track specific movements not currently in the master list.
 
 ### Use Case
 - **UC-1 [Manage Master Exercises]:** Admin can create, read, update, and soft-delete exercises from the master database. 
