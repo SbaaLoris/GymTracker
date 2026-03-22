@@ -59,6 +59,8 @@ An Admin manages the platform's integrity: creating and maintaining the exercise
 
 Our domain model is organized into **4 subdomains** following Domain-Driven Design (DDD) principles. Each subdomain contains one or more **Aggregates**, which are clusters of domain objects treated as a single unit of consistency.
 
+![Mova Domain Model](docs/DDD%20Mova.png)
+
 #### Subdomains & Aggregates
 
 **Subdomain: Workout Logging (Core)**
