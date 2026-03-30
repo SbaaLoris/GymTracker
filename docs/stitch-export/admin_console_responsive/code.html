@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mova Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline": "#906f70",
+              "on-secondary-fixed-variant": "#871d2e",
+              "on-primary-fixed-variant": "#920028",
+              "error-container": "#ffdad6",
+              "secondary-fixed": "#ffdada",
+              "surface-container-low": "#f6f3f2",
+              "primary": "#b80035",
+              "inverse-on-surface": "#f3f0ef",
+              "tertiary-fixed": "#90f5d9",
+              "on-background": "#1c1b1b",
+              "tertiary-container": "#00836c",
+              "on-secondary-fixed": "#40000c",
+              "on-tertiary-container": "#eefff7",
+              "on-primary-fixed": "#40000c",
+              "outline-variant": "#e5bdbe",
+              "surface-container-highest": "#e5e2e1",
+              "on-surface-variant": "#5c3f40",
+              "on-primary-container": "#fffaf9",
+              "on-tertiary-fixed-variant": "#005142",
+              "on-tertiary-fixed": "#002019",
+              "surface": "#fcf8f8",
+              "on-secondary-container": "#710920",
+              "on-primary": "#ffffff",
+              "primary-fixed": "#ffdada",
+              "tertiary-fixed-dim": "#74d8bd",
+              "tertiary": "#006855",
+              "surface-variant": "#e5e2e1",
+              "primary-fixed-dim": "#ffb3b6",
+              "background": "#fcf8f8",
+              "secondary-fixed-dim": "#ffb3b6",
+              "on-secondary": "#ffffff",
+              "error": "#ba1a1a",
+              "on-tertiary": "#ffffff",
+              "surface-container-high": "#ebe7e7",
+              "secondary": "#a83544",
+              "inverse-primary": "#ffb3b6",
+              "surface-bright": "#fcf8f8",
+              "primary-container": "#e11d48",
+              "surface-container-lowest": "#ffffff",
+              "surface-container": "#f0edec",
+              "inverse-surface": "#313030",
+              "on-surface": "#1c1b1b",
+              "on-error": "#ffffff",
+              "surface-tint": "#be0037",
+              "secondary-container": "#fd7681",
+              "on-error-container": "#93000a",
+              "surface-dim": "#dcd9d9"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50">
+<div class="flex justify-between items-center h-16 px-6 max-w-7xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black tracking-tighter text-zinc-900 dark:text-zinc-50">Mova</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-sans tracking-tight font-medium transition-colors active:scale-95 duration-200" href="#">Dashboard</a>
+<a class="text-rose-600 dark:text-rose-500 font-semibold border-b-2 border-rose-600 font-sans tracking-tight active:scale-95 duration-200" href="#">Exercises</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-sans tracking-tight font-medium transition-colors active:scale-95 duration-200" href="#">Workouts</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-sans tracking-tight font-medium transition-colors active:scale-95 duration-200" href="#">Plans</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-sans tracking-tight font-medium transition-colors active:scale-95 duration-200" href="#">Progress</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-xl hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/20">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional man with a confident expression in a clean studio setting with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoTHrQXHN6gdizmTPb55LpRNuu5QWRIerLHdyw7qLRhc1nKheL5p3NhV_GnZt9s0-rht7lYxHdcV7P9CvvZGsk5e-7sYJ6L-UfBObT5CjVLU-VXlIIceQ1fBsJ2spTV6VDm5XuBqz4jzfu0lW-Zt-kSKY1hZjDlhO0PIfRcGG7hlIriDai4oeC_rqjviXUziwWxasrkinqD4z-1qzUItPWBnINNFLlDlNWAm33pp8Jj562oRH64m8RFgfKQAjU0YX6BX2cBbuqGXc"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h1 class="text-4xl md:text-5xl font-black tracking-tighter text-on-surface mb-2">Library Management</h1>
+<p class="text-on-surface-variant max-w-md font-medium">Curate and manage the global exercise database for all Mova athletes.</p>
+</div>
+<button class="flex items-center gap-2 bg-gradient-to-r from-primary to-primary-container text-on-primary px-6 py-3 rounded-lg font-bold tracking-tight shadow-[0_8px_24px_rgba(184,0,53,0.15)] active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                + Add Exercise
+            </button>
+</div>
+<!-- Kinetic Stat Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/10 relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-4">Total Exercises</p>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-black tracking-tighter text-on-surface">1,284</span>
+<span class="text-tertiary text-sm font-bold">+12%</span>
+</div>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl text-surface-container opacity-20 transition-transform group-hover:scale-110 duration-500">fitness_center</span>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/10 relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-4">Pending Requests</p>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-black tracking-tighter text-primary">24</span>
+<span class="text-on-surface-variant text-sm font-bold">Needs Review</span>
+</div>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl text-primary opacity-5 transition-transform group-hover:scale-110 duration-500">pending_actions</span>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/10 relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-4">Active Templates</p>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-black tracking-tighter text-on-surface">86</span>
+<span class="text-tertiary text-sm font-bold">Live</span>
+</div>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl text-surface-container opacity-20 transition-transform group-hover:scale-110 duration-500">dashboard_customize</span>
+</div>
+</div>
+<!-- Data Table Section -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/5">
+<div class="p-6 flex items-center justify-between border-b border-outline-variant/10 bg-surface-container-lowest">
+<h3 class="text-xl font-black tracking-tight text-on-surface">Exercise Database</h3>
+<div class="flex gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-on-surface-variant/50" placeholder="Filter movements..." type="text"/>
+</div>
+<button class="p-2 bg-surface-container rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/70 bg-surface-container-low/50">
+<th class="px-8 py-4">Exercise Name</th>
+<th class="px-6 py-4">Primary Muscle</th>
+<th class="px-6 py-4">Equipment</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-8 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="bg-surface-container-lowest hover:bg-surface-container-high/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high overflow-hidden">
+<img alt="Bench Press" class="w-full h-full object-cover" data-alt="overhead shot of a chrome barbell on a weight bench in a minimalist modern gym with concrete floors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-pue81ab1xiz-MbWUCMFRNA5jlV260N6taj5-32WEMDKVAJRrVXVcCd8VoxO9rP_rJZLqeHBkmc-JqsANuVCA399S7nIt6Ip3kx112Bmc4osZMxMCk9qf39hvLx9dDQ_ARnRycj79J2W4kEH89xGoYxeHnrx0Ydag9et7P__k7sEeoPB2C3iSV0Vki9CrvLxeZlzUWDTl8Y7wzleYs5hufDkn_aol__UZmmRedU8UEROaVXrw4wN3eSoHDQW-UrP_tJBGaPv-Thg"/>
+</div>
+<span class="font-bold text-on-surface">Barbell Bench Press</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm font-medium">Chest</td>
+<td class="px-6 py-5">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Barbell</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-[11px] font-bold uppercase tracking-tighter">Active</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:text-primary transition-colors active:scale-90"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-2 hover:text-error transition-colors active:scale-90"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="bg-surface-container-lowest hover:bg-surface-container-high/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high overflow-hidden">
+<img alt="Dumbbell Rows" class="w-full h-full object-cover" data-alt="close-up of professional gym dumbbells on a rack with dramatic shadows and sharp focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAzV-coy7a25oOEjTKL75qz-7HHViqWNaMLKutNh4j4t_ytnYcf2lGWiGRsvha3OpQaiOBiNXtvdzNHC0qTXjKN-OPTn-g3cWOQjYwWd9jSmeT1mQe370hxoUxZUihgVGKOMA8-gwExdtwUjQpruGQ_mF3rrl7WlHds-xlKqX3Yd4s4hY-OHuuv1WT0qXHvbXAbXI2tGvOqwVjhv3Fw6RUKWr-DkCe3ibuKVq7XsNqSHzbyo4lLPKkml_qAh1WlCPmmd6uJNRVfbc"/>
+</div>
+<span class="font-bold text-on-surface">Single Arm DB Row</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm font-medium">Back</td>
+<td class="px-6 py-5">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Dumbbell</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-[11px] font-bold uppercase tracking-tighter">Active</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:text-primary transition-colors active:scale-90"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-2 hover:text-error transition-colors active:scale-90"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="bg-surface-container-lowest hover:bg-surface-container-high/30 transition-colors opacity-60">
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high overflow-hidden grayscale">
+<img alt="Cable Fly" class="w-full h-full object-cover" data-alt="cable machine workout station in a high-end luxury fitness center with moody architectural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE6sKiPi-doJ0qGdfHeGycgKYUsE62XZJXzfdj5Y2KUbbTQ7Zxpyyjr_0mfckgHeIcZqydfhdR7UAsYh3BaSNmfkRoxGn0rtr8Eijx8BmYxgx3lq40lgqzgXBd3dKDgYGDfv7fTrnXsFLxCh2MbIL5GQGjKu3flQbZLAO-G6TmI-jRRmG0t1uVYll16HOdgSGyGU2oFFZDhTz7f0hf2R5OmIzt4KKuZ71ogtKy7K64LXq1iOXWCxScwJMZFP8ovQG5zXLxbFnz2Wc"/>
+</div>
+<span class="font-bold text-on-surface italic line-through">Cable Chest Fly</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm font-medium">Chest</td>
+<td class="px-6 py-5">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Cable</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-on-surface-variant/40"></span>
+<span class="text-[11px] font-bold uppercase tracking-tighter">Soft-Deleted</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:text-primary transition-colors active:scale-90"><span class="material-symbols-outlined text-[20px]">restore_from_trash</span></button>
+<button class="p-2 hover:text-error transition-colors active:scale-90"><span class="material-symbols-outlined text-[20px]">delete_forever</span></button>
+</div>
+</td>
+</tr>
+<tr class="bg-surface-container-lowest hover:bg-surface-container-high/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high overflow-hidden">
+<img alt="Squat" class="w-full h-full object-cover" data-alt="close-up of a powerlifter squatting with a heavy barbell in a high-performance athletic training facility" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyw6-setP2Y-cl6dNwZDlkIDrHJzzJ9S6qQKzPcx02WvzpF-pMiMFgPXZv3xtpa3TZ1-ZKPTyNIOuU6glAIXx9bxG6WAhmo0s70tA4YPB1UzVEEdL3sXFro_BOocjWBMfm8tsAh5XuHzZPSBsxsgIRElHgEbbR1pwgnTZ_fIik1tJFqN3eKXcO0DK8A8RvcXRLDys6sHt291LIr5qK7hy3t7BcmNwFXkGIOCr1OM9Xw31mglCO9ulCaRrOmaMYpQqQFoCEEbO5YJ4"/>
+</div>
+<span class="font-bold text-on-surface">Back Squat</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm font-medium">Legs</td>
+<td class="px-6 py-5">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Barbell</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-[11px] font-bold uppercase tracking-tighter">Active</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:text-primary transition-colors active:scale-90"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-2 hover:text-error transition-colors active:scale-90"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-8 py-6 bg-surface-container-lowest border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Showing 4 of 1,284 results</span>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container rounded-lg text-xs font-bold active:scale-95 transition-transform opacity-50 cursor-not-allowed">Previous</button>
+<button class="px-4 py-2 bg-primary text-on-primary rounded-lg text-xs font-bold active:scale-95 transition-transform shadow-sm">Next</button>
+</div>
+</div>
+</div>
+<!-- System Alerts / Requests Bento Section -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">priority_high</span>
+<h4 class="text-xl font-black tracking-tight">Recent User Requests</h4>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-4 rounded-lg flex items-center justify-between group">
+<div>
+<p class="font-bold text-sm">Arnold Press</p>
+<p class="text-[10px] text-on-surface-variant font-medium">Requested by: user_4920</p>
+</div>
+<button class="text-[10px] font-bold uppercase tracking-widest text-primary hover:underline transition-all">Review</button>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg flex items-center justify-between group">
+<div>
+<p class="font-bold text-sm">Hip Thrust (Machine)</p>
+<p class="text-[10px] text-on-surface-variant font-medium">Requested by: coach_pro</p>
+</div>
+<button class="text-[10px] font-bold uppercase tracking-widest text-primary hover:underline transition-all">Review</button>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10 flex flex-col justify-center items-center text-center">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">insights</span>
+</div>
+<h4 class="text-xl font-black tracking-tight mb-2">Usage Insights</h4>
+<p class="text-sm text-on-surface-variant font-medium mb-6">Barbell Squats remain the most logged exercise this week across 4,200 unique workouts.</p>
+<button class="text-[10px] font-bold uppercase tracking-widest text-on-surface bg-surface-container-highest px-6 py-2.5 rounded-lg hover:bg-primary hover:text-on-primary transition-all">View Analytics</button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 md:hidden bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-t border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50 pb-safe">
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-rose-600 dark:text-rose-500 bg-rose-50/50 dark:bg-rose-950/20 rounded-xl px-3 py-1 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">fitness_center</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Workouts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Plans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Stats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Library</span>
+</a>
+</nav>
+</body></html>

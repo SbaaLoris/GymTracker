@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Workout Plans | Mova</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "outline": "#906f70",
+                        "on-secondary-fixed-variant": "#871d2e",
+                        "on-primary-fixed-variant": "#920028",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffdada",
+                        "surface-container-low": "#f6f3f2",
+                        "primary": "#b80035",
+                        "inverse-on-surface": "#f3f0ef",
+                        "tertiary-fixed": "#90f5d9",
+                        "on-background": "#1c1b1b",
+                        "tertiary-container": "#00836c",
+                        "on-secondary-fixed": "#40000c",
+                        "on-tertiary-container": "#eefff7",
+                        "on-primary-fixed": "#40000c",
+                        "outline-variant": "#e5bdbe",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-surface-variant": "#5c3f40",
+                        "on-primary-container": "#fffaf9",
+                        "on-tertiary-fixed-variant": "#005142",
+                        "on-tertiary-fixed": "#002019",
+                        "surface": "#fcf8f8",
+                        "on-secondary-container": "#710920",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#ffdada",
+                        "tertiary-fixed-dim": "#74d8bd",
+                        "tertiary": "#006855",
+                        "surface-variant": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb3b6",
+                        "background": "#fcf8f8",
+                        "secondary-fixed-dim": "#ffb3b6",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#ebe7e7",
+                        "secondary": "#a83544",
+                        "inverse-primary": "#ffb3b6",
+                        "surface-bright": "#fcf8f8",
+                        "primary-container": "#e11d48",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#f0edec",
+                        "inverse-surface": "#313030",
+                        "on-surface": "#1c1b1b",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#be0037",
+                        "secondary-container": "#fd7681",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dcd9d9"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-24 md:pb-0">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50">
+<div class="flex justify-between items-center h-16 px-6 max-w-7xl mx-auto">
+<div class="text-2xl font-black tracking-tighter text-zinc-900 dark:text-zinc-50">Mova</div>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-sans tracking-tight font-medium" href="#">Dashboard</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-sans tracking-tight font-medium" href="#">Workouts</a>
+<a class="text-rose-600 dark:text-rose-500 font-semibold border-b-2 border-rose-600 font-sans tracking-tight" href="#">Plans</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-sans tracking-tight font-medium" href="#">Progress</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-sans tracking-tight font-medium" href="#">Exercises</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-zinc-600 dark:text-zinc-300">notifications</span>
+</button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 object-cover" data-alt="Close-up portrait of a young athletic woman with a confident expression, natural lighting, soft professional studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDen1KTcpHT6gx23zTYhkuqyB1dALyLxlgKXoTY8pDOpPKaAe7D4p2FJp7Q-aR3Hzv7d7ccwXn4AIE2nwIJduWOBJdHkHYD3uVJFsJVVLam7HsCvwNPBcAYns-rDye7ISPWJktpZxpmmLLR0hCkpIeSXOZb7SFaMc6lU9iwxk8YxJNoyBfMo2R9W4iq06za3KiS5Bi0misMcrfi10MF7uIpQGGGqrNgF2ofxp7jUdypecjKn01F5VuOS4jpU-RULRx8c42LLhHOn4g"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h1 class="text-4xl md:text-5xl font-black tracking-tighter text-on-surface mb-2">Workout Plans</h1>
+<p class="text-on-surface-variant max-w-md">Curated strength and conditioning programs designed for your specific peak performance goals.</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-3 rounded-xl font-bold tracking-tight shadow-[0_8px_24px_rgba(184,0,53,0.15)] hover:scale-[1.02] active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+                Create New Plan
+            </button>
+</div>
+<!-- Tonal Tabs -->
+<div class="flex p-1 bg-surface-container-low rounded-full w-full max-w-md mb-10">
+<button class="flex-1 py-2 text-sm font-bold tracking-widest uppercase text-primary bg-surface-container-lowest rounded-full shadow-sm">My Plans</button>
+<button class="flex-1 py-2 text-sm font-bold tracking-widest uppercase text-on-surface-variant hover:text-on-surface transition-colors">Official Templates</button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-16">
+<!-- Featured Card (Large) -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-lowest border border-outline-variant/20 shadow-sm transition-all hover:shadow-md">
+<div class="h-64 overflow-hidden relative">
+<img alt="Hypertrophy Program" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Interior of a minimalist high-end gym with barbell and weight plates, atmospheric lighting, moody shadows, industrial aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB39ykb5mVr-zlT5kmQVTauwcx-licej4Lx1Db81TE26JTd3Q2fBUuFYmpMOoyMbguQi1OJXnylzQblWcJvxauiAti0mOEcvuZOG_aPPR8rtexjT2nfiTqMNWt_a2MgN1mS_mfzmZ_FpkV-is3PA4uwcXM_D1_bvDBX08hpOUh7Yn-87UlxwRmvtfVxeYbFkrsx3uuCvQrPtyyVQLeVCYbIZOyEOOjMOoeT--5qerpHdW1cJSD2jE_c8IPMYV0j4o-ph2NROEhy7TM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-6 left-6 text-white">
+<span class="bg-primary/90 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-3 inline-block">Current Active</span>
+<h2 class="text-3xl font-black tracking-tighter">Ultimate Hypertrophy</h2>
+</div>
+</div>
+<div class="p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex gap-8">
+<div>
+<p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Duration</p>
+<p class="text-xl font-black tracking-tight text-on-surface">12 Weeks</p>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Exercises</p>
+<p class="text-xl font-black tracking-tight text-on-surface">42 Moves</p>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Intensity</p>
+<p class="text-xl font-black tracking-tight text-primary">Advanced</p>
+</div>
+</div>
+<button class="w-full md:w-auto px-10 py-4 bg-primary text-white rounded-xl font-black tracking-tighter text-lg active:scale-95 transition-transform">RESUME WORKOUT</button>
+</div>
+</div>
+<!-- Side Card (Stats) -->
+<div class="md:col-span-4 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between border border-outline-variant/10">
+<div>
+<h3 class="text-xl font-black tracking-tighter mb-4 text-on-surface">Plan Insights</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-medium">Weekly Consistency</span>
+<span class="text-tertiary font-bold">94%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[94%]"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-medium">Estimated Volume</span>
+<span class="text-on-surface font-bold">14,200kg</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant/10">
+<p class="text-sm text-on-surface-variant italic font-medium leading-relaxed">"The difference between a goal and a dream is a written plan with a deadline."</p>
+</div>
+</div>
+<!-- Standard Plan Cards -->
+<div class="md:col-span-4 group bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-6 flex flex-col transition-all hover:border-primary/30">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_vert</span>
+</div>
+<h3 class="text-xl font-black tracking-tighter text-on-surface mb-2">Functional Strength</h3>
+<p class="text-sm text-on-surface-variant mb-6 flex-grow">A hybrid approach focusing on multi-planar movements and core stability.</p>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/10">
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">EXC</span>
+<span class="text-sm font-bold">28</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">DUR</span>
+<span class="text-sm font-bold">6w</span>
+</div>
+</div>
+<button class="bg-surface-container-high hover:bg-primary hover:text-white px-4 py-2 rounded-lg text-xs font-black transition-all">START</button>
+</div>
+</div>
+<div class="md:col-span-4 group bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-6 flex flex-col transition-all hover:border-primary/30">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_vert</span>
+</div>
+<h3 class="text-xl font-black tracking-tighter text-on-surface mb-2">Metabolic Burn</h3>
+<p class="text-sm text-on-surface-variant mb-6 flex-grow">High intensity intervals designed to spike heart rate and maximize afterburn.</p>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/10">
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">EXC</span>
+<span class="text-sm font-bold">15</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">DUR</span>
+<span class="text-sm font-bold">4w</span>
+</div>
+</div>
+<button class="bg-surface-container-high hover:bg-primary hover:text-white px-4 py-2 rounded-lg text-xs font-black transition-all">START</button>
+</div>
+</div>
+<div class="md:col-span-4 group bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-6 flex flex-col transition-all hover:border-primary/30">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="self_improvement">self_improvement</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_vert</span>
+</div>
+<h3 class="text-xl font-black tracking-tighter text-on-surface mb-2">Active Recovery</h3>
+<p class="text-sm text-on-surface-variant mb-6 flex-grow">Low-impact mobility drills to improve range of motion and reduce soreness.</p>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/10">
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">EXC</span>
+<span class="text-sm font-bold">12</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">DUR</span>
+<span class="text-sm font-bold">∞</span>
+</div>
+</div>
+<button class="bg-surface-container-high hover:bg-primary hover:text-white px-4 py-2 rounded-lg text-xs font-black transition-all">START</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 md:hidden bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-t border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50 pb-safe">
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Workouts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-rose-600 dark:text-rose-500 bg-rose-50/50 dark:bg-rose-950/20 rounded-xl px-3 py-1 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="event_note" style="font-variation-settings: 'FILL' 1;">event_note</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Plans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Stats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Library</span>
+</a>
+</nav>
+</body></html>

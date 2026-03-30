@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline": "#906f70",
+              "on-secondary-fixed-variant": "#871d2e",
+              "on-primary-fixed-variant": "#920028",
+              "error-container": "#ffdad6",
+              "secondary-fixed": "#ffdada",
+              "surface-container-low": "#f6f3f2",
+              "primary": "#b80035",
+              "inverse-on-surface": "#f3f0ef",
+              "tertiary-fixed": "#90f5d9",
+              "on-background": "#1c1b1b",
+              "tertiary-container": "#00836c",
+              "on-secondary-fixed": "#40000c",
+              "on-tertiary-container": "#eefff7",
+              "on-primary-fixed": "#40000c",
+              "outline-variant": "#e5bdbe",
+              "surface-container-highest": "#e5e2e1",
+              "on-surface-variant": "#5c3f40",
+              "on-primary-container": "#fffaf9",
+              "on-tertiary-fixed-variant": "#005142",
+              "on-tertiary-fixed": "#002019",
+              "surface": "#fcf8f8",
+              "on-secondary-container": "#710920",
+              "on-primary": "#ffffff",
+              "primary-fixed": "#ffdada",
+              "tertiary-fixed-dim": "#74d8bd",
+              "tertiary": "#006855",
+              "surface-variant": "#e5e2e1",
+              "primary-fixed-dim": "#ffb3b6",
+              "background": "#fcf8f8",
+              "secondary-fixed-dim": "#ffb3b6",
+              "on-secondary": "#ffffff",
+              "error": "#ba1a1a",
+              "on-tertiary": "#ffffff",
+              "surface-container-high": "#ebe7e7",
+              "secondary": "#a83544",
+              "inverse-primary": "#ffb3b6",
+              "surface-bright": "#fcf8f8",
+              "primary-container": "#e11d48",
+              "surface-container-lowest": "#ffffff",
+              "surface-container": "#f0edec",
+              "inverse-surface": "#313030",
+              "on-surface": "#1c1b1b",
+              "on-error": "#ffffff",
+              "surface-tint": "#be0037",
+              "secondary-container": "#fd7681",
+              "on-error-container": "#93000a",
+              "surface-dim": "#dcd9d9"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-24 md:pb-0 pt-16">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50">
+<div class="flex justify-between items-center h-16 px-6 max-w-7xl mx-auto">
+<div class="text-2xl font-black tracking-tighter text-zinc-900 dark:text-zinc-50">Mova</div>
+<div class="hidden md:flex space-x-8 h-full items-center">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-sans tracking-tight font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-sans tracking-tight font-medium transition-colors" href="#">Workouts</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-sans tracking-tight font-medium transition-colors" href="#">Plans</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-sans tracking-tight font-medium transition-colors" href="#">Progress</a>
+<a class="text-rose-600 dark:text-rose-500 font-semibold border-b-2 border-rose-600 h-full flex items-center" href="#">Exercises</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-zinc-500 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 p-2 rounded-full transition-colors active:scale-95 duration-200" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-zinc-200">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="professional portrait of a person with a friendly expression in clean minimalist lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsrFtOo03XjPen6bs3i3z_IrrBIoEPFwfXRvPHyFF59lGECBrJpmqqDdy9gydiMU14hUskTiE_eVjNSPhrNP9utgFPlG5qJ5eKWIl3YJuQz5ay7haw7JXZ4naG3uXDGxALgU6I9CVuipiOlBnAg1LCNnUnRtFCU0A3fUH1n9D7-yrlwXDVthsUb51xST_-gR7iK-lzveyKKqsmXxWfu3KY1PCozyLW5HsrqcKaJb5CwvtK4VBnBVAYHvQrM32WNntbWFDVNoOCnxw"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-6 py-8">
+<!-- Pending Request Banner -->
+<div class="mb-8 flex items-center justify-between p-4 bg-surface-container-low rounded-xl border-l-4 border-primary shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="pending_actions">pending_actions</span>
+<div>
+<p class="text-sm font-semibold text-on-surface">Request Pending: Weighted Bulgarian Split Squat</p>
+<p class="text-xs text-on-surface-variant">Our team is reviewing your request for a new exercise addition.</p>
+</div>
+</div>
+<button class="text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">View Status</button>
+</div>
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h1 class="text-[2.75rem] font-black tracking-tight leading-none text-on-surface mb-2">Library</h1>
+<p class="text-on-surface-variant font-medium">Browse 450+ curated high-performance movements.</p>
+</div>
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-6 py-3 rounded-lg font-bold text-sm tracking-wide shadow-[0_8px_24px_rgba(184,0,53,0.1)] active:scale-95 transition-transform flex items-center justify-center gap-2 self-start md:self-auto">
+<span class="material-symbols-outlined text-sm" data-icon="add_circle">add_circle</span>
+                REQUEST EXERCISE
+            </button>
+</div>
+<!-- Filters & Search Shell -->
+<div class="sticky top-20 z-40 bg-surface/80 backdrop-blur-md py-4 mb-8">
+<div class="flex flex-col lg:flex-row gap-6 items-center">
+<!-- Search Bar -->
+<div class="relative w-full lg:max-w-md group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-xl py-3 pl-12 pr-4 text-on-surface placeholder:text-on-surface-variant/60 transition-all" placeholder="Search movements..." type="text"/>
+</div>
+<!-- Muscle Group Pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-2 w-full no-scrollbar">
+<button class="px-5 py-2 rounded-full bg-primary text-on-primary text-xs font-bold whitespace-nowrap">All Muscles</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold whitespace-nowrap hover:bg-surface-container-highest transition-colors">Chest</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold whitespace-nowrap hover:bg-surface-container-highest transition-colors">Back</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold whitespace-nowrap hover:bg-surface-container-highest transition-colors">Legs</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold whitespace-nowrap hover:bg-surface-container-highest transition-colors">Shoulders</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold whitespace-nowrap hover:bg-surface-container-highest transition-colors">Arms</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold whitespace-nowrap hover:bg-surface-container-highest transition-colors">Core</button>
+</div>
+</div>
+</div>
+<!-- Exercise Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+<!-- Exercise Card 1 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-transparent hover:border-outline-variant/20">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="close-up of a person performing a barbell deadlift in a minimalist high-end gym setting with moody lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC90RWl51ZSvxQi2RhwxvT0kucjgGB0qwvMeAQS4vOGMr3DWf-LY1ndQp3t1Vpi0O01zesk2H_3PFjy_yFh-oPgIpclIvnd4M8NRMZtiii49zXrVS7u3ZYzQsVuU4QhmsWmaiHYPpSc_phuabQ9eFr6skWv6ZrcMsUlQWft-_j9oRDbr7uiRFKOm1BupBptjMrxqbAIhN4h6IOhjTJs0Ho85Icld3E9PThHlUa1x4KycZlsJgbVLMTbtH53tiowAX_-4jxNG17crvQ"/>
+<div class="absolute top-3 left-3">
+<span class="bg-surface-container-high/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface">Legs</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold tracking-tight text-on-surface mb-1">Conventional Deadlift</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="fitness_center">fitness_center</span>
+                        Barbell • Compound
+                    </p>
+</div>
+</div>
+<!-- Exercise Card 2 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-transparent hover:border-outline-variant/20">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="focused athlete performing push-ups on a clean wooden floor with natural soft lighting from a window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0Hhn4PJBHtByclpqKFoYbRlU_N-IANAKTMfDeIAB7EqC4X_AOdk5E_ihXm0aDnGe4U_2HW6kUN7VTj9pcNy30JzHnoG3K5YnZVlbXdsgBHJ_RXiALnfJu5C10JqoVVlYSadX_0MWRzEl2CWEpHheoy86Q1S6jyzuALa79yR7veKCro04oP5DP-q4f7S2zgoBhkGuqrhhnnPRu7UFL1m3EpLOAQtL2zfLk2DE68EFJyCoqrqh20Ig7adHaAdOzEawWj9Uqk7KiJ4E"/>
+<div class="absolute top-3 left-3">
+<span class="bg-surface-container-high/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface">Chest</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold tracking-tight text-on-surface mb-1">Diamond Push-Up</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="body_system">body_system</span>
+                        Bodyweight • Isolation
+                    </p>
+</div>
+</div>
+<!-- Exercise Card 3 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-transparent hover:border-outline-variant/20">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="overhead view of dumbbells on a gym floor with dramatic lighting emphasizing textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6cjQICIb5PFUvtEdSmPFnd-DrukTkSn40fi3fDxiZ2iOZx63agOwzwp4mM5WpEmbmOOppEDsTzL5pTdKMGMGqbWjrFB65jfVqbULK5XkqeFrb4Ug1dGIHGsAKyHbyPR5rNkBgkRo-jT-x-96N6XVXvkWHlNOg_6rTfTjYVY-vaC04jHmKlS06pgK9H3AFp5s-HM0EENNxYS0QydTj-UZw6o_LBvKStp9RjSQ3U3kFde0ZKEjzmQ2HCU_XkOv-Iga5O-V0Lsebk24"/>
+<div class="absolute top-3 left-3">
+<span class="bg-surface-container-high/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface">Shoulders</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold tracking-tight text-on-surface mb-1">Arnold Press</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="fitness_center">fitness_center</span>
+                        Dumbbells • Compound
+                    </p>
+</div>
+</div>
+<!-- Exercise Card 4 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-transparent hover:border-outline-variant/20">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="fitness athlete performing pull-ups showing muscular back definition in a high-contrast black and white style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEZM7rYm_CGG340La96TDyCnVxe9bEQI5zwQa6vOePr_bIHNKJIS91koM57gMkH9BREL8k1M7FoyMRMNAv24yhWUx5lMXHUMnXKaZf37cseI6mxG_DD2Lt7Kex7dUu6ND9Ne3w_BZIQSxDx3rUySW-yq5sHxrE15qL1U2NCzoHtpF2DEHIwqstGZ5VxlVnVYJ4EnK4znKa9IRGSs5mLcqgNR39aWNF5vAr-m2cXAJRSfuGWkQEBHk63bRvK76FCSttaLuyOBqGe6s"/>
+<div class="absolute top-3 left-3">
+<span class="bg-surface-container-high/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface">Back</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold tracking-tight text-on-surface mb-1">Weighted Pull-Up</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="body_system">body_system</span>
+                        Bodyweight • Compound
+                    </p>
+</div>
+</div>
+<!-- Exercise Card 5 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-transparent hover:border-outline-variant/20">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="person performing walking lunges outdoors in a park with soft evening sun rays" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHuMhuZFHIEj-lQIQLQF_Cbf4i4SCHTeek9WVGlCDXuMdF-xLcQMcfXV8WzG9kgDHYM_YamOax_UIIQlc27qpQOWX_u9FVtdIzNobU5_4xaYcmhr1lsldIPfY2l-nfmWllKwxxLXkXJ0Re4dWplTrt2Jf2l5oq_wTciMkDMM2sBxKId5z_Ua2ihhDplaSZfFDN41TsI69Gv_DAhH4QYzDkhCQhaNCaAXXAE3KSVX1riR2JIUc4ftgZfcyOBLWJlVOncyqB-Wk2JKE"/>
+<div class="absolute top-3 left-3">
+<span class="bg-surface-container-high/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface">Legs</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold tracking-tight text-on-surface mb-1">Bulgarian Split Squat</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="fitness_center">fitness_center</span>
+                        Dumbbells • Unilateral
+                    </p>
+</div>
+</div>
+<!-- Exercise Card 6 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-transparent hover:border-outline-variant/20">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="close-up of athlete's core during a plank exercise with beads of sweat and sharp focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAomIm1JYsU6q89NWxZmnb2qavbsHIy3lUjln_AjKsKt3lEXHQOMcgUzoTsEddOQ_6kuTNSe5J3BzxOBFigJUA5mh3cMMcPB-89tkE0Iuh7arjEvAJY2GqTrTmciSrX25_Oblw97hrg27JtH890U8ol_JjpgY-Cow0mKyrhK-SYV174MRVPIpfQyZGH-vBBaMFhIUBnjmFFafXmktxuvzdD3fjrcTbyVvL0nnf-hJzyLtBzvql__LDdZCiE9_ONvDqMbNQhdVXd4gc"/>
+<div class="absolute top-3 left-3">
+<span class="bg-surface-container-high/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface">Core</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold tracking-tight text-on-surface mb-1">Hanging Leg Raise</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="body_system">body_system</span>
+                        Bodyweight • Compound
+                    </p>
+</div>
+</div>
+<!-- Exercise Card 7 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-transparent hover:border-outline-variant/20">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="bicep curl motion blur capturing the intensity of a heavy lift in a dark industrial gym" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsiKkz6bMRPcFm6-1Mk7U60y7x_GO0pF5PqejUKP0wmwiVeSn9WUQp__7NWYmdREUeVYFtsiA7dDXTPdibyPR4Fi-6K7-Tv5vBnJNqJb1LYu0YEUDR-J_4RWVQ5bWlAuosEjgIyzRACTEBZr4puReir99Tf-uweJ4uQ6mIzjkwwNk13dqE09Y7fQ7XnIlv9bjetf5rAj2yDHHhjatM-Cl9WsuW6eUiNElB02sQD2usf8ydCawE58hCpYEEpRt69WJfHTph0lwrWok"/>
+<div class="absolute top-3 left-3">
+<span class="bg-surface-container-high/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface">Arms</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold tracking-tight text-on-surface mb-1">Hammer Curl</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="fitness_center">fitness_center</span>
+                        Dumbbells • Isolation
+                    </p>
+</div>
+</div>
+<!-- Exercise Card 8 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-transparent hover:border-outline-variant/20">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="person performing lat pulldowns with back muscles engaged in a brightly lit modern fitness center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgSMrCd4b4hahGfnseZpHQTwqzXmlpuzkXbzDS2xiyU7Dv6Px1twlUWZANGmCoo7M2Cm00XIseLVJ6Nu0g2yaAodQX1f3ERVW_HzrlbK2QXHLobpJB2tGJTfFCnh6ZNF4ntmF08x-q3Hb9Z7bawel3ZfkIoT5-_W2JRBCuCC-WzMMNVS0CmK2qqia9NaeU-mePvn4PTTqqGTlYu7zknrORlDgMvw10TrjFyXt5_xoB8BTQR7Kp5nPHMDt1E0aXiGW1Y8mF6rhZRQc"/>
+<div class="absolute top-3 left-3">
+<span class="bg-surface-container-high/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface">Back</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold tracking-tight text-on-surface mb-1">Single Arm Row</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="fitness_center">fitness_center</span>
+                        Kettlebell • Unilateral
+                    </p>
+</div>
+</div>
+</div>
+<!-- Load More Section -->
+<div class="mt-16 flex justify-center">
+<button class="flex flex-col items-center gap-2 text-on-surface-variant hover:text-primary transition-colors group">
+<span class="text-xs font-bold uppercase tracking-widest">Load More Movements</span>
+<span class="material-symbols-outlined group-hover:translate-y-1 transition-transform" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 md:hidden bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-t border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50 pb-safe">
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Workouts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Plans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Stats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-rose-600 dark:text-rose-500 bg-rose-50/50 dark:bg-rose-950/20 rounded-xl px-3 py-1 touch-manipulation active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Library</span>
+</a>
+</nav>
+</body></html>
