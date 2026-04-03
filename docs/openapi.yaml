@@ -1,0 +1,1605 @@
+openapi: 3.0.3
+
+# =============================================================================
+#  Mova — Gym Tracker API
+#  Full REST API specification following DDD aggregate boundaries.
+# =============================================================================
+
+info:
+  title: Mova – Gym Tracker API
+  description: |
+    REST API for the **Mova** gym-tracking web application.
+
+    ## Authentication
+    All endpoints (except registration) require **HTTP Basic Auth**.
+    Include your credentials via the `Authorization: Basic <base64(username:password)>` header.
+
+    ## Roles
+    | Role    | Description |
+    |---------|-------------|
+    | `admin` | Manages exercises, templates, and exercise requests |
+    | `user`  | Logs workouts, tracks metrics, manages personal plans |
+
+    ## Business Rules
+    1. **Exercise Authority Integrity** — Only admins can create/update/delete exercises. Deletion is a soft-delete (`is_active = false`) to preserve historical data.
+    2. **Anti-Spam Security** — A user can have at most **5 pending** exercise requests at any time.
+    3. **Data Validation** — A workout session cannot be saved unless it contains at least one workout set.
+  version: 1.0.0
+  contact:
+    name: Team Mova
+
+servers:
+  - url: http://localhost:8000
+    description: Local Development
+  - url: https://api.mova.app
+    description: Production
+
+# =============================================================================
+#  Global Security — Basic Auth on every endpoint by default
+# =============================================================================
+security:
+  - basicAuth: []
+
+tags:
+  - name: Auth
+    description: Registration and authentication
+  - name: Exercises
+    description: Master exercise catalogue (admin-managed)
+  - name: Exercise Requests
+    description: User-submitted exercise suggestions
+  - name: Workout Plans
+    description: Reusable workout templates and personal routines
+  - name: Workout Sessions
+    description: Logged gym sessions with sets
+  - name: Body Metrics
+    description: Body weight tracking over time
+  - name: Export
+    description: Data export (CSV / PDF)
+
+# =============================================================================
+#  P A T H S
+# =============================================================================
+paths:
+
+  # ---------------------------------------------------------------------------
+  #  AUTH
+  # ---------------------------------------------------------------------------
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user account
+      description: Creates a new user with role `user`. No authentication required.
+      operationId: registerUser
+      security: []                       # public — no auth needed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '201':
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '409':
+          description: Username already taken
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Get the currently authenticated user
+      description: Returns the profile of the user whose credentials were sent in the `Authorization` header. Useful for validating credentials and retrieving the current user's ID and role.
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: Authenticated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+
+  # ---------------------------------------------------------------------------
+  #  EXERCISES  (Admin-managed master catalogue)
+  # ---------------------------------------------------------------------------
+  /exercises:
+    get:
+      tags: [Exercises]
+      summary: List all exercises
+      description: |
+        Returns all exercises from the master catalogue.
+        By default only active exercises are returned. Admins can include inactive exercises using the `include_inactive` filter.
+      operationId: listExercises
+      parameters:
+        - name: muscle_group
+          in: query
+          required: false
+          description: Filter by muscle group
+          schema:
+            $ref: '#/components/schemas/MuscleGroup'
+        - name: is_cardio
+          in: query
+          required: false
+          description: Filter by cardio flag
+          schema:
+            type: boolean
+        - name: include_inactive
+          in: query
+          required: false
+          description: "**Admin only.** If `true`, also returns soft-deleted exercises."
+          schema:
+            type: boolean
+            default: false
+        - name: search
+          in: query
+          required: false
+          description: Search exercises by name (case-insensitive partial match)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of exercises
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Exercise'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags: [Exercises]
+      summary: Create a new exercise
+      description: "**Admin only.** Adds a new exercise to the master catalogue."
+      operationId: createExercise
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseCreate'
+      responses:
+        '201':
+          description: Exercise created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: An exercise with this name already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /exercises/{exerciseId}:
+    get:
+      tags: [Exercises]
+      summary: Get an exercise by ID
+      operationId: getExercise
+      parameters:
+        - $ref: '#/components/parameters/ExerciseIdParam'
+      responses:
+        '200':
+          description: Exercise details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Exercises]
+      summary: Update an exercise
+      description: "**Admin only.** Updates exercise details (name, muscle group, cardio flag)."
+      operationId: updateExercise
+      parameters:
+        - $ref: '#/components/parameters/ExerciseIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseCreate'
+      responses:
+        '200':
+          description: Updated exercise
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: An exercise with this name already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+    delete:
+      tags: [Exercises]
+      summary: Soft-delete an exercise
+      description: |
+        **Admin only.** Sets `is_active = false` on the exercise.
+        The exercise remains in the database so historical workout data is preserved (Business Rule 1).
+      operationId: deleteExercise
+      parameters:
+        - $ref: '#/components/parameters/ExerciseIdParam'
+      responses:
+        '200':
+          description: Exercise soft-deleted (returned with `is_active = false`)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------------
+  #  EXERCISE REQUESTS  (User-submitted suggestions)
+  # ---------------------------------------------------------------------------
+  /exercise-requests:
+    get:
+      tags: [Exercise Requests]
+      summary: List exercise requests
+      description: |
+        - **Admin:** Returns all exercise requests (optionally filtered by status).
+        - **User:** Returns only their own exercise requests.
+      operationId: listExerciseRequests
+      parameters:
+        - name: status
+          in: query
+          required: false
+          description: Filter by request status
+          schema:
+            $ref: '#/components/schemas/RequestStatus'
+      responses:
+        '200':
+          description: List of exercise requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExerciseRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags: [Exercise Requests]
+      summary: Submit a new exercise request
+      description: |
+        **User only.** Submits a request for a new exercise to be added.
+        The request starts in `pending` status.
+        A user cannot have more than **5 pending** requests at any time (Business Rule 2).
+      operationId: createExerciseRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseRequestCreate'
+      responses:
+        '201':
+          description: Exercise request submitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExerciseRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          description: "User has reached the maximum of 5 pending requests (Business Rule 2)"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /exercise-requests/{requestId}:
+    get:
+      tags: [Exercise Requests]
+      summary: Get an exercise request by ID
+      description: "**Admin or the requesting user.**"
+      operationId: getExerciseRequest
+      parameters:
+        - $ref: '#/components/parameters/RequestIdParam'
+      responses:
+        '200':
+          description: Exercise request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExerciseRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags: [Exercise Requests]
+      summary: Delete an exercise request
+      description: "**Admin or the requesting user.** Only `pending` requests can be deleted."
+      operationId: deleteExerciseRequest
+      parameters:
+        - $ref: '#/components/parameters/RequestIdParam'
+      responses:
+        '204':
+          description: Exercise request deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Cannot delete a request that has already been approved or denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /exercise-requests/{requestId}/approve:
+    post:
+      tags: [Exercise Requests]
+      summary: Approve an exercise request
+      description: |
+        **Admin only.** Sets the request status to `approved`.
+        The admin should then create the corresponding exercise in the master catalogue.
+      operationId: approveExerciseRequest
+      parameters:
+        - $ref: '#/components/parameters/RequestIdParam'
+      responses:
+        '200':
+          description: Request approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExerciseRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Request is not in `pending` status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /exercise-requests/{requestId}/deny:
+    post:
+      tags: [Exercise Requests]
+      summary: Deny an exercise request
+      description: "**Admin only.** Sets the request status to `denied`."
+      operationId: denyExerciseRequest
+      parameters:
+        - $ref: '#/components/parameters/RequestIdParam'
+      responses:
+        '200':
+          description: Request denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExerciseRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Request is not in `pending` status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ---------------------------------------------------------------------------
+  #  WORKOUT PLANS  (Templates & personal routines)
+  # ---------------------------------------------------------------------------
+  /workout-plans:
+    get:
+      tags: [Workout Plans]
+      summary: List workout plans
+      description: |
+        Returns all workout plans visible to the current user.
+        - Public templates (`is_template = true`) are visible to everyone.
+        - Personal plans are only visible to the owner.
+        - Admins can see all plans.
+      operationId: listWorkoutPlans
+      parameters:
+        - name: is_template
+          in: query
+          required: false
+          description: Filter by template flag (`true` = admin templates only, `false` = personal plans only)
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: List of workout plans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkoutPlan'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags: [Workout Plans]
+      summary: Create a new workout plan
+      description: |
+        Creates a new workout plan with at least one exercise slot.
+        - **Admin** can set `is_template = true` to make it a global template.
+        - **User** can only create personal plans (`is_template = false`).
+      operationId: createWorkoutPlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutPlanCreate'
+      responses:
+        '201':
+          description: Workout plan created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutPlan'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /workout-plans/{planId}:
+    get:
+      tags: [Workout Plans]
+      summary: Get a workout plan by ID
+      description: Returns the plan with all its exercise slots. Templates are public; personal plans are owner-only.
+      operationId: getWorkoutPlan
+      parameters:
+        - $ref: '#/components/parameters/PlanIdParam'
+      responses:
+        '200':
+          description: Workout plan with exercise slots
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutPlan'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Workout Plans]
+      summary: Update a workout plan
+      description: |
+        **Owner or Admin.** Replaces the plan metadata and its full list of exercise slots.
+        The request body must include the complete list of `exercises` — any slots not included will be removed.
+      operationId: updateWorkoutPlan
+      parameters:
+        - $ref: '#/components/parameters/PlanIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutPlanCreate'
+      responses:
+        '200':
+          description: Updated workout plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutPlan'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+    delete:
+      tags: [Workout Plans]
+      summary: Delete a workout plan
+      description: "**Owner or Admin.** Permanently deletes the plan and its exercise slots."
+      operationId: deleteWorkoutPlan
+      parameters:
+        - $ref: '#/components/parameters/PlanIdParam'
+      responses:
+        '204':
+          description: Workout plan deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------------
+  #  WORKOUT SESSIONS  (Logged gym visits)
+  # ---------------------------------------------------------------------------
+  /users/{userId}/workout-sessions:
+    get:
+      tags: [Workout Sessions]
+      summary: List a user's workout sessions
+      description: "**Owner or Admin.** Returns all of the user's logged workout sessions, ordered by date (newest first)."
+      operationId: listWorkoutSessions
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - name: from
+          in: query
+          required: false
+          description: Filter sessions from this date (inclusive, ISO 8601)
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: false
+          description: Filter sessions up to this date (inclusive, ISO 8601)
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: List of workout sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkoutSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    post:
+      tags: [Workout Sessions]
+      summary: Log a new workout session
+      description: |
+        **Owner only.** Creates a new workout session.
+        Must include at least one workout set (Business Rule 3).
+        Each set must specify the exercise performed and either `reps` + `weight` (strength) or `duration` (cardio).
+      operationId: createWorkoutSession
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutSessionCreate'
+      responses:
+        '201':
+          description: Workout session logged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /users/{userId}/workout-sessions/{sessionId}:
+    get:
+      tags: [Workout Sessions]
+      summary: Get a workout session by ID
+      description: "**Owner or Admin.** Returns the session with all its sets."
+      operationId: getWorkoutSession
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/SessionIdParam'
+      responses:
+        '200':
+          description: Workout session with sets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Workout Sessions]
+      summary: Update a workout session
+      description: |
+        **Owner only.** Replaces the session's date, plan reference, and its full list of sets.
+        Must still include at least one set (Business Rule 3).
+      operationId: updateWorkoutSession
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/SessionIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutSessionCreate'
+      responses:
+        '200':
+          description: Updated workout session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+    delete:
+      tags: [Workout Sessions]
+      summary: Delete a workout session
+      description: "**Owner or Admin.** Permanently deletes the session and all its sets."
+      operationId: deleteWorkoutSession
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/SessionIdParam'
+      responses:
+        '204':
+          description: Workout session deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------------
+  #  BODY METRICS
+  # ---------------------------------------------------------------------------
+  /users/{userId}/body-metrics:
+    get:
+      tags: [Body Metrics]
+      summary: List a user's body metrics
+      description: "**Owner or Admin.** Returns all of the user's body weight entries, ordered by date (newest first)."
+      operationId: listBodyMetrics
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - name: from
+          in: query
+          required: false
+          description: Filter from this date (inclusive)
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: false
+          description: Filter up to this date (inclusive)
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: List of body metrics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BodyMetric'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    post:
+      tags: [Body Metrics]
+      summary: Log a new body metric entry
+      description: "**Owner only.** Records a body weight measurement for a specific date."
+      operationId: createBodyMetric
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BodyMetricCreate'
+      responses:
+        '201':
+          description: Body metric logged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BodyMetric'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /users/{userId}/body-metrics/{metricId}:
+    get:
+      tags: [Body Metrics]
+      summary: Get a body metric by ID
+      description: "**Owner or Admin.**"
+      operationId: getBodyMetric
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/MetricIdParam'
+      responses:
+        '200':
+          description: Body metric details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BodyMetric'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Body Metrics]
+      summary: Update a body metric entry
+      description: "**Owner only.** Updates the weight value or date of an existing entry."
+      operationId: updateBodyMetric
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/MetricIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BodyMetricCreate'
+      responses:
+        '200':
+          description: Updated body metric
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BodyMetric'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+    delete:
+      tags: [Body Metrics]
+      summary: Delete a body metric entry
+      description: "**Owner or Admin.**"
+      operationId: deleteBodyMetric
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/MetricIdParam'
+      responses:
+        '204':
+          description: Body metric deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------------
+  #  EXPORT
+  # ---------------------------------------------------------------------------
+  /users/{userId}/export/workout-sessions:
+    get:
+      tags: [Export]
+      summary: Export workout session history
+      description: |
+        **Owner or Admin.** Downloads all workout sessions (and their sets) for the user
+        in the requested format. Supports optional date-range filtering.
+      operationId: exportWorkoutSessions
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/ExportFormatParam'
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: File download
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /users/{userId}/export/body-metrics:
+    get:
+      tags: [Export]
+      summary: Export body metrics history
+      description: |
+        **Owner or Admin.** Downloads all body metric entries for the user
+        in the requested format. Supports optional date-range filtering.
+      operationId: exportBodyMetrics
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/ExportFormatParam'
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: File download
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# =============================================================================
+#  C O M P O N E N T S
+# =============================================================================
+components:
+
+  # ---------------------------------------------------------------------------
+  #  Security Schemes
+  # ---------------------------------------------------------------------------
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: "HTTP Basic Authentication. Send `Authorization: Basic <base64(username:password)>`."
+
+  # ---------------------------------------------------------------------------
+  #  Reusable Parameters
+  # ---------------------------------------------------------------------------
+  parameters:
+
+    UserIdParam:
+      name: userId
+      in: path
+      required: true
+      description: Unique identifier of the user
+      schema:
+        type: integer
+
+    ExerciseIdParam:
+      name: exerciseId
+      in: path
+      required: true
+      description: Unique identifier of the exercise
+      schema:
+        type: integer
+
+    RequestIdParam:
+      name: requestId
+      in: path
+      required: true
+      description: Unique identifier of the exercise request
+      schema:
+        type: integer
+
+    PlanIdParam:
+      name: planId
+      in: path
+      required: true
+      description: Unique identifier of the workout plan
+      schema:
+        type: integer
+
+    SessionIdParam:
+      name: sessionId
+      in: path
+      required: true
+      description: Unique identifier of the workout session
+      schema:
+        type: integer
+
+    MetricIdParam:
+      name: metricId
+      in: path
+      required: true
+      description: Unique identifier of the body metric entry
+      schema:
+        type: integer
+
+    ExportFormatParam:
+      name: format
+      in: query
+      required: true
+      description: Desired export file format
+      schema:
+        type: string
+        enum: [csv, pdf]
+
+  # ---------------------------------------------------------------------------
+  #  Reusable Responses
+  # ---------------------------------------------------------------------------
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Forbidden:
+      description: Authenticated but insufficient permissions for this action
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ValidationError:
+      description: Request body failed validation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
+
+  # ---------------------------------------------------------------------------
+  #  Schemas
+  # ---------------------------------------------------------------------------
+  schemas:
+
+    # ── Value Objects / Enums ──────────────────────────────────────────────
+    MuscleGroup:
+      type: string
+      description: Target muscle group for an exercise
+      enum:
+        - Chest
+        - Back
+        - Legs
+        - Shoulders
+        - Arms
+        - Core
+        - Cardio
+
+    RequestStatus:
+      type: string
+      description: Lifecycle status of an exercise request
+      enum:
+        - pending
+        - approved
+        - denied
+
+    Role:
+      type: string
+      description: User role
+      enum:
+        - admin
+        - user
+
+    # ── User Aggregate ─────────────────────────────────────────────────────
+    User:
+      type: object
+      description: A registered user (Aggregate Root)
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 1
+        username:
+          type: string
+          example: loris
+        role:
+          $ref: '#/components/schemas/Role'
+      required:
+        - id
+        - username
+        - role
+
+    UserRegistration:
+      type: object
+      description: Payload for creating a new user account
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+          example: loris
+        password:
+          type: string
+          format: password
+          minLength: 8
+          description: "Plain-text password (will be hashed server-side)"
+          example: "S3cureP@ss!"
+      required:
+        - username
+        - password
+
+
+    # ── Exercise Aggregate ─────────────────────────────────────────────────
+    Exercise:
+      type: object
+      description: A master exercise definition (Aggregate Root)
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 42
+        name:
+          type: string
+          example: Barbell Squat
+        muscle_group:
+          $ref: '#/components/schemas/MuscleGroup'
+        is_cardio:
+          type: boolean
+          example: false
+        is_active:
+          type: boolean
+          description: "`false` means the exercise has been soft-deleted"
+          example: true
+          readOnly: true
+      required:
+        - id
+        - name
+        - muscle_group
+        - is_cardio
+        - is_active
+
+    ExerciseCreate:
+      type: object
+      description: Payload for creating or updating an exercise
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Barbell Squat
+        muscle_group:
+          $ref: '#/components/schemas/MuscleGroup'
+        is_cardio:
+          type: boolean
+          example: false
+      required:
+        - name
+        - muscle_group
+        - is_cardio
+
+    # ── Exercise Request Aggregate ─────────────────────────────────────────
+    ExerciseRequest:
+      type: object
+      description: A user-submitted suggestion for a new exercise (Aggregate Root)
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 7
+        user_id:
+          type: integer
+          readOnly: true
+          example: 1
+        suggested_name:
+          type: string
+          example: Bulgarian Split Squat
+        muscle_group:
+          $ref: '#/components/schemas/MuscleGroup'
+        status:
+          $ref: '#/components/schemas/RequestStatus'
+      required:
+        - id
+        - user_id
+        - suggested_name
+        - muscle_group
+        - status
+
+    ExerciseRequestCreate:
+      type: object
+      description: Payload for submitting a new exercise request
+      properties:
+        suggested_name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Bulgarian Split Squat
+        muscle_group:
+          $ref: '#/components/schemas/MuscleGroup'
+      required:
+        - suggested_name
+        - muscle_group
+
+    # ── Workout Plan Aggregate ─────────────────────────────────────────────
+    WorkoutPlan:
+      type: object
+      description: "A reusable workout template or personal routine (Aggregate Root). Contains one or more exercise slots."
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 3
+        name:
+          type: string
+          example: Leg Day A
+        creator_id:
+          type: integer
+          readOnly: true
+          example: 1
+        is_template:
+          type: boolean
+          description: "`true` = admin-created global template, `false` = personal user plan"
+          example: false
+        exercises:
+          type: array
+          description: Ordered list of exercise slots in this plan
+          items:
+            $ref: '#/components/schemas/PlanExercise'
+      required:
+        - id
+        - name
+        - creator_id
+        - is_template
+        - exercises
+
+    PlanExercise:
+      type: object
+      description: One exercise slot inside a workout plan (Child Entity)
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 10
+        exercise_id:
+          type: integer
+          description: References a master Exercise
+          example: 42
+        order_index:
+          type: integer
+          description: Position of this exercise in the plan (1-indexed)
+          minimum: 1
+          example: 1
+        target_sets:
+          type: integer
+          description: Recommended number of sets
+          minimum: 1
+          example: 4
+        target_reps:
+          type: integer
+          description: Recommended number of reps per set
+          minimum: 1
+          example: 10
+      required:
+        - exercise_id
+        - order_index
+        - target_sets
+        - target_reps
+
+    WorkoutPlanCreate:
+      type: object
+      description: Payload for creating or updating a workout plan (must include at least one exercise slot)
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Leg Day A
+        is_template:
+          type: boolean
+          description: "Only admins can set this to `true`"
+          default: false
+        exercises:
+          type: array
+          description: Must contain at least one exercise slot
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/PlanExerciseInput'
+      required:
+        - name
+        - exercises
+
+    PlanExerciseInput:
+      type: object
+      description: Input for one exercise slot (no ID needed — server assigns it)
+      properties:
+        exercise_id:
+          type: integer
+          example: 42
+        order_index:
+          type: integer
+          minimum: 1
+          example: 1
+        target_sets:
+          type: integer
+          minimum: 1
+          example: 4
+        target_reps:
+          type: integer
+          minimum: 1
+          example: 10
+      required:
+        - exercise_id
+        - order_index
+        - target_sets
+        - target_reps
+
+    # ── Workout Session Aggregate ──────────────────────────────────────────
+    WorkoutSession:
+      type: object
+      description: "One logged gym visit (Aggregate Root). Contains one or more sets."
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 55
+        date:
+          type: string
+          format: date
+          description: Date of the workout session (ISO 8601)
+          example: "2026-03-30"
+        user_id:
+          type: integer
+          readOnly: true
+          example: 1
+        plan_id:
+          type: integer
+          nullable: true
+          description: Optional reference to the workout plan that was followed
+          example: 3
+        sets:
+          type: array
+          description: All sets performed during this session
+          items:
+            $ref: '#/components/schemas/WorkoutSet'
+      required:
+        - id
+        - date
+        - user_id
+        - sets
+
+    WorkoutSet:
+      description: "One individual set performed in a session (Child Entity). Exactly one variant must match: strength (`reps` + `weight`) or cardio (`duration`). The `type` field determines which variant applies."
+      oneOf:
+        - $ref: '#/components/schemas/StrengthSet'
+        - $ref: '#/components/schemas/CardioSet'
+      discriminator:
+        propertyName: type
+        mapping:
+          strength: '#/components/schemas/StrengthSet'
+          cardio: '#/components/schemas/CardioSet'
+
+    StrengthSet:
+      type: object
+      description: A strength-training set (reps + weight)
+      properties:
+        type:
+          type: string
+          enum: [strength]
+          description: "Discriminator — always `strength` for this variant"
+          example: strength
+        id:
+          type: integer
+          readOnly: true
+          example: 100
+        exercise_id:
+          type: integer
+          description: References a master Exercise
+          example: 42
+        reps:
+          type: integer
+          description: Number of repetitions
+          minimum: 1
+          example: 10
+        weight:
+          type: number
+          description: Weight used in **kg**
+          minimum: 0
+          example: 80.0
+        duration:
+          type: integer
+          nullable: true
+          description: "Must be `null` for strength sets"
+      required:
+        - type
+        - exercise_id
+        - reps
+        - weight
+
+    CardioSet:
+      type: object
+      description: A cardio set (duration only)
+      properties:
+        type:
+          type: string
+          enum: [cardio]
+          description: "Discriminator — always `cardio` for this variant"
+          example: cardio
+        id:
+          type: integer
+          readOnly: true
+          example: 200
+        exercise_id:
+          type: integer
+          description: References a master Exercise
+          example: 15
+        duration:
+          type: integer
+          description: Duration in **seconds**
+          minimum: 1
+          example: 1800
+        reps:
+          type: integer
+          nullable: true
+          description: "Must be `null` for cardio sets"
+        weight:
+          type: number
+          nullable: true
+          description: "Must be `null` for cardio sets"
+      required:
+        - type
+        - exercise_id
+        - duration
+
+    WorkoutSessionCreate:
+      type: object
+      description: Payload for creating or updating a workout session (must include at least one set — Business Rule 3)
+      properties:
+        date:
+          type: string
+          format: date
+          example: "2026-03-30"
+        plan_id:
+          type: integer
+          nullable: true
+          description: Optional plan reference
+        sets:
+          type: array
+          description: Must contain at least one set (Business Rule 3)
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/WorkoutSetInput'
+      required:
+        - date
+        - sets
+
+    WorkoutSetInput:
+      description: "Input for one set (no ID needed). Exactly one variant must match: strength (`reps` + `weight`) or cardio (`duration`). The `type` field determines which variant applies."
+      oneOf:
+        - $ref: '#/components/schemas/StrengthSetInput'
+        - $ref: '#/components/schemas/CardioSetInput'
+      discriminator:
+        propertyName: type
+        mapping:
+          strength: '#/components/schemas/StrengthSetInput'
+          cardio: '#/components/schemas/CardioSetInput'
+
+    StrengthSetInput:
+      type: object
+      description: Input for a strength-training set
+      properties:
+        type:
+          type: string
+          enum: [strength]
+          description: "Discriminator — must be `strength`"
+          example: strength
+        exercise_id:
+          type: integer
+          example: 42
+        reps:
+          type: integer
+          minimum: 1
+          example: 10
+        weight:
+          type: number
+          minimum: 0
+          example: 80.0
+      required:
+        - type
+        - exercise_id
+        - reps
+        - weight
+
+    CardioSetInput:
+      type: object
+      description: Input for a cardio set
+      properties:
+        type:
+          type: string
+          enum: [cardio]
+          description: "Discriminator — must be `cardio`"
+          example: cardio
+        exercise_id:
+          type: integer
+          example: 15
+        duration:
+          type: integer
+          minimum: 1
+          description: Duration in **seconds**
+          example: 1800
+      required:
+        - type
+        - exercise_id
+        - duration
+
+    # ── Body Metric Aggregate ──────────────────────────────────────────────
+    BodyMetric:
+      type: object
+      description: A single body weight measurement (Aggregate Root)
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 12
+        user_id:
+          type: integer
+          readOnly: true
+          example: 1
+        date:
+          type: string
+          format: date
+          description: Date of measurement (ISO 8601)
+          example: "2026-03-30"
+        body_weight:
+          type: number
+          description: Body weight in **kg**
+          minimum: 0
+          example: 78.5
+      required:
+        - id
+        - user_id
+        - date
+        - body_weight
+
+    BodyMetricCreate:
+      type: object
+      description: Payload for logging a body metric entry
+      properties:
+        date:
+          type: string
+          format: date
+          example: "2026-03-30"
+        body_weight:
+          type: number
+          description: Body weight in **kg**
+          minimum: 0
+          example: 78.5
+      required:
+        - date
+        - body_weight
+
+
+    # ── Error Responses ────────────────────────────────────────────────────
+    Error:
+      type: object
+      description: Standard error response
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code
+          example: not_found
+        message:
+          type: string
+          description: Human-readable error description
+          example: The requested resource was not found
+      required:
+        - error
+        - message
+
+    ValidationErrorResponse:
+      type: object
+      description: Detailed validation error response
+      properties:
+        error:
+          type: string
+          example: validation_error
+        message:
+          type: string
+          example: Request body failed validation
+        details:
+          type: array
+          description: List of individual field validation errors
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: name
+              message:
+                type: string
+                example: "Field is required"
+      required:
+        - error
+        - message
+        - details
