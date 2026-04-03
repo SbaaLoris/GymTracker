@@ -155,6 +155,15 @@ The following strict business rules are enforced in the backend:
 
 ---
 
+## API Documentation
+
+The full REST API is documented in [`docs/openapi.yaml`](./docs/openapi.yaml) following the OpenAPI 3.0.3 specification.
+
+You can visualize it interactively at:
+[Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/SbaaLoris/GymTracker/main/docs/openapi.yaml)
+
+---
+
 ## Implementation
 
 ### Backend Technology
