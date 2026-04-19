@@ -16,3 +16,11 @@ class RequestNotPending(DomainError):
 
 class PermissionDenied(DomainError):
     """The current user is not allowed to perform this action."""
+
+
+class ExerciseNotFound(DomainError):
+    """Exercise does not exist."""
+
+
+class ExerciseNameConflict(DomainError):
+    """Another exercise with the same name already exists."""
