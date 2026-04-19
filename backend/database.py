@@ -14,6 +14,7 @@ Base = declarative_base()
 def init_db():
     from backend.models.body_metric import BodyMetric
     from backend.models.exercise import Exercise
+    from backend.models.exercise_request import ExerciseRequest
     Base.metadata.create_all(bind=engine)
     
     # Check if table is empty, and seed if necessary
