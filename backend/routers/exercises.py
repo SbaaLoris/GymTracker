@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
 from backend.database import get_db
-from backend.models.exercise import Exercise as ExcerciseModel, MuscleGroup
+from backend.models.exercise import Exercise as ExcerciseModel, MuscleGroupEnum
 from backend.schemas.exercise import ExerciseCreate, Exercise as ExerciseSchema
 
 router = APIRouter(prefix="/exercises", tags=["Exercises"])
@@ -21,7 +21,7 @@ def _get_exercise_or_404(exercise_id: int, db: Session) -> ExcerciseModel:
 
 @router.get("", response_model = list[ExerciseSchema])
 def list_exercises(
-    muscle_group: MuscleGroup | None = Query(default=None),
+    muscle_group: MuscleGroupEnum | None = Query(default=None),
     is_cardio: bool | None = Query(default=None),
     include_inactive: bool = Query(default=False),
     search: str | None = Query(default=None),
