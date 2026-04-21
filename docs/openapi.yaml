@@ -389,8 +389,7 @@ paths:
         `muscle_group`, and `is_cardio` values.
 
         If an exercise with the same name already exists, the approval
-        fails with `409 Conflict` — the admin can then deny the request
-        or ask the user to resubmit with a different name.
+        fails with `409 Conflict` and no changes are persisted.
       operationId: approveExerciseRequest
       parameters:
         - $ref: '#/components/parameters/RequestIdParam'
