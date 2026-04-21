@@ -6,6 +6,7 @@ from backend.models.exercise_request import RequestStatusEnum
 class ExerciseRequestBase(BaseModel):
     suggested_name: str = Field(..., min_length=2, max_length=100)
     muscle_group: MuscleGroupEnum
+    is_cardio: bool
 
 
 class ExerciseRequestCreate(ExerciseRequestBase):
