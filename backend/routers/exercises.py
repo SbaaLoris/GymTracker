@@ -6,7 +6,8 @@ from backend.models.exercise import MuscleGroupEnum
 from backend.schemas.exercise import Exercise as ExerciseSchema, ExerciseCreate
 from backend.services import exercise_service
 from backend.services.exceptions import ExerciseNameConflict, ExerciseNotFound
-from backend.auth import CurrentUser, require_admin
+from backend.auth import CurrentUser, require_admin, get_current_user
+from backend.models.role import RoleEnum
 
 
 router = APIRouter(prefix="/exercises", tags=["Exercises"])
@@ -18,7 +19,12 @@ def list_exercises(
     include_inactive: bool = Query(default=False),
     search: str | None = Query(default=None),
     db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(get_current_user),
 ):
+ # include_inactive is admin-only; silently drop for non-admins (per spec)
+    if include_inactive and current_user.role != RoleEnum.ADMIN:
+        include_inactive = False
+
     return exercise_service.list_exercises(
         db=db,
         muscle_group=muscle_group,
