@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 
 from backend.models.role import RoleEnum
 
@@ -10,14 +10,33 @@ class CurrentUser:
     role: RoleEnum
 
 
+# TODO: Remove this module-level switch once Nico's real auth is wired.
+#       Toggle this to test user-role behavior without real authentication.
+_STUB_USER = CurrentUser(id=1, role=RoleEnum.ADMIN)
+
+
 def get_current_user() -> CurrentUser:
     # TODO: Replace this stub once Nico's User Management is ready.
-    #       Will then read the Authorization header, look up the user in DB,
-    #       and return the real user. Until then: pretend every request comes
-    #       from user 1 as admin. Change role=RoleEnum.USER to test user-role logic.
-    return CurrentUser(id=1, role=RoleEnum.ADMIN)
+    return _STUB_USER
 
 
-def require_admin(current_user: CurrentUser = Depends(get_current_user)) -> CurrentUser:
-    # TODO: When auth is ready, raise 403 if role != admin.
+def require_admin(
+    current_user: CurrentUser = Depends(get_current_user),
+) -> CurrentUser:
+    if current_user.role != RoleEnum.ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin role required",
+        )
+    return current_user
+
+
+def require_user(
+    current_user: CurrentUser = Depends(get_current_user),
+) -> CurrentUser:
+    if current_user.role != RoleEnum.USER:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User role required (admins cannot perform this action)",
+        )
     return current_user
