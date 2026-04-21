@@ -6,6 +6,7 @@ from backend.models.exercise import MuscleGroupEnum
 from backend.schemas.exercise import Exercise as ExerciseSchema, ExerciseCreate
 from backend.services import exercise_service
 from backend.services.exceptions import ExerciseNameConflict, ExerciseNotFound
+from backend.auth import CurrentUser, require_admin
 
 
 router = APIRouter(prefix="/exercises", tags=["Exercises"])
@@ -31,6 +32,7 @@ def list_exercises(
 def create_exercise(
     payload: ExerciseCreate,
     db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(require_admin),
 ):
     try:
         return exercise_service.create_exercise(db=db, payload=payload)
@@ -54,6 +56,7 @@ def update_exercise(
     exercise_id: int,
     payload: ExerciseCreate,
     db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(require_admin),
 ):
     try:
         return exercise_service.update_exercise(
@@ -69,6 +72,7 @@ def update_exercise(
 def delete_exercise(
     exercise_id: int,
     db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(require_admin),
 ):
     try:
         return exercise_service.soft_delete_exercise(db=db, exercise_id=exercise_id)
