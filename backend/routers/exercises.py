@@ -50,6 +50,7 @@ def create_exercise(
 def get_exercise(
     exercise_id: int,
     db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
         return exercise_service.get_exercise(db=db, exercise_id=exercise_id)
