@@ -381,14 +381,21 @@ paths:
       tags: [Exercise Requests]
       summary: Approve an exercise request
       description: |
-        **Admin only.** Sets the request status to `approved`.
-        The admin should then create the corresponding exercise in the master catalogue.
+        **Admin only.** Atomically approves the request and creates the
+        corresponding exercise in the master catalogue.
+
+        The request status transitions from `pending` to `approved`, and
+        a new `Exercise` is created using the request's `suggested_name`,
+        `muscle_group`, and `is_cardio` values.
+
+        If an exercise with the same name already exists, the approval
+        fails with `409 Conflict` and no changes are persisted.
       operationId: approveExerciseRequest
       parameters:
         - $ref: '#/components/parameters/RequestIdParam'
       responses:
         '200':
-          description: Request approved
+          description: Request approved and exercise created
           content:
             application/json:
               schema:
@@ -400,7 +407,9 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
         '409':
-          description: Request is not in `pending` status
+          description: |
+            Either (a) the request is not in `pending` status, or
+            (b) an exercise with the same name already exists.
           content:
             application/json:
               schema:
@@ -1178,6 +1187,9 @@ components:
           example: Bulgarian Split Squat
         muscle_group:
           $ref: '#/components/schemas/MuscleGroup'
+        is_cardio:
+          type: boolean
+          example: false
         status:
           $ref: '#/components/schemas/RequestStatus'
       required:
@@ -1185,6 +1197,7 @@ components:
         - user_id
         - suggested_name
         - muscle_group
+        - is_cardio
         - status
 
     ExerciseRequestCreate:
@@ -1198,9 +1211,14 @@ components:
           example: Bulgarian Split Squat
         muscle_group:
           $ref: '#/components/schemas/MuscleGroup'
+        is_cardio:
+          type: boolean
+          description: Whether this is a cardio exercise
+          example: false
       required:
         - suggested_name
         - muscle_group
+        - is_cardio
 
     # ── Workout Plan Aggregate ─────────────────────────────────────────────
     WorkoutPlan:
