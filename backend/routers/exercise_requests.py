@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
-from backend.auth import CurrentUser, get_current_user, require_admin
+from backend.auth import CurrentUser, get_current_user, require_admin, require_user
 from backend.database import get_db
 from backend.models.exercise_request import ExerciseRequest as RequestModel, RequestStatusEnum
 from backend.schemas.exercise_request import ExerciseRequestCreate, ExerciseRequest as RequestSchema
@@ -34,7 +34,7 @@ def list_exercise_requests(
 def create_exercise_request(
     payload: ExerciseRequestCreate,
     db: Session = Depends(get_db),
-    current_user: CurrentUser = Depends(get_current_user),
+    current_user: CurrentUser = Depends(require_user),
 ):
     try:
         return exercise_request_service.create_request(
