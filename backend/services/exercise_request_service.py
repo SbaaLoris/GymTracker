@@ -85,6 +85,7 @@ def create_request(
         user_id = current_user_id,
         suggested_name = payload.suggested_name,
         muscle_group = payload.muscle_group,
+        is_cardio = payload.is_cardio,
         status = RequestStatusEnum.PENDING,
     )
 
@@ -139,7 +140,7 @@ def approve_request(
     new_exercise = Exercise(
         name=request.suggested_name,
         muscle_group=request.muscle_group,
-        is_cardio=False,
+        is_cardio=request.is_cardio,
         is_active=True
     )
     db.add(new_exercise)
