@@ -498,6 +498,8 @@ paths:
                 $ref: '#/components/schemas/WorkoutPlan'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '422':
           $ref: '#/components/responses/ValidationError'
 
@@ -1279,6 +1281,12 @@ components:
           description: Recommended number of reps per set
           minimum: 1
           example: 10
+        target_weight:
+          type: number
+          nullable: true
+          description: Optional target weight in **kg**. `null` for bodyweight or unspecified.
+          minimum: 0
+          example: 80.0
       required:
         - exercise_id
         - order_index
@@ -1287,7 +1295,9 @@ components:
 
     WorkoutPlanCreate:
       type: object
-      description: Payload for creating or updating a workout plan (must include at least one exercise slot)
+      description: |
+        Payload for creating or updating a workout plan (must include at least one exercise slot).
+        **Only strength-training exercises are allowed in plans.** Cardio exercises must be logged directly via workout sessions.
       properties:
         name:
           type: string
@@ -1327,6 +1337,12 @@ components:
           type: integer
           minimum: 1
           example: 10
+        target_weight:
+          type: number
+          nullable: true
+          description: Optional target weight in **kg**
+          minimum: 0
+          example: 80.0
       required:
         - exercise_id
         - order_index
