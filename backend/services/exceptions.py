@@ -24,3 +24,19 @@ class ExerciseNotFound(DomainError):
 
 class ExerciseNameConflict(DomainError):
     """Another exercise with the same name already exists."""
+
+
+class PlanNotFound(DomainError):
+    """Workout plan does not exist."""
+
+
+class InactiveExerciseInPlan(DomainError):
+    """Cannot reference an inactive (soft-deleted) exercise in a plan."""
+
+
+class DuplicateOrderIndex(DomainError):
+    """The same order_index appears twice in the same plan."""
+
+
+class CardioExerciseInPlan(DomainError):
+    """Cardio exercises cannot be added to workout plans."""
