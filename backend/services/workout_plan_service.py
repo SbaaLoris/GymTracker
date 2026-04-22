@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from backend.models.workout_plan import WorkoutPlan, PlanExercise
 from backend.models.exercise import Exercise
@@ -62,7 +62,7 @@ def list_plans(
     current_user_role: RoleEnum,
     is_template_filter: bool | None,
 ) -> list[WorkoutPlan]:
-    query = db.query(WorkoutPlan)
+    query = db.query(WorkoutPlan).options(selectinload(WorkoutPlan.exercises))
 
     if current_user_role != RoleEnum.ADMIN:
         query = query.filter(
