@@ -60,3 +60,5 @@ class UsernameConflict(DomainError):
 
 class InvalidCredentials(DomainError):
     """Username or password is incorrect."""
+class BodyMetricNotFound(DomainError):
+    """Body metric entry does not exist."""

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.models.role import RoleEnum
 
-_basic = HTTPBasic()
+_basic = HTTPBasic(auto_error=True)
 
 
 @dataclass
@@ -18,9 +18,16 @@ class CurrentUser:
 
 
 def get_current_user(
-    credentials: HTTPBasicCredentials = Depends(_basic),
+    credentials: HTTPBasicCredentials | None = Depends(_basic),
     db: Session = Depends(get_db),
 ) -> CurrentUser:
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
     from backend.services import user_service
     from backend.services.exceptions import InvalidCredentials
     try:
