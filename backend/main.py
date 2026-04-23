@@ -6,6 +6,7 @@ from backend.routers import auth
 from backend.routers import body_metrics
 from backend.routers import exercises
 from backend.routers import exercise_requests
+from backend.routers import export
 from backend.routers import workout_plans
 from backend.routers import workout_sessions
 
@@ -27,5 +28,6 @@ app.include_router(auth.router)
 app.include_router(body_metrics.router)
 app.include_router(exercises.router)
 app.include_router(exercise_requests.router)
+app.include_router(export.router)
 app.include_router(workout_plans.router)
 app.include_router(workout_sessions.router)
