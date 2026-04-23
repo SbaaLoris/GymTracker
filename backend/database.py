@@ -18,32 +18,33 @@ def init_db():
     from backend.models.user import User
     from backend.models.workout_plan import WorkoutPlan, PlanExercise
     from backend.models.workout_session import WorkoutSession, WorkoutSet
+    from backend.models.role import RoleEnum
+    from backend.services.user_service import hash_password
+
     Base.metadata.create_all(bind=engine)
     
     db = SessionLocal()
     try:
-        # Seed body metrics only if table is empty
-        if db.query(BodyMetric).count() == 0:
-            metrics = [
-                BodyMetric(date=date(2024, 1, 1), body_weight=79.5),
-                BodyMetric(date=date(2024, 1, 8), body_weight=79.0),
-                BodyMetric(date=date(2024, 1, 15), body_weight=78.7),
-                BodyMetric(date=date(2024, 1, 22), body_weight=78.2),
-                BodyMetric(date=date(2024, 1, 29), body_weight=77.8),
-                BodyMetric(date=date(2024, 2, 5), body_weight=77.5),
-            ]
-            db.add_all(metrics)
-            db.commit()
-
         # Seed users only if the table is empty
-        from backend.models.role import RoleEnum
-        from backend.services.user_service import hash_password
         if db.query(User).count() == 0:
             db.add_all([
                 User(id=1, username="nicokoechli",   hashed_password=hash_password("12345678"), role=RoleEnum.ADMIN),
                 User(id=2, username="lorissbaa",     hashed_password=hash_password("12345678"), role=RoleEnum.USER),
                 User(id=3, username="patrickzobrist", hashed_password=hash_password("12345678"), role=RoleEnum.USER),
             ])
+            db.commit()
+
+        # Seed body metrics only if table is empty
+        if db.query(BodyMetric).count() == 0:
+            metrics = [
+                BodyMetric(user_id=1, date=date(2024, 1, 1), body_weight=79.5),
+                BodyMetric(user_id=1, date=date(2024, 1, 8), body_weight=79.0),
+                BodyMetric(user_id=1, date=date(2024, 1, 15), body_weight=78.7),
+                BodyMetric(user_id=1, date=date(2024, 1, 22), body_weight=78.2),
+                BodyMetric(user_id=1, date=date(2024, 1, 29), body_weight=77.8),
+                BodyMetric(user_id=1, date=date(2024, 2, 5), body_weight=77.5),
+            ]
+            db.add_all(metrics)
             db.commit()
     finally:
         db.close()
