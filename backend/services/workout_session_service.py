@@ -16,10 +16,21 @@ from backend.services.exceptions import (
     PlanNotFound,
 )
 
-def _get_session_or_raise(db: Session, session_id: int) -> WorkoutSession:
-    session = db.query(WorkoutSession).filter(WorkoutSession.id == session_id).first()
+def _get_session_or_raise(
+    db: Session,
+    session_id: int,
+    path_user_id: int,
+) -> WorkoutSession:
+    session = (
+        db.query(WorkoutSession)
+        .filter(WorkoutSession.id == session_id)
+        .filter(WorkoutSession.user_id == path_user_id)
+        .first()
+    )
     if session is None:
-        raise SessionNotFound(f"Workout session with id {session_id} not found")
+        raise SessionNotFound(
+            f"Workout session with id {session_id} not found for user {path_user_id}"
+        )
     return session
 
 def _assert_user_id_matches(
@@ -127,7 +138,7 @@ def get_session(
     current_user_role: RoleEnum,
 ) -> WorkoutSession:
     _assert_user_id_matches(path_user_id, current_user_id, current_user_role)
-    session = _get_session_or_raise(db, session_id)
+    session = _get_session_or_raise(db, session_id, path_user_id)
     _assert_can_view(session, current_user_id, current_user_role)
     return session
 
@@ -178,7 +189,7 @@ def update_session(
     payload: WorkoutSessionCreate,
 ) -> WorkoutSession:
     _assert_user_id_matches(path_user_id, current_user_id, current_user_role)
-    session = _get_session_or_raise(db, session_id)
+    session = _get_session_or_raise(db, session_id,path_user_id)
     _assert_can_modify(session, current_user_id)
 
     _assert_exercises_valid_for_sets(db, payload.sets)
@@ -211,7 +222,7 @@ def delete_session(
     current_user_role: RoleEnum,
 ) -> None:
     _assert_user_id_matches(path_user_id, current_user_id, current_user_role)
-    session = _get_session_or_raise(db, session_id)
+    session = _get_session_or_raise(db, session_id, path_user_id)
 
     # Admins can delete any session (cleanup support); owner can delete their own.
     if current_user_role != RoleEnum.ADMIN and session.user_id != current_user_id:
