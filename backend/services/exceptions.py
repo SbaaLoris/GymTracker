@@ -40,3 +40,15 @@ class DuplicateOrderIndex(DomainError):
 
 class CardioExerciseInPlan(DomainError):
     """Cardio exercises cannot be added to workout plans."""
+
+
+class SessionNotFound(DomainError):
+    """Workout session does not exist."""
+
+
+class ExerciseTypeMismatch(DomainError):
+    """Set type (strength/cardio) does not match the exercise's is_cardio flag."""
+
+
+class PlanNotVisible(DomainError):
+    """The referenced plan exists but the user is not allowed to use it."""
