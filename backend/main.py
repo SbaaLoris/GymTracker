@@ -6,6 +6,7 @@ from backend.routers import body_metrics
 from backend.routers import exercises
 from backend.routers import exercise_requests
 from backend.routers import workout_plans
+from backend.routers import workout_sessions
 
 app = FastAPI(title="GymTracker API")
 
@@ -25,3 +26,4 @@ app.include_router(body_metrics.router, tags=["Body Metrics"])
 app.include_router(exercises.router)
 app.include_router(exercise_requests.router)
 app.include_router(workout_plans.router)
+app.include_router(workout_sessions.router)
