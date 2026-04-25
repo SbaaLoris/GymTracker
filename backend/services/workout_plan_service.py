@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session, selectinload
 from backend.models.workout_plan import WorkoutPlan, PlanExercise
 from backend.models.exercise import Exercise
 from backend.models.role import RoleEnum
+from backend.models.workout_session import WorkoutSession
 from backend.schemas.workout_plan import WorkoutPlanCreate, PlanExerciseInput
 from backend.services.exceptions import (
     PlanNotFound,
@@ -184,8 +185,9 @@ def delete_plan(
     if not (is_admin or is_owner):
         raise PermissionDenied("You are not allowed to delete this workout plan")
 
-    # WICHTIG (für später): Wenn WorkoutSessions existieren, muss die Beziehung
-    # plan_id bei Sessions wahrscheinlich auf NULL gesetzt werden (SET NULL), 
-    # damit die historischen Sessions erhalten bleiben (Business Rule 1).
+    db.query(WorkoutSession).filter(WorkoutSession.plan_id == plan_id).update(
+        {WorkoutSession.plan_id: None}
+    )
+
     db.delete(plan)
     db.commit()

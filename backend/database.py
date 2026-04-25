@@ -16,6 +16,7 @@ def init_db():
     from backend.models.exercise import Exercise
     from backend.models.exercise_request import ExerciseRequest
     from backend.models.workout_plan import WorkoutPlan, PlanExercise
+    from backend.models.workout_session import WorkoutSession, WorkoutSet
     Base.metadata.create_all(bind=engine)
     
     # Check if table is empty, and seed if necessary
