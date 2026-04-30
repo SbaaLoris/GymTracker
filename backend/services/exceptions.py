@@ -53,8 +53,12 @@ class ExerciseTypeMismatch(DomainError):
 class PlanNotVisible(DomainError):
     """The referenced plan exists but the user is not allowed to use it."""
 
+
 class UsernameConflict(DomainError):
     """Another user with the same username already exists."""
 
+
 class InvalidCredentials(DomainError):
     """Username or password is incorrect."""
+class BodyMetricNotFound(DomainError):
+    """Body metric entry does not exist."""
