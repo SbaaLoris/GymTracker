@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.database import init_db
+from backend.routers import auth
 from backend.routers import body_metrics
 from backend.routers import exercises
 from backend.routers import exercise_requests
@@ -22,6 +23,7 @@ app.add_middleware(
 def on_startup():
     init_db()
 
+app.include_router(auth.router)
 app.include_router(body_metrics.router, tags=["Body Metrics"])
 app.include_router(exercises.router)
 app.include_router(exercise_requests.router)
