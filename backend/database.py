@@ -15,13 +15,14 @@ def init_db():
     from backend.models.body_metric import BodyMetric
     from backend.models.exercise import Exercise
     from backend.models.exercise_request import ExerciseRequest
+    from backend.models.user import User
     from backend.models.workout_plan import WorkoutPlan, PlanExercise
     from backend.models.workout_session import WorkoutSession, WorkoutSet
     Base.metadata.create_all(bind=engine)
     
-    # Check if table is empty, and seed if necessary
     db = SessionLocal()
     try:
+        # Seed body metrics only if table is empty
         if db.query(BodyMetric).count() == 0:
             metrics = [
                 BodyMetric(date=date(2024, 1, 1), body_weight=79.5),
@@ -32,6 +33,17 @@ def init_db():
                 BodyMetric(date=date(2024, 2, 5), body_weight=77.5),
             ]
             db.add_all(metrics)
+            db.commit()
+
+        # Seed users only if the table is empty
+        from backend.models.role import RoleEnum
+        from backend.services.user_service import hash_password
+        if db.query(User).count() == 0:
+            db.add_all([
+                User(id=1, username="nicokoechli",   hashed_password=hash_password("12345678"), role=RoleEnum.ADMIN),
+                User(id=2, username="lorissbaa",     hashed_password=hash_password("12345678"), role=RoleEnum.USER),
+                User(id=3, username="patrickzobrist", hashed_password=hash_password("12345678"), role=RoleEnum.USER),
+            ])
             db.commit()
     finally:
         db.close()
