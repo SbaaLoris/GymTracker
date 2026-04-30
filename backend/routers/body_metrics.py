@@ -1,68 +1,109 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from typing import List
+from datetime import date
 
-from backend.database import SessionLocal
-from backend.models.body_metric import BodyMetric
-from backend.schemas.body_metric import BodyMetricOut, BodyMetricCreate, BodyMetricUpdate, BodyMetricDelete
+from backend.auth import CurrentUser, get_current_user
+from backend.database import get_db
+from backend.schemas.body_metric import BodyMetric as BodyMetricSchema, BodyMetricCreate
+from backend.services import body_metric_service
+from backend.services.exceptions import BodyMetricNotFound, PermissionDenied
 
-router = APIRouter()
+router = APIRouter(tags=["Body Metrics"])
 
-# Dependency logic to provide a clean database session for each request.
-# The session is automatically closed after the request is completed.
-def get_db():
-    db = SessionLocal()
+@router.get("/users/{userId}/body-metrics", response_model=list[BodyMetricSchema])
+def list_body_metrics(
+    userId: int,
+    from_date: date | None = Query(default=None, alias="from"),
+    to_date: date | None = Query(default=None, alias="to"),
+    db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(get_current_user),
+):
     try:
-        yield db
-    finally:
-        db.close()
+        return body_metric_service.list_metrics(
+            db=db,
+            user_id=current_user.id,
+            user_role=current_user.role,
+            target_user_id=userId,
+            from_date=from_date,
+            to_date=to_date
+        )
+    except PermissionDenied as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
-# GET endpoint to retrieve all body metrics.
-# Used for fetching and displaying previously saved entries (e.g., in a chart).
-@router.get("/body-metrics", response_model=List[BodyMetricOut])
-def read_body_metrics(db: Session = Depends(get_db)):
-    metrics = db.query(BodyMetric).order_by(BodyMetric.date.asc()).all()
-    return metrics
+@router.post("/users/{userId}/body-metrics", response_model=BodyMetricSchema, status_code=status.HTTP_201_CREATED)
+def create_body_metric(
+    userId: int,
+    payload: BodyMetricCreate,
+    db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    try:
+        return body_metric_service.create_metric(
+            db=db,
+            user_id=current_user.id,
+            target_user_id=userId,
+            payload=payload
+        )
+    except PermissionDenied as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
-# POST endpoint for creating a new body metric entry.
-# Pydantic validates the incoming payload using the BodyMetricCreate schema.
-@router.post("/body-metrics", response_model=BodyMetricOut)
-def create_body_metric(metric: BodyMetricCreate, db: Session = Depends(get_db)):
-    # Converts the validated Pydantic input into a dictionary to instantiate the ORM model
-    db_metric = BodyMetric(**metric.model_dump())
-    # Prepares the new object for insertion into the database
-    db.add(db_metric)
-    # Saves the entry permanently to the database
-    db.commit()
-    # Reloads the saved object to get auto-generated properties like the ID
-    db.refresh(db_metric)
-    # Returns the created entry back to the client
-    return db_metric
+@router.get("/users/{userId}/body-metrics/{metricId}", response_model=BodyMetricSchema)
+def get_body_metric(
+    userId: int,
+    metricId: int,
+    db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    try:
+        return body_metric_service.get_metric(
+            db=db,
+            metric_id=metricId,
+            user_id=current_user.id,
+            user_role=current_user.role,
+            target_user_id=userId
+        )
+    except BodyMetricNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionDenied as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
-# PUT endpoint to update an existing body metric.
-# Used when the user edits a past entry.
-@router.put("/body-metrics", response_model=BodyMetricOut)
-def update_body_metric(metric: BodyMetricUpdate, db: Session = Depends(get_db)):
-    db_metric = db.query(BodyMetric).filter(BodyMetric.id == metric.id).first()
-    if not db_metric:
-        raise HTTPException(status_code=404, detail="Body metric not found")
-    
-    db_metric.date = metric.date
-    db_metric.body_weight = metric.body_weight
-    
-    db.commit()
-    db.refresh(db_metric)
-    return db_metric
+@router.put("/users/{userId}/body-metrics/{metricId}", response_model=BodyMetricSchema)
+def update_body_metric(
+    userId: int,
+    metricId: int,
+    payload: BodyMetricCreate,
+    db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    try:
+        return body_metric_service.update_metric(
+            db=db,
+            metric_id=metricId,
+            user_id=current_user.id,
+            target_user_id=userId,
+            payload=payload
+        )
+    except BodyMetricNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionDenied as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
-# DELETE endpoint to remove an existing body metric.
-# Accepts a JSON body containing the ID of the metric to delete.
-@router.delete("/body-metrics")
-def delete_body_metric(metric: BodyMetricDelete, db: Session = Depends(get_db)):
-    db_metric = db.query(BodyMetric).filter(BodyMetric.id == metric.id).first()
-    if not db_metric:
-        raise HTTPException(status_code=404, detail="Body metric not found")
-    
-    # Removes the object from the database context
-    db.delete(db_metric)
-    db.commit()
-    return {"message": "Body metric deleted successfully"}
+@router.delete("/users/{userId}/body-metrics/{metricId}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_body_metric(
+    userId: int,
+    metricId: int,
+    db: Session = Depends(get_db),
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    try:
+        body_metric_service.delete_metric(
+            db=db,
+            metric_id=metricId,
+            user_id=current_user.id,
+            user_role=current_user.role,
+            target_user_id=userId
+        )
+    except BodyMetricNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionDenied as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))

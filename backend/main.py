@@ -24,7 +24,7 @@ def on_startup():
     init_db()
 
 app.include_router(auth.router)
-app.include_router(body_metrics.router, tags=["Body Metrics"])
+app.include_router(body_metrics.router)
 app.include_router(exercises.router)
 app.include_router(exercise_requests.router)
 app.include_router(workout_plans.router)
