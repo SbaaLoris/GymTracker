@@ -35,17 +35,16 @@ def init_db():
             db.add_all(metrics)
             db.commit()
 
-        # Always reset seed users so exactly these 3 exist with the correct IDs
+        # Seed users only if the table is empty
         from backend.models.role import RoleEnum
         from backend.services.user_service import hash_password
-        db.query(User).delete()
-        db.commit()
-        db.add_all([
-            User(id=1, username="nicokoechli",   hashed_password=hash_password("12345678"), role=RoleEnum.ADMIN),
-            User(id=2, username="lorissbaa",     hashed_password=hash_password("12345678"), role=RoleEnum.USER),
-            User(id=3, username="patrickzobrist", hashed_password=hash_password("12345678"), role=RoleEnum.USER),
-        ])
-        db.commit()
+        if db.query(User).count() == 0:
+            db.add_all([
+                User(id=1, username="nicokoechli",   hashed_password=hash_password("12345678"), role=RoleEnum.ADMIN),
+                User(id=2, username="lorissbaa",     hashed_password=hash_password("12345678"), role=RoleEnum.USER),
+                User(id=3, username="patrickzobrist", hashed_password=hash_password("12345678"), role=RoleEnum.USER),
+            ])
+            db.commit()
     finally:
         db.close()
 

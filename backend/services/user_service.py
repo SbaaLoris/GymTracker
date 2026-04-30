@@ -1,5 +1,6 @@
 import bcrypt as _bcrypt
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from backend.models.role import RoleEnum
 from backend.models.user import User
@@ -31,7 +32,11 @@ def create_user(db: Session, payload: UserRegistration) -> User:
         role=RoleEnum.USER,
     )
     db.add(new_user)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise UsernameConflict(f"Username '{payload.username}' is already taken")
     db.refresh(new_user)
     return new_user
 
