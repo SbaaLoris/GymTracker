@@ -53,7 +53,14 @@ def generate_workout_sessions_csv(sessions: list[WorkoutSession], exercises_by_i
     for s in sessions:
         for st in s.sets:
             ex_name = exercises_by_id.get(st.exercise_id, "Unknown Exercise")
-            writer.writerow([s.date.isoformat(), ex_name, st.type, st.reps or "", st.weight or "", st.duration or ""])
+            writer.writerow([
+                s.date.isoformat(),
+                ex_name,
+                st.type,
+                "" if st.reps is None else st.reps,
+                "" if st.weight is None else st.weight,
+                "" if st.duration is None else st.duration
+            ])
     return output.getvalue()
 
 def generate_workout_sessions_pdf(sessions: list[WorkoutSession], exercises_by_id: dict, username: str) -> bytes:
