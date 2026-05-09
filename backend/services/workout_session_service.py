@@ -57,8 +57,6 @@ def _assert_can_modify(
     current_user_id: int,
     current_user_role: RoleEnum,
 ) -> None:
-    if current_user_role == RoleEnum.ADMIN:
-        return
     if session.user_id != current_user_id:
         raise PermissionDenied("You are not allowed to modify this workout session")
 

@@ -41,7 +41,7 @@ def list_exercises(
     if search is not None:
         query = query.filter(Exercise.name.ilike(f"%{search}%"))
 
-    return query.all()
+    return query.order_by(Exercise.id.asc()).all()
 
 
 def get_exercise(db: Session, exercise_id: int) -> Exercise:

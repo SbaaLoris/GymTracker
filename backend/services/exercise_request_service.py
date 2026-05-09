@@ -67,7 +67,7 @@ def list_requests_for_user(
     if status_filter is not None:
         query = query.filter(ExerciseRequest.status == status_filter)
 
-    return query.all()
+    return query.order_by(ExerciseRequest.id.asc()).all()
 
 def create_request(
     db: Session,

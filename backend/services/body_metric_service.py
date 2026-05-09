@@ -46,6 +46,13 @@ def create_metric(db: Session, user_id: int, target_user_id: int, payload: BodyM
     if user_id != target_user_id:
         raise PermissionDenied("You can only log body metrics for yourself")
         
+    existing = db.query(BodyMetric).filter_by(user_id=user_id, date=payload.date).first()
+    if existing:
+        existing.body_weight = payload.body_weight
+        db.commit()
+        db.refresh(existing)
+        return existing
+
     new_metric = BodyMetric(
         user_id=user_id,
         date=payload.date,

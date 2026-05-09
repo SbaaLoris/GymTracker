@@ -166,24 +166,35 @@ You can visualize it interactively at:
 
 ## Configuration
 
-The backend supports the following environment variables. All have sensible defaults so the app runs out-of-the-box locally without any `.env` file.
+The backend supports the following environment variables.
 
 | Variable | Default | Description |
 |---|---|---|
-| `MOVA_CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated list of allowed CORS origins. Override with your production frontend URL (e.g. `https://your-app.onrender.com`) when deploying. |
-| `MOVA_SEED_DEMO_USERS` | `1` | Set to `1` to automatically seed demo users (`nicokoechli`, `lorissbaa`, `patrickzobrist`) and sample body metrics on first boot. Set to `0` in production (e.g. on Render) to start with an empty database. |
+| `DATABASE_URL` | `sqlite:///./mova.db` | Connection string for the database. Render automatically provides this for PostgreSQL. |
+| `MOVA_CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated list of allowed CORS origins. |
+| `MOVA_BOOTSTRAP_ADMIN_USERNAME` | *(none)* | Username for the initial admin account (bootstrap). |
+| `MOVA_BOOTSTRAP_ADMIN_PASSWORD` | *(none)* | Password for the initial admin account (bootstrap). |
+| `MOVA_SEED_DEMO_USERS` | `0` | Set to `1` to seed demo users (`nicokoechli`, `lorissbaa`, `patrickzobrist`) and body metrics. |
+| `MOVA_SEED_STARTER_DATA` | `0` | Set to `1` to seed 15 starter exercises and a beginner workout template. |
 
-### Local development (no config needed)
+### Local Development
+To run the backend locally with full demo data:
 ```bash
+export MOVA_SEED_DEMO_USERS=1
+export MOVA_SEED_STARTER_DATA=1
 uvicorn backend.main:app --reload
 ```
 
-### Production (Render)
-Set environment variables in the Render dashboard:
-```
-MOVA_CORS_ORIGINS=https://your-frontend.onrender.com
-MOVA_SEED_DEMO_USERS=0
-```
+### Deployment (Render)
+1. **Database:** Create a PostgreSQL instance on Render.
+2. **Web Service:** 
+   - Build Command: `pip install -r backend/requirements.txt`
+   - Start Command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+   - Environment Variables:
+     - `DATABASE_URL`: (Auto-filled by Render if linked to DB)
+     - `MOVA_BOOTSTRAP_ADMIN_USERNAME`: Your chosen admin username
+     - `MOVA_BOOTSTRAP_ADMIN_PASSWORD`: Your chosen admin password
+     - `MOVA_CORS_ORIGINS`: Your frontend URL
 
 ---
 
@@ -220,8 +231,8 @@ The front-end will be developed using a low-code approach via **Budibase** to en
 |---|-----------|--------|
 | 1 | Analysis: Scenario ideation, use case analysis and user story writing | ✅ Completed |
 | 2 | Domain Design: Definition of domain model | ✅ Completed |
-| 3 | Frontend Implementation: Design, prototyping and realization of frontend functionality | 🔄 In Progress |
-| 4 | Business Logic and API Design: Definition of business logic and API | 🔄 In Progress |
-| 5 | Data and API Implementation: Implementation of data access and business logic layers and API | ⏳ Pending |
-| 6 | Security: Implementation of API-level security (Basic Auth) | ⏳ Pending |
-| 7 | Demonstrator: Integration of frontend and backend to realize an end-to-end application | ⏳ Pending |
+| 3 | Frontend Implementation: Design, prototyping and realization of frontend functionality | ✅ Completed |
+| 4 | Business Logic and API Design: Definition of business logic and API | ✅ Completed |
+| 5 | Data and API Implementation: Implementation of data access and business logic layers and API | ✅ Completed |
+| 6 | Security: Implementation of API-level security (Basic Auth) | ✅ Completed |
+| 7 | Demonstrator: Integration of frontend and backend to realize an end-to-end application | 🔄 In Progress |
