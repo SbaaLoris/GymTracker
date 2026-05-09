@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response, Query
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from datetime import date
+from typing import Literal
 import io
 
 from backend.auth import CurrentUser, get_current_user
@@ -15,7 +16,7 @@ router = APIRouter(prefix="/users/{userId}/export", tags=["Export"])
 @router.get("/body-metrics")
 def export_body_metrics(
     userId: int,
-    format: str, # enum [csv, pdf]
+    format: Literal["csv", "pdf"],
     from_date: date | None = Query(default=None, alias="from"),
     to_date: date | None = Query(default=None, alias="to"),
     db: Session = Depends(get_db),
@@ -41,20 +42,18 @@ def export_body_metrics(
             media_type="text/csv",
             headers={"Content-Disposition": f"attachment; filename=body_metrics_{userId}.csv"}
         )
-    elif format.lower() == "pdf":
+    else:  # format must be pdf due to Literal
         pdf_content = export_service.generate_body_metrics_pdf(metrics, current_user.username if current_user.id == userId else f"User {userId}")
         return Response(
             content=pdf_content,
             media_type="application/pdf",
             headers={"Content-Disposition": f"attachment; filename=body_metrics_{userId}.pdf"}
         )
-    else:
-        raise HTTPException(status_code=400, detail="Invalid format. Supported: csv, pdf")
 
 @router.get("/workout-sessions")
 def export_workout_sessions(
     userId: int,
-    format: str,
+    format: Literal["csv", "pdf"],
     from_date: date | None = Query(default=None, alias="from"),
     to_date: date | None = Query(default=None, alias="to"),
     db: Session = Depends(get_db),
@@ -83,12 +82,10 @@ def export_workout_sessions(
             media_type="text/csv",
             headers={"Content-Disposition": f"attachment; filename=workout_sessions_{userId}.csv"}
         )
-    elif format.lower() == "pdf":
+    else:  # format must be pdf due to Literal
         pdf_content = export_service.generate_workout_sessions_pdf(sessions, exercises_by_id, current_user.username if current_user.id == userId else f"User {userId}")
         return Response(
             content=pdf_content,
             media_type="application/pdf",
             headers={"Content-Disposition": f"attachment; filename=workout_sessions_{userId}.pdf"}
         )
-    else:
-        raise HTTPException(status_code=400, detail="Invalid format. Supported: csv, pdf")

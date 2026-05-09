@@ -30,8 +30,8 @@ class PlanNotFound(DomainError):
     """Workout plan does not exist."""
 
 
-class InactiveExerciseInPlan(DomainError):
-    """Cannot reference an inactive (soft-deleted) exercise in a plan."""
+class InactiveExerciseReferenced(DomainError):
+    """Cannot reference an inactive (soft-deleted) exercise."""
 
 
 class DuplicateOrderIndex(DomainError):

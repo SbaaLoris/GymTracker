@@ -164,6 +164,29 @@ You can visualize it interactively at:
 
 ---
 
+## Configuration
+
+The backend supports the following environment variables. All have sensible defaults so the app runs out-of-the-box locally without any `.env` file.
+
+| Variable | Default | Description |
+|---|---|---|
+| `MOVA_CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated list of allowed CORS origins. Override with your production frontend URL (e.g. `https://your-app.onrender.com`) when deploying. |
+| `MOVA_SEED_DEMO_USERS` | `1` | Set to `1` to automatically seed demo users (`nicokoechli`, `lorissbaa`, `patrickzobrist`) and sample body metrics on first boot. Set to `0` in production (e.g. on Render) to start with an empty database. |
+
+### Local development (no config needed)
+```bash
+uvicorn backend.main:app --reload
+```
+
+### Production (Render)
+Set environment variables in the Render dashboard:
+```
+MOVA_CORS_ORIGINS=https://your-frontend.onrender.com
+MOVA_SEED_DEMO_USERS=0
+```
+
+---
+
 ## Implementation
 
 ### Backend Technology
