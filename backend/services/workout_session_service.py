@@ -1,4 +1,3 @@
-from sqlalchemy.orm import query
 from datetime import date
 from sqlalchemy.orm import Session, selectinload
 
@@ -10,7 +9,7 @@ from backend.schemas.workout_session import WorkoutSessionCreate
 from backend.services.exceptions import (
     SessionNotFound,
     PermissionDenied,
-    InactiveExerciseInPlan,
+    InactiveExerciseReferenced,
     ExerciseTypeMismatch,
     PlanNotVisible,
     PlanNotFound,
@@ -56,7 +55,10 @@ def _assert_can_view(
 def _assert_can_modify(
     session: WorkoutSession,
     current_user_id: int,
+    current_user_role: RoleEnum,
 ) -> None:
+    if current_user_role == RoleEnum.ADMIN:
+        return
     if session.user_id != current_user_id:
         raise PermissionDenied("You are not allowed to modify this workout session")
 
@@ -76,7 +78,7 @@ def _assert_exercises_valid_for_sets(
     for s in sets_input:
         ex = by_id.get(s.exercise_id)
         if ex is None:
-            raise InactiveExerciseInPlan(
+            raise InactiveExerciseReferenced(
                 f"Exercise {s.exercise_id} does not exist or is not active"
             )
         if s.type == "strength" and ex.is_cardio:
@@ -190,7 +192,7 @@ def update_session(
 ) -> WorkoutSession:
     _assert_user_id_matches(path_user_id, current_user_id, current_user_role)
     session = _get_session_or_raise(db, session_id,path_user_id)
-    _assert_can_modify(session, current_user_id)
+    _assert_can_modify(session, current_user_id, current_user_role)
 
     _assert_exercises_valid_for_sets(db, payload.sets)
     _assert_plan_is_visible(db, payload.plan_id, current_user_id, current_user_role)

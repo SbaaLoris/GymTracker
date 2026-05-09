@@ -11,7 +11,7 @@ from backend.services import workout_plan_service
 from backend.services.exceptions import (
     PlanNotFound,
     PermissionDenied,
-    InactiveExerciseInPlan,
+    InactiveExerciseReferenced,
     DuplicateOrderIndex,
     CardioExerciseInPlan,
 )
@@ -47,19 +47,18 @@ def create_workout_plan(
         )
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
-    except (InactiveExerciseInPlan, DuplicateOrderIndex, CardioExerciseInPlan) as e:
+    except (InactiveExerciseReferenced, DuplicateOrderIndex, CardioExerciseInPlan) as e:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
 
-@router.get("/{plan_id}", response_model=WorkoutPlanSchema)
+@router.get("/{planId}", response_model=WorkoutPlanSchema)
 def get_workout_plan(
-    plan_id: int,
+    planId: int,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
         return workout_plan_service.get_plan(
-            db=db,
-            plan_id=plan_id,
+            db=db, plan_id=planId,
             current_user_id=current_user.id,
             current_user_role=current_user.role,
         )
@@ -68,17 +67,16 @@ def get_workout_plan(
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
-@router.put("/{plan_id}", response_model=WorkoutPlanSchema)
+@router.put("/{planId}", response_model=WorkoutPlanSchema)
 def update_workout_plan(
-    plan_id: int,
+    planId: int,
     payload: WorkoutPlanCreate,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
         return workout_plan_service.update_plan(
-            db=db,
-            plan_id=plan_id,
+            db=db, plan_id=planId,
             current_user_id=current_user.id,
             current_user_role=current_user.role,
             payload=payload,
@@ -87,19 +85,18 @@ def update_workout_plan(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
-    except (InactiveExerciseInPlan, DuplicateOrderIndex, CardioExerciseInPlan) as e:
+    except (InactiveExerciseReferenced, DuplicateOrderIndex, CardioExerciseInPlan) as e:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
 
-@router.delete("/{plan_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{planId}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_workout_plan(
-    plan_id: int,
+    planId: int,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
         workout_plan_service.delete_plan(
-            db=db,
-            plan_id=plan_id,
+            db=db, plan_id=planId,
             current_user_id=current_user.id,
             current_user_role=current_user.role,
         )

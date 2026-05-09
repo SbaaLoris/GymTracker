@@ -48,16 +48,16 @@ def create_exercise_request(
             detail=str(e),
         )
 
-@router.get("/{request_id}", response_model=RequestSchema)
+@router.get("/{requestId}", response_model=RequestSchema)
 def get_exercise_request(
-    request_id: int,
+    requestId: int,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
         return exercise_request_service.get_request(
             db=db,
-            request_id=request_id,
+            request_id=requestId,
             current_user_id=current_user.id,
             current_user_role=current_user.role,
         )
@@ -67,16 +67,16 @@ def get_exercise_request(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
 
-@router.delete("/{request_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{requestId}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_exercise_request(
-    request_id: int,
+    requestId: int,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
         exercise_request_service.delete_request(
             db=db,
-            request_id=request_id,
+            request_id=requestId,
             current_user_id=current_user.id,
             current_user_role=current_user.role,
         )
@@ -88,16 +88,16 @@ def delete_exercise_request(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
 
 
-@router.post("/{request_id}/approve", response_model=RequestSchema)
+@router.post("/{requestId}/approve", response_model=RequestSchema)
 def approve_exercise_request(
-    request_id: int,
+    requestId: int,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(require_admin), # Sicherheitsschicht 1: Router lässt nur Admins durch
 ):
     try:
         return exercise_request_service.approve_request(
             db=db,
-            request_id=request_id,
+            request_id=requestId,
             current_user_role=current_user.role # Sicherheitsschicht 2: Service checkt die Rolle noch einmal
         )
     except RequestNotFound as e:
@@ -111,16 +111,16 @@ def approve_exercise_request(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
 
-@router.post("/{request_id}/deny", response_model=RequestSchema)
+@router.post("/{requestId}/deny", response_model=RequestSchema)
 def deny_exercise_request(
-    request_id: int,
+    requestId: int,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(require_admin),
 ):
     try:
         return exercise_request_service.deny_request(
             db=db,
-            request_id=request_id,
+            request_id=requestId,
             current_user_role=current_user.role
         )
     except RequestNotFound as e:

@@ -60,7 +60,6 @@ tags:
 #  P A T H S
 # =============================================================================
 paths:
-
   # ---------------------------------------------------------------------------
   #  AUTH
   # ---------------------------------------------------------------------------
@@ -70,28 +69,28 @@ paths:
       summary: Register a new user account
       description: Creates a new user with role `user`. No authentication required.
       operationId: registerUser
-      security: []                       # public — no auth needed
+      security: [] # public — no auth needed
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRegistration'
+              $ref: "#/components/schemas/UserRegistration"
       responses:
-        '201':
+        "201":
           description: Account created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '409':
+                $ref: "#/components/schemas/User"
+        "409":
           description: Username already taken
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/Error"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
   /auth/me:
     get:
@@ -100,15 +99,14 @@ paths:
       description: Returns the profile of the user whose credentials were sent in the `Authorization` header. Useful for validating credentials and retrieving the current user's ID and role.
       operationId: getCurrentUser
       responses:
-        '200':
+        "200":
           description: Authenticated user profile
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
 
   # ---------------------------------------------------------------------------
   #  EXERCISES  (Admin-managed master catalogue)
@@ -127,7 +125,7 @@ paths:
           required: false
           description: Filter by muscle group
           schema:
-            $ref: '#/components/schemas/MuscleGroup'
+            $ref: "#/components/schemas/MuscleGroup"
         - name: is_cardio
           in: query
           required: false
@@ -148,16 +146,16 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: List of exercises
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Exercise'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                  $ref: "#/components/schemas/Exercise"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
 
     post:
       tags: [Exercises]
@@ -169,26 +167,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExerciseCreate'
+              $ref: "#/components/schemas/ExerciseCreate"
       responses:
-        '201':
+        "201":
           description: Exercise created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Exercise'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '409':
+                $ref: "#/components/schemas/Exercise"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
           description: An exercise with this name already exists
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/Error"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
   /exercises/{exerciseId}:
     get:
@@ -196,18 +194,18 @@ paths:
       summary: Get an exercise by ID
       operationId: getExercise
       parameters:
-        - $ref: '#/components/parameters/ExerciseIdParam'
+        - $ref: "#/components/parameters/ExerciseIdParam"
       responses:
-        '200':
+        "200":
           description: Exercise details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Exercise'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Exercise"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
     put:
       tags: [Exercises]
@@ -215,34 +213,34 @@ paths:
       description: "**Admin only.** Updates exercise details (name, muscle group, cardio flag)."
       operationId: updateExercise
       parameters:
-        - $ref: '#/components/parameters/ExerciseIdParam'
+        - $ref: "#/components/parameters/ExerciseIdParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExerciseCreate'
+              $ref: "#/components/schemas/ExerciseCreate"
       responses:
-        '200':
+        "200":
           description: Updated exercise
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Exercise'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
+                $ref: "#/components/schemas/Exercise"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
           description: An exercise with this name already exists
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/Error"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
     delete:
       tags: [Exercises]
@@ -252,20 +250,20 @@ paths:
         The exercise remains in the database so historical workout data is preserved (Business Rule 1).
       operationId: deleteExercise
       parameters:
-        - $ref: '#/components/parameters/ExerciseIdParam'
+        - $ref: "#/components/parameters/ExerciseIdParam"
       responses:
-        '200':
+        "200":
           description: Exercise soft-deleted (returned with `is_active = false`)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Exercise'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Exercise"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   # ---------------------------------------------------------------------------
   #  EXERCISE REQUESTS  (User-submitted suggestions)
@@ -284,18 +282,18 @@ paths:
           required: false
           description: Filter by request status
           schema:
-            $ref: '#/components/schemas/RequestStatus'
+            $ref: "#/components/schemas/RequestStatus"
       responses:
-        '200':
+        "200":
           description: List of exercise requests
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ExerciseRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                  $ref: "#/components/schemas/ExerciseRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
 
     post:
       tags: [Exercise Requests]
@@ -310,26 +308,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExerciseRequestCreate'
+              $ref: "#/components/schemas/ExerciseRequestCreate"
       responses:
-        '201':
+        "201":
           description: Exercise request submitted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExerciseRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '422':
-          $ref: '#/components/responses/ValidationError'
-        '429':
+                $ref: "#/components/schemas/ExerciseRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "429":
           description: "User has reached the maximum of 5 pending requests (Business Rule 2)"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /exercise-requests/{requestId}:
     get:
@@ -338,20 +336,20 @@ paths:
       description: "**Admin or the requesting user.**"
       operationId: getExerciseRequest
       parameters:
-        - $ref: '#/components/parameters/RequestIdParam'
+        - $ref: "#/components/parameters/RequestIdParam"
       responses:
-        '200':
+        "200":
           description: Exercise request details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExerciseRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/ExerciseRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
     delete:
       tags: [Exercise Requests]
@@ -359,22 +357,22 @@ paths:
       description: "**Admin or the requesting user.** Only `pending` requests can be deleted."
       operationId: deleteExerciseRequest
       parameters:
-        - $ref: '#/components/parameters/RequestIdParam'
+        - $ref: "#/components/parameters/RequestIdParam"
       responses:
-        '204':
+        "204":
           description: Exercise request deleted
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
           description: Cannot delete a request that has already been approved or denied
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /exercise-requests/{requestId}/approve:
     post:
@@ -392,28 +390,28 @@ paths:
         fails with `409 Conflict` and no changes are persisted.
       operationId: approveExerciseRequest
       parameters:
-        - $ref: '#/components/parameters/RequestIdParam'
+        - $ref: "#/components/parameters/RequestIdParam"
       responses:
-        '200':
+        "200":
           description: Request approved and exercise created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExerciseRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
+                $ref: "#/components/schemas/ExerciseRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
           description: |
             Either (a) the request is not in `pending` status, or
             (b) an exercise with the same name already exists.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /exercise-requests/{requestId}/deny:
     post:
@@ -422,26 +420,26 @@ paths:
       description: "**Admin only.** Sets the request status to `denied`."
       operationId: denyExerciseRequest
       parameters:
-        - $ref: '#/components/parameters/RequestIdParam'
+        - $ref: "#/components/parameters/RequestIdParam"
       responses:
-        '200':
+        "200":
           description: Request denied
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExerciseRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
+                $ref: "#/components/schemas/ExerciseRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
           description: Request is not in `pending` status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   # ---------------------------------------------------------------------------
   #  WORKOUT PLANS  (Templates & personal routines)
@@ -464,16 +462,16 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        "200":
           description: List of workout plans
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/WorkoutPlan'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                  $ref: "#/components/schemas/WorkoutPlan"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
 
     post:
       tags: [Workout Plans]
@@ -488,20 +486,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WorkoutPlanCreate'
+              $ref: "#/components/schemas/WorkoutPlanCreate"
       responses:
-        '201':
+        "201":
           description: Workout plan created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WorkoutPlan'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/WorkoutPlan"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
   /workout-plans/{planId}:
     get:
@@ -510,20 +508,20 @@ paths:
       description: Returns the plan with all its exercise slots. Templates are public; personal plans are owner-only.
       operationId: getWorkoutPlan
       parameters:
-        - $ref: '#/components/parameters/PlanIdParam'
+        - $ref: "#/components/parameters/PlanIdParam"
       responses:
-        '200':
+        "200":
           description: Workout plan with exercise slots
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WorkoutPlan'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/WorkoutPlan"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
     put:
       tags: [Workout Plans]
@@ -533,28 +531,28 @@ paths:
         The request body must include the complete list of `exercises` — any slots not included will be removed.
       operationId: updateWorkoutPlan
       parameters:
-        - $ref: '#/components/parameters/PlanIdParam'
+        - $ref: "#/components/parameters/PlanIdParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WorkoutPlanCreate'
+              $ref: "#/components/schemas/WorkoutPlanCreate"
       responses:
-        '200':
+        "200":
           description: Updated workout plan
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WorkoutPlan'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/WorkoutPlan"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
     delete:
       tags: [Workout Plans]
@@ -562,16 +560,16 @@ paths:
       description: "**Owner or Admin.** Permanently deletes the plan and its exercise slots."
       operationId: deleteWorkoutPlan
       parameters:
-        - $ref: '#/components/parameters/PlanIdParam'
+        - $ref: "#/components/parameters/PlanIdParam"
       responses:
-        '204':
+        "204":
           description: Workout plan deleted
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   # ---------------------------------------------------------------------------
   #  WORKOUT SESSIONS  (Logged gym visits)
@@ -583,7 +581,7 @@ paths:
       description: "**Owner or Admin.** Returns all of the user's logged workout sessions, ordered by date (newest first)."
       operationId: listWorkoutSessions
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
         - name: from
           in: query
           required: false
@@ -599,20 +597,20 @@ paths:
             type: string
             format: date
       responses:
-        '200':
+        "200":
           description: List of workout sessions
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/WorkoutSession'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                  $ref: "#/components/schemas/WorkoutSession"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
     post:
       tags: [Workout Sessions]
@@ -623,26 +621,26 @@ paths:
         Each set must specify the exercise performed and either `reps` + `weight` (strength) or `duration` (cardio).
       operationId: createWorkoutSession
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WorkoutSessionCreate'
+              $ref: "#/components/schemas/WorkoutSessionCreate"
       responses:
-        '201':
+        "201":
           description: Workout session logged
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WorkoutSession'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/WorkoutSession"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
   /users/{userId}/workout-sessions/{sessionId}:
     get:
@@ -651,21 +649,21 @@ paths:
       description: "**Owner or Admin.** Returns the session with all its sets."
       operationId: getWorkoutSession
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
-        - $ref: '#/components/parameters/SessionIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
+        - $ref: "#/components/parameters/SessionIdParam"
       responses:
-        '200':
+        "200":
           description: Workout session with sets
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WorkoutSession'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/WorkoutSession"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
     put:
       tags: [Workout Sessions]
@@ -675,29 +673,29 @@ paths:
         Must still include at least one set (Business Rule 3).
       operationId: updateWorkoutSession
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
-        - $ref: '#/components/parameters/SessionIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
+        - $ref: "#/components/parameters/SessionIdParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WorkoutSessionCreate'
+              $ref: "#/components/schemas/WorkoutSessionCreate"
       responses:
-        '200':
+        "200":
           description: Updated workout session
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WorkoutSession'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/WorkoutSession"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
     delete:
       tags: [Workout Sessions]
@@ -705,17 +703,17 @@ paths:
       description: "**Owner or Admin.** Permanently deletes the session and all its sets."
       operationId: deleteWorkoutSession
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
-        - $ref: '#/components/parameters/SessionIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
+        - $ref: "#/components/parameters/SessionIdParam"
       responses:
-        '204':
+        "204":
           description: Workout session deleted
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   # ---------------------------------------------------------------------------
   #  BODY METRICS
@@ -727,7 +725,7 @@ paths:
       description: "**Owner or Admin.** Returns all of the user's body weight entries, ordered by date (newest first)."
       operationId: listBodyMetrics
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
         - name: from
           in: query
           required: false
@@ -743,20 +741,20 @@ paths:
             type: string
             format: date
       responses:
-        '200':
+        "200":
           description: List of body metrics
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BodyMetric'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                  $ref: "#/components/schemas/BodyMetric"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
     post:
       tags: [Body Metrics]
@@ -764,26 +762,26 @@ paths:
       description: "**Owner only.** Records a body weight measurement for a specific date."
       operationId: createBodyMetric
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BodyMetricCreate'
+              $ref: "#/components/schemas/BodyMetricCreate"
       responses:
-        '201':
+        "201":
           description: Body metric logged
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BodyMetric'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/BodyMetric"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
   /users/{userId}/body-metrics/{metricId}:
     get:
@@ -792,21 +790,21 @@ paths:
       description: "**Owner or Admin.**"
       operationId: getBodyMetric
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
-        - $ref: '#/components/parameters/MetricIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
+        - $ref: "#/components/parameters/MetricIdParam"
       responses:
-        '200':
+        "200":
           description: Body metric details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BodyMetric'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/BodyMetric"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
     put:
       tags: [Body Metrics]
@@ -814,29 +812,29 @@ paths:
       description: "**Owner only.** Updates the weight value or date of an existing entry."
       operationId: updateBodyMetric
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
-        - $ref: '#/components/parameters/MetricIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
+        - $ref: "#/components/parameters/MetricIdParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BodyMetricCreate'
+              $ref: "#/components/schemas/BodyMetricCreate"
       responses:
-        '200':
+        "200":
           description: Updated body metric
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BodyMetric'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/ValidationError'
+                $ref: "#/components/schemas/BodyMetric"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationError"
 
     delete:
       tags: [Body Metrics]
@@ -844,17 +842,17 @@ paths:
       description: "**Owner or Admin.**"
       operationId: deleteBodyMetric
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
-        - $ref: '#/components/parameters/MetricIdParam'
+        - $ref: "#/components/parameters/UserIdParam"
+        - $ref: "#/components/parameters/MetricIdParam"
       responses:
-        '204':
+        "204":
           description: Body metric deleted
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   # ---------------------------------------------------------------------------
   #  EXPORT
@@ -868,8 +866,8 @@ paths:
         in the requested format. Supports optional date-range filtering.
       operationId: exportWorkoutSessions
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
-        - $ref: '#/components/parameters/ExportFormatParam'
+        - $ref: "#/components/parameters/UserIdParam"
+        - $ref: "#/components/parameters/ExportFormatParam"
         - name: from
           in: query
           required: false
@@ -883,7 +881,7 @@ paths:
             type: string
             format: date
       responses:
-        '200':
+        "200":
           description: File download
           content:
             text/csv:
@@ -894,12 +892,12 @@ paths:
               schema:
                 type: string
                 format: binary
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /users/{userId}/export/body-metrics:
     get:
@@ -910,8 +908,8 @@ paths:
         in the requested format. Supports optional date-range filtering.
       operationId: exportBodyMetrics
       parameters:
-        - $ref: '#/components/parameters/UserIdParam'
-        - $ref: '#/components/parameters/ExportFormatParam'
+        - $ref: "#/components/parameters/UserIdParam"
+        - $ref: "#/components/parameters/ExportFormatParam"
         - name: from
           in: query
           required: false
@@ -925,7 +923,7 @@ paths:
             type: string
             format: date
       responses:
-        '200':
+        "200":
           description: File download
           content:
             text/csv:
@@ -936,18 +934,17 @@ paths:
               schema:
                 type: string
                 format: binary
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
 # =============================================================================
 #  C O M P O N E N T S
 # =============================================================================
 components:
-
   # ---------------------------------------------------------------------------
   #  Security Schemes
   # ---------------------------------------------------------------------------
@@ -961,7 +958,6 @@ components:
   #  Reusable Parameters
   # ---------------------------------------------------------------------------
   parameters:
-
     UserIdParam:
       name: userId
       in: path
@@ -1028,34 +1024,33 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
 
     Forbidden:
       description: Authenticated but insufficient permissions for this action
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
 
     NotFound:
       description: The requested resource was not found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
 
     ValidationError:
       description: Request body failed validation
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ValidationErrorResponse'
+            $ref: "#/components/schemas/ValidationErrorResponse"
 
   # ---------------------------------------------------------------------------
   #  Schemas
   # ---------------------------------------------------------------------------
   schemas:
-
     # ── Value Objects / Enums ──────────────────────────────────────────────
     MuscleGroup:
       type: string
@@ -1097,7 +1092,7 @@ components:
           type: string
           example: loris
         role:
-          $ref: '#/components/schemas/Role'
+          $ref: "#/components/schemas/Role"
       required:
         - id
         - username
@@ -1116,12 +1111,12 @@ components:
           type: string
           format: password
           minLength: 8
+          maxLength: 72
           description: "Plain-text password (will be hashed server-side)"
           example: "S3cureP@ss!"
       required:
         - username
         - password
-
 
     # ── Exercise Aggregate ─────────────────────────────────────────────────
     Exercise:
@@ -1136,7 +1131,7 @@ components:
           type: string
           example: Barbell Squat
         muscle_group:
-          $ref: '#/components/schemas/MuscleGroup'
+          $ref: "#/components/schemas/MuscleGroup"
         is_cardio:
           type: boolean
           example: false
@@ -1162,7 +1157,7 @@ components:
           maxLength: 100
           example: Barbell Squat
         muscle_group:
-          $ref: '#/components/schemas/MuscleGroup'
+          $ref: "#/components/schemas/MuscleGroup"
         is_cardio:
           type: boolean
           example: false
@@ -1188,12 +1183,12 @@ components:
           type: string
           example: Bulgarian Split Squat
         muscle_group:
-          $ref: '#/components/schemas/MuscleGroup'
+          $ref: "#/components/schemas/MuscleGroup"
         is_cardio:
           type: boolean
           example: false
         status:
-          $ref: '#/components/schemas/RequestStatus'
+          $ref: "#/components/schemas/RequestStatus"
       required:
         - id
         - user_id
@@ -1212,7 +1207,7 @@ components:
           maxLength: 100
           example: Bulgarian Split Squat
         muscle_group:
-          $ref: '#/components/schemas/MuscleGroup'
+          $ref: "#/components/schemas/MuscleGroup"
         is_cardio:
           type: boolean
           description: Whether this is a cardio exercise
@@ -1246,7 +1241,7 @@ components:
           type: array
           description: Ordered list of exercise slots in this plan
           items:
-            $ref: '#/components/schemas/PlanExercise'
+            $ref: "#/components/schemas/PlanExercise"
       required:
         - id
         - name
@@ -1313,7 +1308,7 @@ components:
           description: Must contain at least one exercise slot
           minItems: 1
           items:
-            $ref: '#/components/schemas/PlanExerciseInput'
+            $ref: "#/components/schemas/PlanExerciseInput"
       required:
         - name
         - exercises
@@ -1376,7 +1371,7 @@ components:
           type: array
           description: All sets performed during this session
           items:
-            $ref: '#/components/schemas/WorkoutSet'
+            $ref: "#/components/schemas/WorkoutSet"
       required:
         - id
         - date
@@ -1386,13 +1381,13 @@ components:
     WorkoutSet:
       description: "One individual set performed in a session (Child Entity). Exactly one variant must match: strength (`reps` + `weight`) or cardio (`duration`). The `type` field determines which variant applies."
       oneOf:
-        - $ref: '#/components/schemas/StrengthSet'
-        - $ref: '#/components/schemas/CardioSet'
+        - $ref: "#/components/schemas/StrengthSet"
+        - $ref: "#/components/schemas/CardioSet"
       discriminator:
         propertyName: type
         mapping:
-          strength: '#/components/schemas/StrengthSet'
-          cardio: '#/components/schemas/CardioSet'
+          strength: "#/components/schemas/StrengthSet"
+          cardio: "#/components/schemas/CardioSet"
 
     StrengthSet:
       type: object
@@ -1483,7 +1478,7 @@ components:
           description: Must contain at least one set (Business Rule 3)
           minItems: 1
           items:
-            $ref: '#/components/schemas/WorkoutSetInput'
+            $ref: "#/components/schemas/WorkoutSetInput"
       required:
         - date
         - sets
@@ -1491,13 +1486,13 @@ components:
     WorkoutSetInput:
       description: "Input for one set (no ID needed). Exactly one variant must match: strength (`reps` + `weight`) or cardio (`duration`). The `type` field determines which variant applies."
       oneOf:
-        - $ref: '#/components/schemas/StrengthSetInput'
-        - $ref: '#/components/schemas/CardioSetInput'
+        - $ref: "#/components/schemas/StrengthSetInput"
+        - $ref: "#/components/schemas/CardioSetInput"
       discriminator:
         propertyName: type
         mapping:
-          strength: '#/components/schemas/StrengthSetInput'
-          cardio: '#/components/schemas/CardioSetInput'
+          strength: "#/components/schemas/StrengthSetInput"
+          cardio: "#/components/schemas/CardioSetInput"
 
     StrengthSetInput:
       type: object
@@ -1569,6 +1564,7 @@ components:
           type: number
           description: Body weight in **kg**
           minimum: 0
+          exclusiveMinimum: true
           example: 78.5
       required:
         - id
@@ -1588,11 +1584,11 @@ components:
           type: number
           description: Body weight in **kg**
           minimum: 0
+          exclusiveMinimum: true
           example: 78.5
       required:
         - date
         - body_weight
-
 
     # ── Error Responses ────────────────────────────────────────────────────
     Error:
