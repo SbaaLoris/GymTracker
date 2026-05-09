@@ -73,7 +73,7 @@ def list_plans(
     if is_template_filter is not None:
         query = query.filter(WorkoutPlan.is_template == is_template_filter)
 
-    return query.all()
+    return query.order_by(WorkoutPlan.id.asc()).all()
 
 
 def get_plan(
