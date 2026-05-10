@@ -33,7 +33,7 @@ An Admin manages the platform's integrity: creating and maintaining the exercise
 
 **User**
 
-1. As a User, I want to use list views on public pages to browse available workout templates and the master exercise list before I commit to a workout.
+1. As a User, I want to use list views to browse available workout templates and the master exercise list before I commit to a workout.
 2. As a User, I want to authenticate myself so that I can access my private dashboard, log my personal workout sessions, and track my confidential body metrics.
 3. As a User, I want to track my progress over time and export my logged data (workouts and body metrics) into a PDF or CSV file for personal record-keeping or sharing with a coach.
 4. As a User, I want to save my own customized workout routines based on the master exercise list, so I don't have to rebuild my workout from scratch every time.

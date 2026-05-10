@@ -180,7 +180,8 @@ request "Get session details" "$USER_AUTH" "GET" "/users/2/workout-sessions/1" 2
 # -----------------------------------------------------------------------------
 echo -e "\n${YELLOW}[6/7] Body Metric Tests${NC}"
 request "Log weight" "$USER_AUTH" "POST" "/users/2/body-metrics" 201 '{"date":"2026-05-09","body_weight":80.5}' '.id == 7'
-request "Update weight" "$USER_AUTH" "PUT" "/users/2/body-metrics/7" 200 '{"date":"2026-05-09","body_weight":80.0}' '.body_weight == 80.0'
+request "Update weight via PUT" "$USER_AUTH" "PUT" "/users/2/body-metrics/7" 200 '{"date":"2026-05-09","body_weight":80.0}' '.body_weight == 80.0'
+request "Update weight via POST (Upsert)" "$USER_AUTH" "POST" "/users/2/body-metrics" 200 '{"date":"2026-05-09","body_weight":81.0}' '.body_weight == 81.0'
 request "List metrics" "$USER_AUTH" "GET" "/users/2/body-metrics" 200 "" 'length >= 1'
 
 # -----------------------------------------------------------------------------
