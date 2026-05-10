@@ -33,7 +33,7 @@ An Admin manages the platform's integrity: creating and maintaining the exercise
 
 **User**
 
-1. As a User, I want to use list views on public pages to browse available workout templates and the master exercise list before I commit to a workout.
+1. As a User, I want to use list views to browse available workout templates and the master exercise list before I commit to a workout.
 2. As a User, I want to authenticate myself so that I can access my private dashboard, log my personal workout sessions, and track my confidential body metrics.
 3. As a User, I want to track my progress over time and export my logged data (workouts and body metrics) into a PDF or CSV file for personal record-keeping or sharing with a coach.
 4. As a User, I want to save my own customized workout routines based on the master exercise list, so I don't have to rebuild my workout from scratch every time.
@@ -164,6 +164,43 @@ You can visualize it interactively at:
 
 ---
 
+## Configuration
+
+The backend supports the following environment variables.
+
+| Variable | Default | Description |
+|---|---|---|
+| `DATABASE_URL` | `sqlite:///./mova.db` | Connection string for the database. Render automatically provides this for PostgreSQL. If not set, app will exit unless `MOVA_DEV_MODE=1`. |
+| `MOVA_DEV_MODE` | `0` | Set to `1` to bypass strict `DATABASE_URL` checks and allow local SQLite databases. |
+| `MOVA_CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated list of allowed CORS origins. |
+| `MOVA_BOOTSTRAP_ADMIN_USERNAME` | *(none)* | Username for the initial admin account (bootstrap). |
+| `MOVA_BOOTSTRAP_ADMIN_PASSWORD` | *(none)* | Password for the initial admin account (bootstrap). |
+| `MOVA_SEED_DEMO_USERS` | `0` | Set to `1` to seed demo users (`nicokoechli`, `lorissbaa`, `patrickzobrist`) and body metrics. |
+| `MOVA_SEED_STARTER_DATA` | `0` | Set to `1` to seed 15 starter exercises and a beginner workout template. |
+
+### Local Development
+To run the backend locally with full demo data:
+```bash
+export MOVA_DEV_MODE=1
+export MOVA_SEED_DEMO_USERS=1
+export MOVA_SEED_STARTER_DATA=1
+cd backend && alembic upgrade head && cd ..
+uvicorn backend.main:app --reload
+```
+
+### Deployment (Render)
+1. **Database:** Create a PostgreSQL instance on Render.
+2. **Web Service:** 
+   - Build Command: `pip install -r backend/requirements.txt && cd backend && alembic upgrade head`
+   - Start Command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+   - Environment Variables:
+     - `DATABASE_URL`: (Auto-filled by Render if linked to DB)
+     - `MOVA_BOOTSTRAP_ADMIN_USERNAME`: Your chosen admin username
+     - `MOVA_BOOTSTRAP_ADMIN_PASSWORD`: Your chosen admin password
+     - `MOVA_CORS_ORIGINS`: Your frontend URL
+
+---
+
 ## Implementation
 
 ### Backend Technology
@@ -197,8 +234,8 @@ The front-end will be developed using a low-code approach via **Budibase** to en
 |---|-----------|--------|
 | 1 | Analysis: Scenario ideation, use case analysis and user story writing | ✅ Completed |
 | 2 | Domain Design: Definition of domain model | ✅ Completed |
-| 3 | Frontend Implementation: Design, prototyping and realization of frontend functionality | 🔄 In Progress |
-| 4 | Business Logic and API Design: Definition of business logic and API | 🔄 In Progress |
-| 5 | Data and API Implementation: Implementation of data access and business logic layers and API | ⏳ Pending |
-| 6 | Security: Implementation of API-level security (Basic Auth) | ⏳ Pending |
-| 7 | Demonstrator: Integration of frontend and backend to realize an end-to-end application | ⏳ Pending |
+| 3 | Frontend Implementation: Design, prototyping and realization of frontend functionality | ✅ Completed |
+| 4 | Business Logic and API Design: Definition of business logic and API | ✅ Completed |
+| 5 | Data and API Implementation: Implementation of data access and business logic layers and API | ✅ Completed |
+| 6 | Security: Implementation of API-level security (Basic Auth) | ✅ Completed |
+| 7 | Demonstrator: Integration of frontend and backend to realize an end-to-end application | 🔄 In Progress |

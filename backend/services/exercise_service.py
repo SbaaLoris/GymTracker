@@ -13,7 +13,7 @@ def _get_exercise_or_raise(db: Session, exercise_id: int) -> Exercise:
 
 
 def _assert_name_is_free(db: Session, name: str, exclude_id: int | None = None) -> None:
-    query = db.query(Exercise).filter(Exercise.name == name)
+    query = db.query(Exercise).filter(Exercise.name.ilike(name))
     if exclude_id is not None:
         query = query.filter(Exercise.id != exclude_id)
     if query.first() is not None:
@@ -41,7 +41,7 @@ def list_exercises(
     if search is not None:
         query = query.filter(Exercise.name.ilike(f"%{search}%"))
 
-    return query.all()
+    return query.order_by(Exercise.id.asc()).all()
 
 
 def get_exercise(db: Session, exercise_id: int) -> Exercise:

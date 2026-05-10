@@ -3,12 +3,11 @@ from sqlalchemy.orm import Session, selectinload
 from backend.models.workout_plan import WorkoutPlan, PlanExercise
 from backend.models.exercise import Exercise
 from backend.models.role import RoleEnum
-from backend.models.workout_session import WorkoutSession
 from backend.schemas.workout_plan import WorkoutPlanCreate, PlanExerciseInput
 from backend.services.exceptions import (
     PlanNotFound,
     PermissionDenied,
-    InactiveExerciseInPlan,
+    InactiveExerciseReferenced,
     DuplicateOrderIndex,
     CardioExerciseInPlan,
 )
@@ -36,7 +35,7 @@ def _assert_exercises_are_active(
     
     for wanted_id in exercise_ids:
         if wanted_id not in active_ids:
-            raise InactiveExerciseInPlan(
+            raise InactiveExerciseReferenced(
                 f"Exercise {wanted_id} does not exist or is not active"
             )
 
@@ -74,7 +73,7 @@ def list_plans(
     if is_template_filter is not None:
         query = query.filter(WorkoutPlan.is_template == is_template_filter)
 
-    return query.all()
+    return query.order_by(WorkoutPlan.id.asc()).all()
 
 
 def get_plan(
@@ -178,6 +177,7 @@ def delete_plan(
     current_user_id: int,
     current_user_role: RoleEnum,
 ) -> None:
+    from backend.models.workout_session import WorkoutSession
     plan = _get_plan_or_raise(db, plan_id)
 
     is_admin = current_user_role == RoleEnum.ADMIN
@@ -186,8 +186,7 @@ def delete_plan(
         raise PermissionDenied("You are not allowed to delete this workout plan")
 
     db.query(WorkoutSession).filter(WorkoutSession.plan_id == plan_id).update(
-        {WorkoutSession.plan_id: None}
+        {"plan_id": None}, synchronize_session=False
     )
-
     db.delete(plan)
     db.commit()
