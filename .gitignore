@@ -31,3 +31,6 @@ mova.db
 .vscode/
 *.swp
 *.swo
+
+# LLM Context & Reviews
+review/

@@ -6,9 +6,9 @@ class WorkoutSession(Base):
     __tablename__ = "workout_sessions"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     date = Column(Date, nullable=False, index=True)
-    plan_id = Column(Integer, ForeignKey("workout_plans.id"), nullable=True)
+    plan_id = Column(Integer, ForeignKey("workout_plans.id", ondelete="SET NULL"), nullable=True)
 
     sets = relationship(
         "WorkoutSet",

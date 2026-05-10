@@ -1,5 +1,5 @@
 from enum import Enum
-from sqlalchemy import Column, Integer, String, Boolean, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, Boolean, Enum as SQLEnum, ForeignKey
 from backend.database import Base
 from backend.models.exercise import MuscleGroupEnum
 
@@ -14,7 +14,7 @@ class ExerciseRequest(Base):
     __tablename__ = "exercise_requests"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     suggested_name = Column(String(100), nullable=False)
     muscle_group = Column(SQLEnum(MuscleGroupEnum), nullable=False)
     is_cardio = Column(Boolean, nullable=False, default=False)

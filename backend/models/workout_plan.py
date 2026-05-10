@@ -8,8 +8,7 @@ class WorkoutPlan(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
-    # No FK yet — users table is owned by Nico's User Management work.
-    creator_id = Column(Integer, nullable=False, index=True)
+    creator_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     is_template = Column(Boolean, nullable=False, default=False)
 
     # Cascade delete: when a plan is deleted, all its slots go with it.

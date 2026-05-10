@@ -30,8 +30,8 @@ class PlanNotFound(DomainError):
     """Workout plan does not exist."""
 
 
-class InactiveExerciseInPlan(DomainError):
-    """Cannot reference an inactive (soft-deleted) exercise in a plan."""
+class InactiveExerciseReferenced(DomainError):
+    """Cannot reference an inactive (soft-deleted) exercise."""
 
 
 class DuplicateOrderIndex(DomainError):
@@ -62,3 +62,11 @@ class InvalidCredentials(DomainError):
     """Username or password is incorrect."""
 class BodyMetricNotFound(DomainError):
     """Body metric entry does not exist."""
+
+
+class BodyMetricDateConflict(DomainError):
+    """A body metric entry already exists for this date."""
+
+
+class UserNotFound(DomainError):
+    """User does not exist."""

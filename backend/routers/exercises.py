@@ -46,28 +46,31 @@ def create_exercise(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
 
 
-@router.get("/{exercise_id}", response_model=ExerciseSchema)
+@router.get("/{exerciseId}", response_model=ExerciseSchema)
 def get_exercise(
-    exercise_id: int,
+    exerciseId: int,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
-        return exercise_service.get_exercise(db=db, exercise_id=exercise_id)
+        exercise = exercise_service.get_exercise(db=db, exercise_id=exerciseId)
+        if not exercise.is_active and current_user.role != RoleEnum.ADMIN:
+            raise ExerciseNotFound(f"Exercise with id {exerciseId} not found")
+        return exercise
     except ExerciseNotFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
 
-@router.put("/{exercise_id}", response_model=ExerciseSchema)
+@router.put("/{exerciseId}", response_model=ExerciseSchema)
 def update_exercise(
-    exercise_id: int,
+    exerciseId: int,
     payload: ExerciseCreate,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(require_admin),
 ):
     try:
         return exercise_service.update_exercise(
-            db=db, exercise_id=exercise_id, payload=payload
+            db=db, exercise_id=exerciseId, payload=payload
         )
     except ExerciseNotFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
@@ -75,13 +78,13 @@ def update_exercise(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
 
 
-@router.delete("/{exercise_id}", response_model=ExerciseSchema)
+@router.delete("/{exerciseId}", response_model=ExerciseSchema)
 def delete_exercise(
-    exercise_id: int,
+    exerciseId: int,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(require_admin),
 ):
     try:
-        return exercise_service.soft_delete_exercise(db=db, exercise_id=exercise_id)
+        return exercise_service.soft_delete_exercise(db=db, exercise_id=exerciseId)
     except ExerciseNotFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))

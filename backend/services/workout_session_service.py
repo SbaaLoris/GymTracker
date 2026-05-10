@@ -1,19 +1,20 @@
-from sqlalchemy.orm import query
 from datetime import date
 from sqlalchemy.orm import Session, selectinload
 
 from backend.models.workout_session import WorkoutSession, WorkoutSet
 from backend.models.workout_plan import WorkoutPlan
 from backend.models.exercise import Exercise
+from backend.models.user import User
 from backend.models.role import RoleEnum
 from backend.schemas.workout_session import WorkoutSessionCreate
 from backend.services.exceptions import (
     SessionNotFound,
     PermissionDenied,
-    InactiveExerciseInPlan,
+    InactiveExerciseReferenced,
     ExerciseTypeMismatch,
     PlanNotVisible,
     PlanNotFound,
+    UserNotFound,
 )
 
 def _get_session_or_raise(
@@ -32,6 +33,11 @@ def _get_session_or_raise(
             f"Workout session with id {session_id} not found for user {path_user_id}"
         )
     return session
+
+def _assert_user_exists(db: Session, user_id: int) -> None:
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise UserNotFound(f"User with id {user_id} not found")
 
 def _assert_user_id_matches(
     path_user_id: int,
@@ -56,6 +62,7 @@ def _assert_can_view(
 def _assert_can_modify(
     session: WorkoutSession,
     current_user_id: int,
+    current_user_role: RoleEnum,
 ) -> None:
     if session.user_id != current_user_id:
         raise PermissionDenied("You are not allowed to modify this workout session")
@@ -76,7 +83,7 @@ def _assert_exercises_valid_for_sets(
     for s in sets_input:
         ex = by_id.get(s.exercise_id)
         if ex is None:
-            raise InactiveExerciseInPlan(
+            raise InactiveExerciseReferenced(
                 f"Exercise {s.exercise_id} does not exist or is not active"
             )
         if s.type == "strength" and ex.is_cardio:
@@ -115,6 +122,7 @@ def list_sessions(
     from_date: date | None,
     to_date: date | None,
 ) -> list[WorkoutSession]:
+    _assert_user_exists(db, path_user_id)
     _assert_user_id_matches(path_user_id, current_user_id, current_user_role)
 
     query = (
@@ -190,7 +198,7 @@ def update_session(
 ) -> WorkoutSession:
     _assert_user_id_matches(path_user_id, current_user_id, current_user_role)
     session = _get_session_or_raise(db, session_id,path_user_id)
-    _assert_can_modify(session, current_user_id)
+    _assert_can_modify(session, current_user_id, current_user_role)
 
     _assert_exercises_valid_for_sets(db, payload.sets)
     _assert_plan_is_visible(db, payload.plan_id, current_user_id, current_user_role)
