@@ -2,11 +2,24 @@ from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import date
 import os
+import sys
+
+# Get project root (parent of backend dir)
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Render uses "postgres://", but SQLAlchemy 2.x requires "postgresql://"
-db_url = os.environ.get("DATABASE_URL", "sqlite:///./mova.db")
-if db_url.startswith("postgres://"):
+db_url = os.environ.get("DATABASE_URL")
+if db_url and db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+is_dev = os.environ.get("MOVA_DEV_MODE", "0") == "1"
+
+if not db_url:
+    if is_dev:
+        db_url = f"sqlite:///{os.path.join(project_root, 'mova.db')}"
+    else:
+        print("ERROR: DATABASE_URL is not set and MOVA_DEV_MODE is not 1. Aborting startup to prevent silent fallback to ephemeral SQLite.")
+        sys.exit(1)
 
 # SQLite specific connect_args
 connect_args = {"check_same_thread": False} if db_url.startswith("sqlite") else {}
@@ -139,7 +152,7 @@ def init_db():
     from backend.models.workout_plan import WorkoutPlan, PlanExercise
     from backend.models.workout_session import WorkoutSession, WorkoutSet
     
-    Base.metadata.create_all(bind=engine)
+    # Base.metadata.create_all is removed. Use Alembic migrations instead.
     
     db = SessionLocal()
     try:

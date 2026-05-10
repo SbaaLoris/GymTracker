@@ -53,7 +53,10 @@ def get_exercise(
     current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
-        return exercise_service.get_exercise(db=db, exercise_id=exerciseId)
+        exercise = exercise_service.get_exercise(db=db, exercise_id=exerciseId)
+        if not exercise.is_active and current_user.role != RoleEnum.ADMIN:
+            raise ExerciseNotFound(f"Exercise with id {exerciseId} not found")
+        return exercise
     except ExerciseNotFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 

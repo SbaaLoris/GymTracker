@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from backend.models.exercise_request import ExerciseRequest, RequestStatusEnum
 from backend.models.role import RoleEnum
@@ -131,7 +132,7 @@ def approve_request(
     if request.status != RequestStatusEnum.PENDING:
         raise RequestNotPending("Request is not in 'pending' status")
     
-    existing_exercise = db.query(Exercise).filter(Exercise.name == request.suggested_name).first()
+    existing_exercise = db.query(Exercise).filter(Exercise.name.ilike(request.suggested_name)).first()
     if existing_exercise is not None:
         raise ExerciseNameConflict(f"An exercise named '{request.suggested_name}' already exists.")
 
@@ -145,7 +146,12 @@ def approve_request(
     )
     db.add(new_exercise)
 
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise ExerciseNameConflict(f"An exercise named '{request.suggested_name}' was just created concurrently.")
+        
     db.refresh(request)
     return request
 
