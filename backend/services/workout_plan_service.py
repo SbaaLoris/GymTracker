@@ -185,6 +185,8 @@ def delete_plan(
     if not (is_admin or is_owner):
         raise PermissionDenied("You are not allowed to delete this workout plan")
 
-    db.query(WorkoutSession).filter(WorkoutSession.plan_id == plan_id).update({"plan_id": None})
+    db.query(WorkoutSession).filter(WorkoutSession.plan_id == plan_id).update(
+        {"plan_id": None}, synchronize_session=False
+    )
     db.delete(plan)
     db.commit()

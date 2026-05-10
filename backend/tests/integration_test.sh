@@ -2,7 +2,14 @@
 # =============================================================================
 #  GymTracker — Comprehensive Integration Test Suite
 #  Aligned with docs/openapi.yaml
-#  Assumes a fresh DB (rm mova.db before starting the server)
+#
+#  IMPORTANT: This test suite expects a specific initial database state.
+#  Before running this script, you MUST start the server exactly like this:
+#
+#    export MOVA_SEED_DEMO_USERS=1
+#    export MOVA_SEED_STARTER_DATA=0
+#    rm -f mova.db
+#    uvicorn backend.main:app
 # =============================================================================
 
 set -euo pipefail
@@ -71,10 +78,21 @@ request() {
     fi
 }
 
-# Cleanup previous data if possible (optional, depends on server state)
-# For this script, we assume a fresh-ish DB or at least seeded ones.
-
 echo -e "${YELLOW}=== STARTING INTEGRATION TESTS ===${NC}\n"
+
+echo -ne "${BLUE}Checking server state...${NC} "
+http_code=$(curl -s -o /tmp/gym_check.json -w "%{http_code}" -u "$ADMIN_AUTH" "$BASE_URL/exercises")
+if [ "$http_code" -ne 200 ]; then
+    echo -e "${RED}Error: Server is not running or demo users are not seeded.${NC}"
+    echo -e "${YELLOW}Please ensure MOVA_SEED_DEMO_USERS=1 is set.${NC}"
+    exit 1
+fi
+if jq -e '. | length > 0' /tmp/gym_check.json > /dev/null; then
+    echo -e "${RED}Error: Database already contains exercises.${NC}"
+    echo -e "${YELLOW}Please start with MOVA_SEED_STARTER_DATA=0 and a fresh DB (rm mova.db).${NC}"
+    exit 1
+fi
+echo -e "${GREEN}Clean environment confirmed.${NC}\n"
 
 # -----------------------------------------------------------------------------
 #  1. AUTHENTICATION
