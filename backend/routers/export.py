@@ -9,7 +9,7 @@ from backend.auth import CurrentUser, get_current_user
 from backend.database import get_db
 from backend.services import body_metric_service, export_service, workout_session_service
 from backend.models.exercise import Exercise
-from backend.services.exceptions import PermissionDenied
+from backend.services.exceptions import PermissionDenied, UserNotFound
 
 router = APIRouter(prefix="/users/{userId}/export", tags=["Export"])
 
@@ -32,6 +32,8 @@ def export_body_metrics(
             from_date=from_date,
             to_date=to_date
         )
+    except UserNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
@@ -68,6 +70,8 @@ def export_workout_sessions(
             from_date=from_date,
             to_date=to_date
         )
+    except UserNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 

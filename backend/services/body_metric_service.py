@@ -1,8 +1,11 @@
+from backend.services.exceptions import BodyMetricDateConflict
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from datetime import date
 from backend.models.body_metric import BodyMetric
+from backend.models.user import User
 from backend.schemas.body_metric import BodyMetricCreate
-from backend.services.exceptions import BodyMetricNotFound, PermissionDenied
+from backend.services.exceptions import BodyMetricNotFound, PermissionDenied, UserNotFound
 from backend.models.role import RoleEnum
 
 def _get_metric_or_raise(db: Session, metric_id: int, target_user_id: int) -> BodyMetric:
@@ -14,6 +17,11 @@ def _get_metric_or_raise(db: Session, metric_id: int, target_user_id: int) -> Bo
         raise BodyMetricNotFound(f"Body metric {metric_id} not found for user {target_user_id}")
     return metric
 
+def _assert_user_exists(db: Session, user_id: int) -> None:
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise UserNotFound(f"User with id {user_id} not found")
+
 def list_metrics(
     db: Session, 
     user_id: int, 
@@ -22,6 +30,7 @@ def list_metrics(
     from_date: date | None = None,
     to_date: date | None = None
 ) -> list[BodyMetric]:
+    _assert_user_exists(db, target_user_id)
     # Check if current user is allowed to view target_user_id's metrics
     if user_role != RoleEnum.ADMIN and user_id != target_user_id:
         raise PermissionDenied("You can only view your own body metrics")
@@ -73,7 +82,12 @@ def update_metric(db: Session, metric_id: int, user_id: int, target_user_id: int
     metric.date = payload.date
     metric.body_weight = payload.body_weight
     
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise BodyMetricDateConflict("A body metric entry already exists for this date.")
+        
     db.refresh(metric)
     return metric
 

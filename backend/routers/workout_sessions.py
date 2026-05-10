@@ -16,6 +16,7 @@ from backend.services.exceptions import (
     ExerciseTypeMismatch,
     PlanNotVisible,
     PlanNotFound,
+    UserNotFound,
 )
 
 
@@ -41,6 +42,8 @@ def list_workout_sessions(
             from_date=from_date,
             to_date=to_date,
         )
+    except UserNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
