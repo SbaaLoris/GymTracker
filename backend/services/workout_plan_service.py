@@ -177,6 +177,7 @@ def delete_plan(
     current_user_id: int,
     current_user_role: RoleEnum,
 ) -> None:
+    from backend.models.workout_session import WorkoutSession
     plan = _get_plan_or_raise(db, plan_id)
 
     is_admin = current_user_role == RoleEnum.ADMIN
@@ -184,5 +185,6 @@ def delete_plan(
     if not (is_admin or is_owner):
         raise PermissionDenied("You are not allowed to delete this workout plan")
 
+    db.query(WorkoutSession).filter(WorkoutSession.plan_id == plan_id).update({"plan_id": None})
     db.delete(plan)
     db.commit()

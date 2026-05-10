@@ -2,6 +2,7 @@
 # =============================================================================
 #  GymTracker — Comprehensive Integration Test Suite
 #  Aligned with docs/openapi.yaml
+#  Assumes a fresh DB (rm mova.db before starting the server)
 # =============================================================================
 
 set -euo pipefail
