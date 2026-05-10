@@ -41,7 +41,7 @@ def get_metric(db: Session, metric_id: int, user_id: int, user_role: RoleEnum, t
         
     return _get_metric_or_raise(db, metric_id, target_user_id)
 
-def create_metric(db: Session, user_id: int, target_user_id: int, payload: BodyMetricCreate) -> BodyMetric:
+def create_metric(db: Session, user_id: int, target_user_id: int, payload: BodyMetricCreate) -> tuple[BodyMetric, bool]:
     # POST /users/{userId}/body-metrics is "Owner only" as per spec
     if user_id != target_user_id:
         raise PermissionDenied("You can only log body metrics for yourself")
@@ -51,7 +51,7 @@ def create_metric(db: Session, user_id: int, target_user_id: int, payload: BodyM
         existing.body_weight = payload.body_weight
         db.commit()
         db.refresh(existing)
-        return existing
+        return existing, False
 
     new_metric = BodyMetric(
         user_id=user_id,
@@ -61,7 +61,7 @@ def create_metric(db: Session, user_id: int, target_user_id: int, payload: BodyM
     db.add(new_metric)
     db.commit()
     db.refresh(new_metric)
-    return new_metric
+    return new_metric, True
 
 def update_metric(db: Session, metric_id: int, user_id: int, target_user_id: int, payload: BodyMetricCreate) -> BodyMetric:
     # PUT /users/{userId}/body-metrics/{metricId} is "Owner only" as per spec

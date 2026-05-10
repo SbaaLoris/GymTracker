@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
 from datetime import date
 
@@ -30,20 +30,23 @@ def list_body_metrics(
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
-@router.post("/users/{userId}/body-metrics", response_model=BodyMetricSchema, status_code=status.HTTP_201_CREATED)
+@router.post("/users/{userId}/body-metrics", response_model=BodyMetricSchema)
 def create_body_metric(
     userId: int,
     payload: BodyMetricCreate,
+    response: Response,
     db: Session = Depends(get_db),
     current_user: CurrentUser = Depends(get_current_user),
 ):
     try:
-        return body_metric_service.create_metric(
+        metric, was_created = body_metric_service.create_metric(
             db=db,
             user_id=current_user.id,
             target_user_id=userId,
             payload=payload
         )
+        response.status_code = status.HTTP_201_CREATED if was_created else status.HTTP_200_OK
+        return metric
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 

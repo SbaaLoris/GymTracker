@@ -61,6 +61,28 @@ tags:
 # =============================================================================
 paths:
   # ---------------------------------------------------------------------------
+  #  SYSTEM
+  # ---------------------------------------------------------------------------
+  /health:
+    get:
+      tags: [System]
+      summary: Health check
+      description: Returns the health status of the API. Does not require authentication.
+      operationId: healthCheck
+      security: []
+      responses:
+        "200":
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+
+  # ---------------------------------------------------------------------------
   #  AUTH
   # ---------------------------------------------------------------------------
   /auth/register:
@@ -770,6 +792,12 @@ paths:
             schema:
               $ref: "#/components/schemas/BodyMetricCreate"
       responses:
+        "200":
+          description: Body metric updated (date already existed)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BodyMetric"
         "201":
           description: Body metric logged
           content:
@@ -1416,10 +1444,6 @@ components:
           description: Weight used in **kg**
           minimum: 0
           example: 80.0
-        duration:
-          type: integer
-          nullable: true
-          description: "Must be `null` for strength sets"
       required:
         - type
         - exercise_id
@@ -1448,14 +1472,6 @@ components:
           description: Duration in **seconds**
           minimum: 1
           example: 1800
-        reps:
-          type: integer
-          nullable: true
-          description: "Must be `null` for cardio sets"
-        weight:
-          type: number
-          nullable: true
-          description: "Must be `null` for cardio sets"
       required:
         - type
         - exercise_id
@@ -1595,41 +1611,33 @@ components:
       type: object
       description: Standard error response
       properties:
-        error:
-          type: string
-          description: Machine-readable error code
-          example: not_found
-        message:
+        detail:
           type: string
           description: Human-readable error description
           example: The requested resource was not found
       required:
-        - error
-        - message
+        - detail
 
     ValidationErrorResponse:
       type: object
       description: Detailed validation error response
       properties:
-        error:
-          type: string
-          example: validation_error
-        message:
-          type: string
-          example: Request body failed validation
-        details:
+        detail:
           type: array
           description: List of individual field validation errors
           items:
             type: object
             properties:
-              field:
-                type: string
-                example: name
-              message:
+              loc:
+                type: array
+                items:
+                  type: string
+                example: ["body", "name"]
+              msg:
                 type: string
                 example: "Field is required"
+              type:
+                type: string
+                example: "value_error.missing"
       required:
-        - error
-        - message
-        - details
+        - detail
