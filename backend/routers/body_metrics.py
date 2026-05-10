@@ -6,7 +6,7 @@ from backend.auth import CurrentUser, get_current_user
 from backend.database import get_db
 from backend.schemas.body_metric import BodyMetric as BodyMetricSchema, BodyMetricCreate
 from backend.services import body_metric_service
-from backend.services.exceptions import BodyMetricNotFound, PermissionDenied
+from backend.services.exceptions import BodyMetricNotFound, PermissionDenied, BodyMetricDateConflict, UserNotFound, BodyMetricDateConflict
 
 router = APIRouter(tags=["Body Metrics"])
 
@@ -27,6 +27,8 @@ def list_body_metrics(
             from_date=from_date,
             to_date=to_date
         )
+    except UserNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
@@ -90,6 +92,8 @@ def update_body_metric(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except PermissionDenied as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+    except BodyMetricDateConflict as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
 
 @router.delete("/users/{userId}/body-metrics/{metricId}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_body_metric(

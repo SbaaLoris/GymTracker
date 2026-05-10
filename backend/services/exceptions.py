@@ -62,3 +62,11 @@ class InvalidCredentials(DomainError):
     """Username or password is incorrect."""
 class BodyMetricNotFound(DomainError):
     """Body metric entry does not exist."""
+
+
+class BodyMetricDateConflict(DomainError):
+    """A body metric entry already exists for this date."""
+
+
+class UserNotFound(DomainError):
+    """User does not exist."""

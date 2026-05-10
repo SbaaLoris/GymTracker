@@ -170,7 +170,8 @@ The backend supports the following environment variables.
 
 | Variable | Default | Description |
 |---|---|---|
-| `DATABASE_URL` | `sqlite:///./mova.db` | Connection string for the database. Render automatically provides this for PostgreSQL. |
+| `DATABASE_URL` | `sqlite:///./mova.db` | Connection string for the database. Render automatically provides this for PostgreSQL. If not set, app will exit unless `MOVA_DEV_MODE=1`. |
+| `MOVA_DEV_MODE` | `0` | Set to `1` to bypass strict `DATABASE_URL` checks and allow local SQLite databases. |
 | `MOVA_CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated list of allowed CORS origins. |
 | `MOVA_BOOTSTRAP_ADMIN_USERNAME` | *(none)* | Username for the initial admin account (bootstrap). |
 | `MOVA_BOOTSTRAP_ADMIN_PASSWORD` | *(none)* | Password for the initial admin account (bootstrap). |
@@ -180,15 +181,17 @@ The backend supports the following environment variables.
 ### Local Development
 To run the backend locally with full demo data:
 ```bash
+export MOVA_DEV_MODE=1
 export MOVA_SEED_DEMO_USERS=1
 export MOVA_SEED_STARTER_DATA=1
+cd backend && alembic upgrade head && cd ..
 uvicorn backend.main:app --reload
 ```
 
 ### Deployment (Render)
 1. **Database:** Create a PostgreSQL instance on Render.
 2. **Web Service:** 
-   - Build Command: `pip install -r backend/requirements.txt`
+   - Build Command: `pip install -r backend/requirements.txt && cd backend && alembic upgrade head`
    - Start Command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
    - Environment Variables:
      - `DATABASE_URL`: (Auto-filled by Render if linked to DB)
