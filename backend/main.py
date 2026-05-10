@@ -11,7 +11,11 @@ from backend.routers import export
 from backend.routers import workout_plans
 from backend.routers import workout_sessions
 
-app = FastAPI(title="GymTracker API")
+app = FastAPI(
+    title="Mova – Gym Tracker API",
+    version="1.0.0",
+    description="Backend API for the Mova Gym Tracker application. Handles users, workout plans, and exercise tracking.",
+)
 
 app.add_middleware(
     CORSMiddleware,

@@ -6,9 +6,11 @@
 #  IMPORTANT: This test suite expects a specific initial database state.
 #  Before running this script, you MUST start the server exactly like this:
 #
+#    export MOVA_DEV_MODE=1
 #    export MOVA_SEED_DEMO_USERS=1
 #    export MOVA_SEED_STARTER_DATA=0
 #    rm -f mova.db
+#    cd backend && alembic upgrade head && cd ..
 #    uvicorn backend.main:app
 # =============================================================================
 
