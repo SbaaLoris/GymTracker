@@ -3,6 +3,7 @@ import { useAuth } from '@/auth/AuthContext'
 import { ProtectedRoute } from '@/auth/ProtectedRoute'
 import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
+import RegisterPage from '@/pages/RegisterPage'
 import ExercisesPage from '@/pages/ExercisesPage'
 
 function App() {
@@ -34,9 +35,14 @@ function App() {
               </button>
             </>
           ) : (
-            <Link to="/login" className="text-blue-600 hover:underline">
-              Login
-            </Link>
+            <>
+              <Link to="/login" className="text-blue-600 hover:underline">
+                Login
+              </Link>
+              <Link to="/register" className="text-blue-600 hover:underline">
+                Register
+              </Link>
+            </>
           )}
         </div>
       </nav>
@@ -44,6 +50,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route
           path="/exercises"
           element={

@@ -22,22 +22,26 @@ export class ApiError extends Error {
 export async function apiFetch<T>(
     path: string,
     schema: z.ZodType<T>,
-    credentials: Credentials,
+    credentials?: Credentials | null,
     init?: RequestInit,
 ): Promise<T> {
     if (!API_URL) {
         throw new Error('VITE_API_URL is not set in .env')
     }
 
-    const auth = btoa(`${credentials.username}:${credentials.password}`)
+    const requestHeaders: Headers = new Headers(init?.headers)
+    if (!requestHeaders.has('Content-Type')) {
+        requestHeaders.set('Content-Type', 'application/json')
+    }
+
+    if (credentials) {
+        const auth = btoa(`${credentials.username}:${credentials.password}`)
+        requestHeaders.set('Authorization', `Basic ${auth}`)
+    }
 
     const response = await fetch(`${API_URL}${path}`, {
         ...init,
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Basic ${auth}`,
-            ...init?.headers,
-        },
+        headers: requestHeaders,
     })
 
     if (!response.ok) {
