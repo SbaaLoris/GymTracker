@@ -17,10 +17,7 @@ export const CardioSetSchema = z.object({
 })
 export type CardioSet = z.infer<typeof CardioSetSchema>
 
-export const WorkoutSetSchema = z.discriminatedUnion('type', [
-  StrengthSetSchema,
-  CardioSetSchema,
-])
+export const WorkoutSetSchema = z.discriminatedUnion('type', [StrengthSetSchema, CardioSetSchema])
 export type WorkoutSet = z.infer<typeof WorkoutSetSchema>
 
 export const StrengthSetInputSchema = z.object({

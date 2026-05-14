@@ -7,11 +7,10 @@ const envSchema = z.object({
 const parsed = envSchema.safeParse(import.meta.env)
 
 if (!parsed.success) {
-  console.error(
-    'Invalid environment variables:\n',
-    z.prettifyError(parsed.error),
+  console.error('Invalid environment variables:\n', z.prettifyError(parsed.error))
+  throw new Error(
+    'Environment validation failed. Please check your .env.local file and ensure all required variables are set correctly.'
   )
-  throw new Error('Environment validation failed. Please check your .env.local file and ensure all required variables are set correctly.')
 }
 
 export const env = parsed.data
