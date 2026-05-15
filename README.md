@@ -155,12 +155,13 @@ The following strict business rules are enforced in the backend:
 
 ---
 
-## API Documentation
+---
 
-The full REST API is documented in [`docs/openapi.yaml`](./docs/openapi.yaml) following the OpenAPI 3.0.3 specification.
+## Documentation
 
-You can visualize it interactively at:
-[Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/SbaaLoris/GymTracker/main/docs/openapi.yaml)
+- [Architecture Documentation](docs/architecture.md) — High-level overview, tech stack, and design principles.
+- [Deployment Documentation](docs/deployment.md) — Production setup for Backend (Render) and Frontend (Vercel).
+- [OpenAPI Specification](docs/openapi.yaml) — Full REST API definition.
 
 ---
 
@@ -188,16 +189,9 @@ cd backend && alembic upgrade head && cd ..
 uvicorn backend.main:app --reload
 ```
 
-### Deployment (Render)
-1. **Database:** Create a PostgreSQL instance on Render.
-2. **Web Service:** 
-   - Build Command: `pip install -r backend/requirements.txt && cd backend && alembic upgrade head`
-   - Start Command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
-   - Environment Variables:
-     - `DATABASE_URL`: (Auto-filled by Render if linked to DB)
-     - `MOVA_BOOTSTRAP_ADMIN_USERNAME`: Your chosen admin username
-     - `MOVA_BOOTSTRAP_ADMIN_PASSWORD`: Your chosen admin password
-     - `MOVA_CORS_ORIGINS`: Your frontend URL
+### Deployment
+
+For detailed production setup instructions, environment variables, and build settings, please refer to the [Deployment Documentation](docs/deployment.md).
 
 ---
 
@@ -214,7 +208,14 @@ This web application relies on:
 
 ### Frontend Technology
 
-The front-end will be developed using a low-code approach via **Budibase** to ensure a responsive layout across desktop and mobile devices.
+The frontend is a single-page application (SPA) developed with:
+- **Vite + React 19**
+- **TypeScript**
+- **Tailwind CSS 4 + shadcn/ui**
+- **TanStack Query 5** (Data fetching)
+- **React Router 7** (Navigation)
+
+See the [Architecture Documentation](docs/architecture.md) for a full breakdown.
 
 ---
 

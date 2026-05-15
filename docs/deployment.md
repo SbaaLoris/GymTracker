@@ -8,10 +8,11 @@ This document describes the production deployment setup for the **Mova Gym Track
 | Component | Provider | Purpose |
 |---|---|---|
 | Backend API | Render | Hosts the FastAPI application and exposes the REST API. |
+| Frontend App | Vercel | Hosts the React/Vite application. |
 | Database | Supabase | Hosts the PostgreSQL database. |
 | Keep-alive | cron-job.org | Calls `/health` every 15 minutes to reduce cold starts on the free Render tier. |
 
-> **Rule:** The frontend must never connect directly to Supabase. All application logic, authentication, and business rules are handled by the FastAPI backend.
+> **Rule:** The frontend must never connect directly to Supabase. All application logic, authentication, and business rules are handled by the FastAPI backend via the Vercel-to-Render API connection.
 
 ---
 
@@ -45,6 +46,29 @@ The `.python-version` file in the repository root pins the runtime to **3.11.9**
 ```
 
 This prevents Render from using a newer default Python version that can break dependency installation for packages such as `pydantic-core`.
+
+---
+
+## Vercel Frontend Service
+
+| Item | Value |
+|---|---|
+| Production URL | `https://mova-gym-tracker.vercel.app` (example) |
+| Framework | Vite / React |
+| Root Directory | `frontend` |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
+| Node.js Version | 20.x or higher |
+
+### Environment Variables (Vercel)
+
+| Variable | Value | Purpose |
+|---|---|---|
+| `VITE_API_URL` | `https://mova-backend-05ic.onrender.com` | Point the frontend to the production backend. |
+
+> [!IMPORTANT]
+> The `VITE_API_URL` is baked into the frontend build. If you change this variable in Vercel, you must **Redeploy** the application for the changes to take effect.
+
 
 ---
 
