@@ -75,12 +75,3 @@ Mova uses **HTTP Basic Authentication**.
 3. **API Calls**: The `apiFetch` wrapper automatically adds the `Authorization: Basic ...` header to every request if credentials exist.
 4. **Validation**: The backend validates the header against the database.
 5. **Persistence**: On refresh, `AuthContext` initializes from `sessionStorage` to keep the user logged in.
-
----
-
-## Development Principles
-
-- **Surgical Changes**: We follow the **Karpathy Guidelines**—touch only what is necessary and maintain consistency.
-- **Types First**: Always define TypeScript interfaces and Zod schemas before building UI.
-- **Clean API Layer**: Never use `fetch()` directly in components; always use the `api/` layer and TanStack Query hooks.
-- **Responsive Design**: All UI components are built mobile-first using Tailwind CSS.
