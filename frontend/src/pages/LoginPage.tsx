@@ -1,100 +1,78 @@
-import { useState, type FormEvent } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { ApiError } from '@/api/client'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/auth/AuthContext'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 
-type LocationState = {
-  from?: {
-    pathname?: string
-  }
-  message?: string
-}
+export default function LoginPage() {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
-function LoginPage() {
-  const { login, status } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
+    const { login } = useAuth()
+    const navigate = useNavigate()
 
-  const locationState = location.state as LocationState | null
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault()
+        setError(null)
+        setIsLoading(true)
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const from = locationState?.from?.pathname ?? '/exercises'
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setError(null)
-    setIsSubmitting(true)
-
-    try {
-      await login({ username, password })
-      navigate(from, { replace: true })
-    } catch (err) {
-      if (err instanceof ApiError && err.status === 401) {
-        setError('Invalid username or password.')
-      } else {
-        setError('Login failed. Please check the backend and network connection.')
-      }
-    } finally {
-      setIsSubmitting(false)
+        try {
+            await login({ username, password })
+            navigate('/exercises')
+        } catch (err) {
+            setError('Invalid credentials')
+        } finally {
+            setIsLoading(false)
+        }
     }
-  }
 
-  if (status === 'checking') {
-    return <div className="p-4">Checking authentication…</div>
-  }
+    return (
+        <div className="flex min-h-screen items-center justify-center">
+            <Card className="w-full max-w-sm">
+                <CardHeader>
+                    <CardTitle>Login</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-1">
+                            <Label htmlFor="username">Username</Label>
+                            <Input
+                                id="username"
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                autoComplete="username"
+                                required
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="current-password"
+                                required
+                            />
+                        </div>
 
-  return (
-    <div className="max-w-sm mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
+                        {error && (
+                            <p className="text-sm font-medium text-destructive">
+                                {error}
+                            </p>
+                        )}
 
-      {locationState?.message && (
-        <div className="mb-4 text-sm text-green-700">{locationState.message}</div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="username" className="block text-sm font-medium mb-1">
-            Username
-          </label>
-          <input
-            id="username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            className="w-full border rounded px-3 py-2"
-            autoComplete="username"
-          />
+                        <Button type="submit" className="w-full" disabled={isLoading}>
+                            {isLoading ? 'Logging in…' : 'Login'}
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
         </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium mb-1">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            className="w-full border rounded px-3 py-2"
-            autoComplete="current-password"
-          />
-        </div>
-
-        {error && <div className="text-sm text-red-600">{error}</div>}
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
-        >
-          {isSubmitting ? 'Logging in…' : 'Log in'}
-        </button>
-      </form>
-    </div>
-  )
+    )
 }
-
-export default LoginPage
