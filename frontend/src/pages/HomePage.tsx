@@ -1,14 +1,24 @@
 import { Link } from 'react-router-dom'
+import { AppLayout } from "@/components/layout/AppLayout"
+import { PageHeader } from "@/components/layout/PageHeader"
+import { Button } from "@/components/ui/button"
 
 function HomePage() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Mova Gym Tracker</h1>
-      <p className="mb-4 text-gray-700">Willkommen. Erste Demo-Seite.</p>
-      <Link to="/exercises" className="text-blue-600 underline">
-        Zu den Exercises →
-      </Link>
-    </div>
+    <AppLayout>
+      <PageHeader 
+        title="Mova Gym Tracker" 
+        description="Welcome. Your journey to better fitness starts here."
+      />
+      <div className="flex flex-col gap-4">
+        <p className="text-muted-foreground italic">First demo page.</p>
+        <Button asChild className="w-fit">
+          <Link to="/exercises">
+            Go to Exercises →
+          </Link>
+        </Button>
+      </div>
+    </AppLayout>
   )
 }
 

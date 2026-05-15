@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ApiError } from '@/api/client'
 import { registerUser } from '@/api/auth'
-import { Logo } from "@/components/Logo"
+import { AuthLayout } from "@/components/layout/AuthLayout"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -72,73 +72,68 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
-            <div className="flex w-full max-w-sm flex-col gap-6">
-                <Link to="/" className="self-center">
-                    <Logo className="h-8" />
-                </Link>
-                <Card>
-                    <CardHeader className="text-center">
-                        <CardTitle className="text-xl">Create account</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={handleSubmit}>
-                            <FieldGroup>
-                                <Field>
-                                    <FieldLabel htmlFor="username">Username</FieldLabel>
-                                    <Input
-                                        id="username"
-                                        placeholder="johndoe"
-                                        value={username}
-                                        onChange={(event) => setUsername(event.target.value)}
-                                        autoComplete="username"
-                                        required
-                                    />
-                                </Field>
+        <AuthLayout>
+            <Card>
+                <CardHeader className="text-center">
+                    <CardTitle className="text-xl">Create account</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit}>
+                        <FieldGroup>
+                            <Field>
+                                <FieldLabel htmlFor="username">Username</FieldLabel>
+                                <Input
+                                    id="username"
+                                    placeholder="johndoe"
+                                    value={username}
+                                    onChange={(event) => setUsername(event.target.value)}
+                                    autoComplete="username"
+                                    required
+                                />
+                            </Field>
 
-                                <Field>
-                                    <FieldLabel htmlFor="password">Password</FieldLabel>
-                                    <Input
-                                        id="password"
-                                        type="password"
-                                        value={password}
-                                        onChange={(event) => setPassword(event.target.value)}
-                                        autoComplete="new-password"
-                                        required
-                                    />
-                                </Field>
+                            <Field>
+                                <FieldLabel htmlFor="password">Password</FieldLabel>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    value={password}
+                                    onChange={(event) => setPassword(event.target.value)}
+                                    autoComplete="new-password"
+                                    required
+                                />
+                            </Field>
 
-                                <Field>
-                                    <FieldLabel htmlFor="confirmPassword">Confirm password</FieldLabel>
-                                    <Input
-                                        id="confirmPassword"
-                                        type="password"
-                                        value={confirmPassword}
-                                        onChange={(event) => setConfirmPassword(event.target.value)}
-                                        autoComplete="new-password"
-                                        required
-                                    />
-                                </Field>
+                            <Field>
+                                <FieldLabel htmlFor="confirmPassword">Confirm password</FieldLabel>
+                                <Input
+                                    id="confirmPassword"
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(event) => setConfirmPassword(event.target.value)}
+                                    autoComplete="new-password"
+                                    required
+                                />
+                            </Field>
 
-                                {error && (
-                                    <p className="text-sm font-medium text-destructive text-center">
-                                        {error}
-                                    </p>
-                                )}
+                            {error && (
+                                <p className="text-sm font-medium text-destructive text-center">
+                                    {error}
+                                </p>
+                            )}
 
-                                <Field>
-                                    <Button type="submit" className="w-full" disabled={isSubmitting}>
-                                        {isSubmitting ? 'Creating account…' : 'Create account'}
-                                    </Button>
-                                    <FieldDescription className="text-center">
-                                        Already have an account? <Link to="/login" className="underline underline-offset-4">Log in</Link>
-                                    </FieldDescription>
-                                </Field>
-                            </FieldGroup>
-                        </form>
-                    </CardContent>
-                </Card>
-            </div>
-        </div>
+                            <Field>
+                                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Creating account…' : 'Create account'}
+                                </Button>
+                                <FieldDescription className="text-center">
+                                    Already have an account? <Link to="/login" className="underline underline-offset-4">Log in</Link>
+                                </FieldDescription>
+                            </Field>
+                        </FieldGroup>
+                    </form>
+                </CardContent>
+            </Card>
+        </AuthLayout>
     )
 }
