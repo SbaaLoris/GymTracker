@@ -37,7 +37,7 @@ export function useWorkoutPlan(id: number) {
 }
 
 export function useCreateWorkoutPlan() {
-  const { credentials, user } = useAuth()
+  const { credentials } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -46,13 +46,13 @@ export function useCreateWorkoutPlan() {
       return createWorkoutPlan(payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout-plans', user?.id] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
     },
   })
 }
 
 export function useUpdateWorkoutPlan() {
-  const { credentials, user } = useAuth()
+  const { credentials } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -61,13 +61,13 @@ export function useUpdateWorkoutPlan() {
       return updateWorkoutPlan(id, payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout-plans', user?.id] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
     },
   })
 }
 
 export function useDeleteWorkoutPlan() {
-  const { credentials, user } = useAuth()
+  const { credentials } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -76,7 +76,7 @@ export function useDeleteWorkoutPlan() {
       return deleteWorkoutPlan(id, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout-plans', user?.id] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
     },
   })
 }

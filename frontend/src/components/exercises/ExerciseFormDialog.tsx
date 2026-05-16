@@ -89,8 +89,9 @@ export function ExerciseFormDialog({
         toast.success("Exercise created successfully")
       }
       onOpenChange(false)
-    } catch (error: any) {
-      toast.error(error.message || "Failed to save exercise")
+    } catch (error) {
+      const err = error as Error
+      toast.error(err.message || "Failed to save exercise")
     }
   }
 

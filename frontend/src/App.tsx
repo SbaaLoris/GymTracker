@@ -16,6 +16,7 @@ import EditPlanPage from '@/pages/EditPlanPage'
 import WorkoutsPage from '@/pages/WorkoutsPage'
 import NewWorkoutPage from '@/pages/NewWorkoutPage'
 import WorkoutDetailPage from '@/pages/WorkoutDetailPage'
+import EditWorkoutPage from '@/pages/EditWorkoutPage'
 import ProgressPage from '@/pages/ProgressPage'
 import AdminDashboardPage from '@/pages/AdminDashboardPage'
 import AdminExercisesPage from '@/pages/AdminExercisesPage'
@@ -42,6 +43,7 @@ function App() {
         <Route path="/workouts" element={<ProtectedRoute><WorkoutsPage /></ProtectedRoute>} />
         <Route path="/workouts/new" element={<ProtectedRoute><NewWorkoutPage /></ProtectedRoute>} />
         <Route path="/workouts/:sessionId" element={<ProtectedRoute><WorkoutDetailPage /></ProtectedRoute>} />
+        <Route path="/workouts/:sessionId/edit" element={<ProtectedRoute><EditWorkoutPage /></ProtectedRoute>} />
         
         <Route path="/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
         

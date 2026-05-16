@@ -35,7 +35,7 @@ export function ExerciseList() {
   }, [search])
 
   const filters = React.useMemo(() => {
-    const f: any = {}
+    const f: Record<string, string | boolean> = {}
     if (debouncedSearch) f.search = debouncedSearch
     if (muscleGroup !== "all") f.muscle_group = muscleGroup
     if (cardioFilter !== "all") f.is_cardio = cardioFilter === "cardio"
@@ -68,7 +68,8 @@ export function ExerciseList() {
     try {
       await deleteExercise(deletingExercise.id)
       toast.success("Exercise deleted successfully")
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as Error
       toast.error(err.message || "Failed to delete exercise")
     }
   }

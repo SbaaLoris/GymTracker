@@ -73,12 +73,13 @@ export function ExerciseRequestDialog({
       await createRequest(result.data)
       toast.success("Exercise request submitted successfully")
       onOpenChange(false)
-    } catch (error: any) {
+    } catch (error) {
+      const err = error as Error
       // Handle 429 Too Many Requests specifically
-      if (error.message && error.message.includes("429")) {
+      if (err.message && err.message.includes("429")) {
         toast.error("You have reached the maximum number of pending requests. Please wait for an admin to review them.")
       } else {
-        toast.error(error.message || "Failed to submit request")
+        toast.error(err.message || "Failed to submit request")
       }
     }
   }
