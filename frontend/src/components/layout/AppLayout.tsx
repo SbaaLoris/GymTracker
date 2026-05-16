@@ -13,21 +13,18 @@ export function AppLayout({ children }: AppLayoutProps) {
   const { isAuthenticated, user, logout } = useAuth()
 
   return (
-    <div className="min-h-svh bg-background text-foreground">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto flex h-14 max-w-5xl items-center px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6">
-            <Link to="/" className="flex items-center gap-2">
-              <Logo className="h-6" />
+    <div className="app-layout">
+      <header className="app-header">
+        <div className="app-header__inner">
+          <div className="app-header__left">
+            <Link to="/" className="app-header__logo">
+              <Logo style={{ height: 24 }} />
             </Link>
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+            <nav className="app-nav">
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  cn(
-                    "transition-colors hover:text-foreground/80",
-                    isActive ? "text-foreground" : "text-foreground/60"
-                  )
+                  cn("app-nav__link", isActive && "is-active")
                 }
               >
                 Home
@@ -35,26 +32,23 @@ export function AppLayout({ children }: AppLayoutProps) {
               <NavLink
                 to="/exercises"
                 className={({ isActive }) =>
-                  cn(
-                    "transition-colors hover:text-foreground/80",
-                    isActive ? "text-foreground" : "text-foreground/60"
-                  )
+                  cn("app-nav__link", isActive && "is-active")
                 }
               >
                 Exercises
               </NavLink>
             </nav>
           </div>
-          <div className="ml-auto flex items-center gap-4">
+          <div className="app-header__right">
             {isAuthenticated && user ? (
               <div className="flex items-center gap-4">
-                <div className="hidden sm:flex flex-col items-end gap-0.5">
-                  <span className="text-sm font-medium leading-none">{user.username}</span>
-                  <Badge variant="secondary" className="h-4 px-1 text-[10px] uppercase">
+                <div className="user-info">
+                  <span className="user-info__name">{user.username}</span>
+                  <Badge variant="secondary" className="badge--tiny">
                     {user.role}
                   </Badge>
                 </div>
-                <Button variant="ghost" size="sm" onClick={logout} className="h-8 px-2 text-destructive hover:bg-destructive/10 hover:text-destructive">
+                <Button variant="ghost" size="sm" onClick={logout} className="ghost-destructive h-8 px-2">
                   Logout
                 </Button>
               </div>
@@ -98,7 +92,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         </NavLink>
       </nav>
 
-      <main className="container mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
+      <main className="app-main">
         {children}
       </main>
     </div>

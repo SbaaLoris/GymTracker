@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Radii</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: var(--background); color: var(--foreground); }
+  .root { padding: 24px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;}
+  .item { display: flex; flex-direction: column; gap: 6px; align-items: flex-start;}
+  .box { width: 100%; aspect-ratio: 1.4; background: var(--muted); box-shadow: inset 0 0 0 1px var(--border); }
+  .name { font-size: 11px; font-weight: 600; }
+  .meta { font-size: 10px; color: var(--muted-foreground); font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+  <div class="root">
+    <div class="item"><div class="box" style="border-radius: var(--radius-sm)"></div><div class="name">sm</div><div class="meta">4.3px · chip</div></div>
+    <div class="item"><div class="box" style="border-radius: var(--radius-md)"></div><div class="name">md</div><div class="meta">5.8px</div></div>
+    <div class="item"><div class="box" style="border-radius: var(--radius-lg)"></div><div class="name">lg</div><div class="meta">7.2px · button</div></div>
+    <div class="item"><div class="box" style="border-radius: var(--radius-xl)"></div><div class="name">xl</div><div class="meta">10px · card</div></div>
+    <div class="item"><div class="box" style="border-radius: var(--radius-4xl)"></div><div class="name">4xl</div><div class="meta">18.7px · pill badge</div></div>
+  </div>
+</body>
+</html>

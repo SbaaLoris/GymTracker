@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Spacing</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: var(--background); color: var(--foreground); }
+  .root { padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .row { display: grid; grid-template-columns: 70px 1fr 60px; align-items: center; gap: 12px; }
+  .bar { height: 18px; background: var(--destructive); border-radius: 4px; }
+  .tag { font-size: 11px; font-weight: 600;}
+  .meta { font-size: 10px; color: var(--muted-foreground); font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+  <div class="root">
+    <div class="row"><div class="tag">space-1</div><div class="bar" style="width: 4px"></div><div class="meta">4px</div></div>
+    <div class="row"><div class="tag">space-2</div><div class="bar" style="width: 8px"></div><div class="meta">8px</div></div>
+    <div class="row"><div class="tag">space-3</div><div class="bar" style="width: 12px"></div><div class="meta">12px</div></div>
+    <div class="row"><div class="tag">space-4</div><div class="bar" style="width: 16px"></div><div class="meta">16px · card pad</div></div>
+    <div class="row"><div class="tag">space-6</div><div class="bar" style="width: 24px"></div><div class="meta">24px · page gutter</div></div>
+    <div class="row"><div class="tag">space-8</div><div class="bar" style="width: 32px"></div><div class="meta">32px</div></div>
+    <div class="row"><div class="tag">space-12</div><div class="bar" style="width: 48px"></div><div class="meta">48px · section</div></div>
+  </div>
+</body>
+</html>

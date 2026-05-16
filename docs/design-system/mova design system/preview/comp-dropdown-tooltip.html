@@ -1,0 +1,43 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/><title>Dropdown · Tooltip</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../ui_kits/mova-app/shadcn-components.css">
+<link rel="stylesheet" href="_preview-common.css">
+<style>
+  .preview .dropdown { position: relative; box-shadow: 0 10px 30px rgb(0 0 0 / 0.10); }
+  .preview .tooltip { position: relative; display: inline-flex; margin-left: 8px; }
+</style>
+</head><body class="preview"><div class="preview-root" style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px;">
+  <div>
+    <div class="preview-label" style="margin-bottom: 8px">Dropdown menu · open state</div>
+    <div class="dropdown" style="position: relative; max-width: 220px;" role="menu">
+      <div class="dropdown__label">Actions</div>
+      <div class="dropdown__group" role="group">
+        <button class="dropdown__item" role="menuitem">Edit<span class="dropdown__kbd">⌘E</span></button>
+        <button class="dropdown__item" role="menuitem">Duplicate</button>
+        <button class="dropdown__item" role="menuitem">Share</button>
+      </div>
+      <div class="dropdown__sep"></div>
+      <div class="dropdown__group" role="group">
+        <button class="dropdown__item" role="menuitem" data-variant="destructive">Delete<span class="dropdown__kbd">⌘⌫</span></button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="preview-label" style="margin-bottom: 8px">Tooltip</div>
+    <div style="display: inline-flex; align-items: center;">
+      <button class="btn btn--outline">Logout</button>
+      <span class="tooltip tooltip--right" role="tooltip">Sign out of your account</span>
+    </div>
+    <div style="margin-top: 18px;">
+      <div class="preview-label" style="margin-bottom: 8px">Popover</div>
+      <div class="popover popover--start" role="dialog" style="position: relative; max-width: 260px;">
+        <div style="font-weight: 500; font-size: 14px; margin-bottom: 8px;">Filter</div>
+        <div class="field">
+          <label class="field__label">Muscle</label>
+          <div class="select"><button class="select-trigger"><span class="select-value">Legs</span><svg class="select-trigger__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></body></html>

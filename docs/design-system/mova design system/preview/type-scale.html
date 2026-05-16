@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Typography Scale</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: var(--background); color: var(--foreground); }
+  .root { padding: 24px; display:flex; flex-direction: column; gap: 12px; }
+  .row { display: grid; grid-template-columns: 110px 1fr; align-items: baseline; gap: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border);}
+  .row:last-child { border-bottom: 0; }
+  .tag { font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em;}
+</style>
+</head>
+<body>
+  <div class="root">
+    <div class="row"><div class="tag">display / 48</div><div class="mova-display">Progress.</div></div>
+    <div class="row"><div class="tag">h1 / 36</div><div class="mova-h1">Good morning, Loris</div></div>
+    <div class="row"><div class="tag">h2 / 24</div><div class="mova-h2">Body Weight Progress</div></div>
+    <div class="row"><div class="tag">h3 / 18</div><div class="mova-h3">Barbell Back Squat</div></div>
+    <div class="row"><div class="tag">eyebrow / 12</div><div class="mova-eyebrow">Performance insights</div></div>
+    <div class="row"><div class="tag">body / 14</div><div>Ready to hit your targets today?</div></div>
+    <div class="row"><div class="tag">small / 12</div><div class="mova-body-sm">Updated 2 hours ago</div></div>
+  </div>
+</body>
+</html>

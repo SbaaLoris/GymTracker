@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/auth/AuthContext'
 import { AuthLayout } from "@/components/layout/AuthLayout"
@@ -23,8 +23,14 @@ export default function LoginPage() {
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
 
-    const { login } = useAuth()
+    const { login, isAuthenticated } = useAuth()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/')
+        }
+    }, [isAuthenticated, navigate])
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
@@ -33,7 +39,7 @@ export default function LoginPage() {
 
         try {
             await login({ username, password })
-            navigate('/exercises')
+            // Navigation is handled by useEffect when isAuthenticated becomes true
         } catch {
             setError('Invalid credentials')
         } finally {
@@ -44,8 +50,8 @@ export default function LoginPage() {
     return (
         <AuthLayout>
             <Card>
-                <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Welcome back</CardTitle>
+                <CardHeader className="text-center pb-2">
+                    <CardTitle className="text-2xl font-bold tracking-tight">Welcome back</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit}>
@@ -78,12 +84,12 @@ export default function LoginPage() {
                                 </p>
                             )}
 
-                            <Field>
+                            <Field className="pt-2">
                                 <Button type="submit" className="w-full" disabled={isLoading}>
                                     {isLoading ? 'Logging in…' : 'Login'}
                                 </Button>
                                 <FieldDescription className="text-center">
-                                    Don&apos;t have an account? <Link to="/register" className="underline underline-offset-4">Sign up</Link>
+                                    Don&apos;t have an account? <Link to="/register" className="underline underline-offset-4 hover:text-primary transition-colors">Sign up</Link>
                                 </FieldDescription>
                             </Field>
                         </FieldGroup>

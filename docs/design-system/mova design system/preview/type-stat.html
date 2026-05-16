@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Type / Display Specimen</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: var(--background); color: var(--foreground); }
+  .root { padding: 28px 24px; display: flex; flex-direction: column; gap: 4px; }
+  .tag { font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground);}
+  .stat { font-family: var(--font-heading); font-size: 80px; line-height: 0.95; font-weight: 700; letter-spacing: -0.035em;}
+  .stat .kg { font-size: 22px; font-weight: 500; color: var(--muted-foreground); margin-left: 6px; letter-spacing: 0;}
+</style>
+</head>
+<body>
+  <div class="root">
+    <div class="tag">CURRENT WEIGHT — stat numerals</div>
+    <div class="stat">78.4<span class="kg">kg</span></div>
+    <div class="tag" style="margin-top: 10px">TOTAL WORKOUTS</div>
+    <div class="stat">128</div>
+  </div>
+</body>
+</html>

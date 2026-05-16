@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Semantic Colors</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: var(--background); color: var(--foreground); }
+  .root { padding: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .card { padding: 14px; border-radius: 12px; display:flex; flex-direction:column; gap:8px; min-height: 90px; }
+  .card .swatch { display: flex; gap: 8px; align-items: center;}
+  .dot { width: 28px; height: 28px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08); }
+  .name { font-size: 12px; font-weight: 600;}
+  .role { font-size: 11px; color: var(--muted-foreground); }
+  .ex { font-size: 11px; font-family: var(--font-mono);}
+</style>
+</head>
+<body>
+  <div class="root">
+    <div class="card" style="background:var(--card); box-shadow: var(--ring-card);">
+      <div class="swatch"><div class="dot" style="background:var(--destructive)"></div><div><div class="name">Primary action</div><div class="role">destructive token / CTA red</div></div></div>
+      <div class="ex">→ "Log New Workout"</div>
+    </div>
+    <div class="card" style="background:var(--card); box-shadow: var(--ring-card);">
+      <div class="swatch"><div class="dot" style="background:var(--foreground)"></div><div><div class="name">Foreground</div><div class="role">headlines, body text</div></div></div>
+      <div class="ex">→ "Good morning, Loris"</div>
+    </div>
+    <div class="card" style="background:var(--card); box-shadow: var(--ring-card);">
+      <div class="swatch"><div class="dot" style="background:var(--muted)"></div><div><div class="name">Muted surface</div><div class="role">badges, hover bg</div></div></div>
+      <div class="ex">→ chip "QUADS"</div>
+    </div>
+    <div class="card" style="background:var(--card); box-shadow: var(--ring-card);">
+      <div class="swatch"><div class="dot" style="background:#15803d"></div><div><div class="name">Success</div><div class="role">checkmarks, deltas</div></div></div>
+      <div class="ex">→ "+12% from last month"</div>
+    </div>
+  </div>
+</body>
+</html>

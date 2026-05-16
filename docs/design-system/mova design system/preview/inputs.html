@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Inputs</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: var(--background); color: var(--foreground); }
+  .root { padding: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .group { display: flex; flex-direction: column; gap: 6px;}
+  .lbl { font-size: 12px; font-weight: 500; color: var(--foreground);}
+  .input { height: 32px; border-radius: 8px; border: 1px solid var(--input); background: transparent; padding: 0 10px; font-size: 14px; font-family: inherit; color: var(--foreground); outline: none; transition: border-color 100ms, box-shadow 100ms;}
+  .input::placeholder { color: var(--muted-foreground); }
+  .input.focus { border-color: var(--ring); box-shadow: 0 0 0 3px oklch(0.737 0.021 106.9 / 0.4); }
+  .input.error { border-color: var(--destructive); box-shadow: 0 0 0 3px oklch(0.577 0.245 27.325 / 0.2); }
+  .input.disabled { background: var(--muted); color: var(--muted-foreground); cursor: not-allowed;}
+  .err { font-size: 12px; color: var(--destructive);}
+
+  /* Cell-style input from logger */
+  .cell { display: inline-flex; height: 30px; width: 90px; align-items: center; justify-content: center; background: var(--muted); border-radius: 6px; font-size: 14px; font-weight: 600;}
+  .search { position: relative; }
+  .search .input { padding-left: 32px; }
+  .search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--destructive); }
+</style>
+</head>
+<body>
+  <div class="root">
+    <div class="group">
+      <label class="lbl">Username</label>
+      <input class="input" placeholder="johndoe" value="loris.sbaa"/>
+    </div>
+    <div class="group">
+      <label class="lbl">Password (focus)</label>
+      <input class="input focus" type="password" value="••••••••"/>
+    </div>
+    <div class="group">
+      <label class="lbl">Email (error)</label>
+      <input class="input error" value="bad@email"/>
+      <div class="err">Enter a valid email</div>
+    </div>
+    <div class="group">
+      <label class="lbl">Notes (disabled)</label>
+      <input class="input disabled" disabled value="Locked"/>
+    </div>
+    <div class="group">
+      <label class="lbl">LBS / REPS cell</label>
+      <div style="display: flex; gap: 8px;"><div class="cell">225</div><div class="cell">8</div></div>
+    </div>
+    <div class="group">
+      <label class="lbl">Search</label>
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="input" placeholder="Search movements…"/>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

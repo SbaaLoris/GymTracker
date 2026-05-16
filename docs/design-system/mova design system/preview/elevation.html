@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Elevation</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: oklch(0.988 0.003 106.5); color: var(--foreground); }
+  .root { padding: 30px 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;}
+  .box { background: var(--card); border-radius: 12px; height: 90px; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px;}
+  .name { font-size: 11px; font-weight: 600; }
+  .meta { font-size: 10px; color: var(--muted-foreground); font-family: var(--font-mono);}
+</style>
+</head>
+<body>
+  <div class="root">
+    <div class="box" style="box-shadow: var(--ring-card);"><div class="name">ring-card</div><div class="meta">1px fg/10 — default card</div></div>
+    <div class="box" style="box-shadow: var(--shadow-xs);"><div class="name">shadow-xs</div><div class="meta">subtle lift</div></div>
+    <div class="box" style="box-shadow: var(--shadow-sm);"><div class="name">shadow-sm</div><div class="meta">menu / dropdown</div></div>
+    <div class="box" style="box-shadow: var(--shadow-md);"><div class="name">shadow-md</div><div class="meta">floating CTA</div></div>
+  </div>
+</body>
+</html>

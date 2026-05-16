@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — UI Kit</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="shadcn-components.css">
+<style>
+  .ghost-destructive { background: transparent; color: var(--destructive); }
+  .ghost-destructive:hover { background: oklch(0.577 0.245 27.325 / 0.08); }
+  .h-6 { height: 24px; }
+
+  /* Components page specific layout */
+  .components-stack { display: flex; flex-direction: column; gap: 2.5rem; }
+  .component-section { display: grid; grid-template-columns: 240px 1fr; gap: 2rem; }
+  @media (max-width: 880px) { .component-section { grid-template-columns: 1fr; gap: 0.5rem; } }
+  .component-section__head { display: flex; flex-direction: column; gap: 0.25rem; }
+  .component-section__eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-foreground); }
+  .component-section__title   { font-family: var(--font-heading); font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; }
+  .component-section__desc    { font-size: 0.8125rem; color: var(--muted-foreground); line-height: 1.45; }
+  .component-section__body    { display: flex; flex-direction: column; align-items: flex-start; }
+
+  .text-muted { color: var(--muted-foreground); }
+  .row-gap-lg { display: flex; flex-direction: column; gap: 1.25rem; }
+  .row-gap-md { display: flex; flex-direction: column; gap: 0.75rem; }
+  .row-between { display: flex; justify-content: space-between; align-items: center; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="Primitives.jsx"></script>
+<script type="text/babel" src="Layout.jsx"></script>
+<script type="text/babel" src="FormControls.jsx"></script>
+<script type="text/babel" src="Overlays.jsx"></script>
+<script type="text/babel" src="DataDisplay.jsx"></script>
+<script type="text/babel" src="Feedback.jsx"></script>
+<script type="text/babel" src="HomePage.jsx"></script>
+<script type="text/babel" src="ExercisesPage.jsx"></script>
+<script type="text/babel" src="LoginPage.jsx"></script>
+<script type="text/babel" src="RegisterPage.jsx"></script>
+<script type="text/babel" src="ComponentsPage.jsx"></script>
+
+<script type="text/babel">
+  function App() {
+    const [route, setRoute] = React.useState("/components");
+    const [user, setUser]   = React.useState({ username: "loris.sbaa", role: "USER" });
+
+    const auth = {
+      user,
+      login: (u) => setUser(u),
+      logout: () => { setUser(null); setRoute("/"); },
+    };
+    const navigate = (r) => { setRoute(r); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+
+    let view;
+    switch (route) {
+      case "/":           view = <HomePage       navigate={navigate} auth={auth} />; break;
+      case "/exercises":  view = <ExercisesPage  navigate={navigate} auth={auth} />; break;
+      case "/components": view = <ComponentsPage navigate={navigate} auth={auth} />; break;
+      case "/login":      view = <LoginPage      navigate={navigate} auth={auth} />; break;
+      case "/register":   view = <RegisterPage   navigate={navigate} auth={auth} />; break;
+      default:            view = <HomePage       navigate={navigate} auth={auth} />;
+    }
+
+    return (
+      <>
+        <div data-screen-label={route} key={route}>{view}</div>
+        <Toaster position="bottom-right"/>
+      </>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

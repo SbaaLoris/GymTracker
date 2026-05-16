@@ -38,16 +38,16 @@ function ExercisesPage() {
           ))}
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {data?.map((ex) => (
-            <Card key={ex.id} className="transition-colors hover:bg-muted/50">
-              <CardContent className="p-4 flex flex-col gap-2">
+            <Card key={ex.id} className="mova-card p-0 transition-all hover:shadow-lg hover:-translate-y-0.5">
+              <CardContent className="p-5 flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-2">
-                  <h3 className="font-semibold leading-none">{ex.name}</h3>
-                  <span className="text-[10px] font-mono text-muted-foreground">#{ex.id}</span>
+                  <h3 className="font-semibold leading-tight">{ex.name}</h3>
+                  <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-wider">#{ex.id}</span>
                 </div>
-                <div>
-                  <Badge variant="outline" className="text-[10px]">
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-[10px] bg-background/50 font-medium px-2 py-0">
                     {ex.muscle_group}
                   </Badge>
                 </div>

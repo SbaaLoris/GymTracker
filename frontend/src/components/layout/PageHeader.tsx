@@ -8,19 +8,13 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
-    <div className="flex flex-col gap-4 mb-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-          {description && (
-            <p className="text-muted-foreground">{description}</p>
-          )}
+    <div className="page-header">
+      <div className="page-header__row">
+        <div className="page-header__col">
+          <h1 className="page-header__title">{title}</h1>
+          {description && <p className="page-header__desc">{description}</p>}
         </div>
-        {actions && (
-          <div className="flex items-center gap-2">
-            {actions}
-          </div>
-        )}
+        {actions && <div className="page-header__actions">{actions}</div>}
       </div>
       <Separator />
     </div>
