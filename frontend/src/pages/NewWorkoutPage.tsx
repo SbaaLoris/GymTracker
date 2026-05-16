@@ -32,9 +32,12 @@ export default function NewWorkoutPage() {
     )
   }
 
+  const today = new Date()
+  const localDateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`
+
   // Pre-fill defaults
   const defaultValues: Partial<WorkoutSessionCreate> = {
-    date: new Date().toISOString().split('T')[0],
+    date: localDateStr,
     plan_id: plan ? plan.id : null,
     sets: [],
   }

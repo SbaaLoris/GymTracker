@@ -17,10 +17,13 @@ interface WorkoutSessionFormProps {
 }
 
 export function WorkoutSessionForm({ defaultValues, exercises, onSubmit, isPending }: WorkoutSessionFormProps) {
+  const today = new Date()
+  const localTodayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`
+
   const form = useForm<WorkoutSessionCreate>({
     resolver: zodResolver(WorkoutSessionCreateSchema),
     defaultValues: {
-      date: defaultValues?.date || new Date().toISOString().split('T')[0],
+      date: defaultValues?.date || localTodayStr,
       plan_id: defaultValues?.plan_id || null,
       sets: defaultValues?.sets || [],
     },
