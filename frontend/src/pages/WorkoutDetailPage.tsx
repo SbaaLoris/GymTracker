@@ -55,7 +55,8 @@ export default function WorkoutDetailPage() {
     })
   }
 
-  const formattedDate = new Date(session.date).toLocaleDateString(undefined, {
+  const [_year, _month, _day] = session.date.split("-").map(Number)
+  const formattedDate = new Date(_year, _month - 1, _day).toLocaleDateString(undefined, {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
