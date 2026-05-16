@@ -89,7 +89,7 @@ Mova follows a clean client–server architecture with strict separation of conc
 
 ```mermaid
 graph LR
-    User["🖥️ User Browser"] -- React / Vite --> Frontend["Vercel Frontend"]
+    User["User Browser"] -- React / Vite --> Frontend["Vercel Frontend"]
     Frontend -- "REST API / Basic Auth" --> Backend["Render Backend"]
     Backend -- SQLAlchemy --> DB[("Supabase PostgreSQL")]
 ```
