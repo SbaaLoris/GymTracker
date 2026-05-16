@@ -1,82 +1,82 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { 
-  listExercises, 
-  getExercise, 
-  createExercise, 
-  updateExercise, 
-  deleteExercise 
-} from '@/api/exercises'
+  listWorkoutPlans, 
+  getWorkoutPlan, 
+  createWorkoutPlan, 
+  updateWorkoutPlan, 
+  deleteWorkoutPlan 
+} from '@/api/workoutPlans'
 import { useAuth } from '@/auth/AuthContext'
-import type { ExerciseCreateSchema } from '@/schemas'
+import type { WorkoutPlanCreateSchema } from '@/schemas'
 import { z } from 'zod'
 
-export function useExercises(filters?: Parameters<typeof listExercises>[1]) {
+export function useWorkoutPlans(isTemplate?: boolean) {
   const { credentials } = useAuth()
   
   return useQuery({
-    queryKey: ['exercises', filters],
+    queryKey: ['workout-plans', isTemplate],
     queryFn: () => {
       if (!credentials) throw new Error('Unauthorized')
-      return listExercises(credentials, filters)
+      return listWorkoutPlans(credentials, isTemplate)
     },
     enabled: !!credentials,
   })
 }
 
-export function useExercise(id: number) {
+export function useWorkoutPlan(id: number) {
   const { credentials } = useAuth()
   
   return useQuery({
-    queryKey: ['exercises', id],
+    queryKey: ['workout-plans', id],
     queryFn: () => {
       if (!credentials) throw new Error('Unauthorized')
-      return getExercise(id, credentials)
+      return getWorkoutPlan(id, credentials)
     },
     enabled: !!credentials && !!id,
   })
 }
 
-export function useCreateExercise() {
+export function useCreateWorkoutPlan() {
   const { credentials } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: (payload: z.infer<typeof ExerciseCreateSchema>) => {
+    mutationFn: (payload: z.infer<typeof WorkoutPlanCreateSchema>) => {
       if (!credentials) throw new Error('Unauthorized')
-      return createExercise(payload, credentials)
+      return createWorkoutPlan(payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercises'] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
     },
   })
 }
 
-export function useUpdateExercise() {
+export function useUpdateWorkoutPlan() {
   const { credentials } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: ({ id, payload }: { id: number; payload: z.infer<typeof ExerciseCreateSchema> }) => {
+    mutationFn: ({ id, payload }: { id: number; payload: z.infer<typeof WorkoutPlanCreateSchema> }) => {
       if (!credentials) throw new Error('Unauthorized')
-      return updateExercise(id, payload, credentials)
+      return updateWorkoutPlan(id, payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercises'] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
     },
   })
 }
 
-export function useDeleteExercise() {
+export function useDeleteWorkoutPlan() {
   const { credentials } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
     mutationFn: (id: number) => {
       if (!credentials) throw new Error('Unauthorized')
-      return deleteExercise(id, credentials)
+      return deleteWorkoutPlan(id, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercises'] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
     },
   })
 }

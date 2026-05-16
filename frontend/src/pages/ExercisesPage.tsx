@@ -1,4 +1,3 @@
-import { useAuth } from '@/auth/AuthContext'
 import { useExercises } from '@/hooks/useExercises'
 import { AppLayout } from "@/components/layout/AppLayout"
 import { PageHeader } from "@/components/layout/PageHeader"
@@ -7,8 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 function ExercisesPage() {
-  const { credentials } = useAuth()
-  const { data, isLoading, error } = useExercises(credentials)
+  const { data, isLoading, error } = useExercises()
 
   if (error) {
     return (
