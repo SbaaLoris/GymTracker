@@ -13,6 +13,7 @@ interface StatCardProps {
     footerSecondary?: string
     icon?: LucideIcon
     className?: string
+    invertColor?: boolean
 }
 
 export function StatCard({
@@ -23,9 +24,11 @@ export function StatCard({
     trendDirection,
     footerPrimary,
     footerSecondary,
-    className
+    className,
+    invertColor
 }: StatCardProps) {
     const isPositive = trendDirection === "up"
+    const isSuccess = invertColor ? trendDirection === "down" : trendDirection === "up"
 
     return (
         <Card className={cn("mova-card p-6 gap-5", className)}>
@@ -45,7 +48,7 @@ export function StatCard({
                             variant="outline"
                             className={cn(
                                 "rounded-full h-6 px-2 gap-1 font-semibold text-[10px] uppercase tracking-wider",
-                                isPositive 
+                                isSuccess 
                                     ? "bg-success/10 text-success border-success/20" 
                                     : "bg-destructive/10 text-destructive border-destructive/20"
                             )}
