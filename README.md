@@ -87,11 +87,11 @@ The platform implements **role-based access control** with two roles:
 
 Mova follows a clean client–server architecture with strict separation of concerns.
 
-```
-┌───────────────┐       REST / Basic Auth       ┌───────────────┐       SQLAlchemy       ┌─────────────┐
-│  React SPA    │  ──────────────────────────▶   │  FastAPI      │  ──────────────────▶   │  PostgreSQL │
-│  (Vercel)     │  ◀──────────────────────────   │  (Render)     │  ◀──────────────────   │  (Supabase) │
-└───────────────┘                                └───────────────┘                        └─────────────┘
+```mermaid
+graph LR
+    User["🖥️ User Browser"] -- React / Vite --> Frontend["Vercel Frontend"]
+    Frontend -- "REST API / Basic Auth" --> Backend["Render Backend"]
+    Backend -- SQLAlchemy --> DB[("Supabase PostgreSQL")]
 ```
 
 > **Rule:** The frontend never connects directly to the database. All data access, authentication, and business logic is handled by the FastAPI backend.
