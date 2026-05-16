@@ -29,7 +29,7 @@ export const WorkoutPlanSchema = z.object({
 export type WorkoutPlan = z.infer<typeof WorkoutPlanSchema>
 
 export const WorkoutPlanCreateSchema = z.object({
-  name: z.string(),
+  name: z.string().min(2).max(100),
   is_template: z.boolean().optional(),
   exercises: z.array(PlanExerciseInputSchema).min(1),
 })

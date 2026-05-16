@@ -11,7 +11,7 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>
 
 export const UserRegistrationSchema = z.object({
-  username: z.string(),
-  password: z.string(),
+  username: z.string().min(3).max(50),
+  password: z.string().min(8).max(72),
 })
 export type UserRegistration = z.infer<typeof UserRegistrationSchema>

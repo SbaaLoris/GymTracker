@@ -15,7 +15,7 @@ export const ExerciseRequestSchema = z.object({
 export type ExerciseRequest = z.infer<typeof ExerciseRequestSchema>
 
 export const ExerciseRequestCreateSchema = z.object({
-  suggested_name: z.string(),
+  suggested_name: z.string().min(2).max(100),
   muscle_group: MuscleGroupSchema,
   is_cardio: z.boolean(),
 })

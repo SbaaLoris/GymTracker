@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { getMe } from '@/api/auth'
 import type { Credentials } from '@/api/client'
 import type { User } from '@/schemas/user'
+import { useQueryClient } from '@tanstack/react-query'
 
 type AuthStatus = 'checking' | 'authenticated' | 'anonymous'
 
@@ -45,6 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [credentials, setCredentials] = useState<Credentials | null>(null)
   const [status, setStatus] = useState<AuthStatus>('checking')
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     const storedCredentials = readStoredCredentials()
@@ -82,6 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     setCredentials(null)
     setStatus('anonymous')
+    queryClient.clear()
   }
 
   const value = useMemo(

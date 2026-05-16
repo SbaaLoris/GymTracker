@@ -26,3 +26,8 @@ export const ValidationErrorResponseSchema = z.object({
   detail: z.array(ValidationErrorSchema),
 })
 export type ValidationErrorResponse = z.infer<typeof ValidationErrorResponseSchema>
+
+export const HealthSchema = z.object({
+  status: z.string(),
+})
+export type Health = z.infer<typeof HealthSchema>
