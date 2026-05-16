@@ -21,7 +21,7 @@ export const ExerciseSchema = z.object({
 export type Exercise = z.infer<typeof ExerciseSchema>
 
 export const ExerciseCreateSchema = z.object({
-  name: z.string(),
+  name: z.string().min(2).max(100),
   muscle_group: MuscleGroupSchema,
   is_cardio: z.boolean(),
 })
