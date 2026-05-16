@@ -2,6 +2,7 @@ import { Route, Routes, Navigate } from 'react-router-dom'
 import { ProtectedRoute } from '@/auth/ProtectedRoute'
 import { AdminRoute } from '@/auth/AdminRoute'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { Toaster } from '@/components/ui/sonner'
 import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
 import ExercisesPage from '@/pages/ExercisesPage'
@@ -15,6 +16,7 @@ import EditPlanPage from '@/pages/EditPlanPage'
 import WorkoutsPage from '@/pages/WorkoutsPage'
 import NewWorkoutPage from '@/pages/NewWorkoutPage'
 import WorkoutDetailPage from '@/pages/WorkoutDetailPage'
+import EditWorkoutPage from '@/pages/EditWorkoutPage'
 import ProgressPage from '@/pages/ProgressPage'
 import AdminDashboardPage from '@/pages/AdminDashboardPage'
 import AdminExercisesPage from '@/pages/AdminExercisesPage'
@@ -41,6 +43,7 @@ function App() {
         <Route path="/workouts" element={<ProtectedRoute><WorkoutsPage /></ProtectedRoute>} />
         <Route path="/workouts/new" element={<ProtectedRoute><NewWorkoutPage /></ProtectedRoute>} />
         <Route path="/workouts/:sessionId" element={<ProtectedRoute><WorkoutDetailPage /></ProtectedRoute>} />
+        <Route path="/workouts/:sessionId/edit" element={<ProtectedRoute><EditWorkoutPage /></ProtectedRoute>} />
         
         <Route path="/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
         
@@ -50,6 +53,7 @@ function App() {
         <Route path="/admin/requests" element={<AdminRoute><AdminRequestsPage /></AdminRoute>} />
         <Route path="/admin/templates" element={<AdminRoute><AdminTemplatesPage /></AdminRoute>} />
       </Routes>
+      <Toaster />
     </TooltipProvider>
   )
 }

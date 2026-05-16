@@ -1,5 +1,14 @@
+import * as React from "react"
 import { Navigate, useLocation } from "react-router-dom"
 import { useAuth } from "@/auth/AuthContext"
+import { toast } from "sonner"
+
+function AdminRedirect() {
+  React.useEffect(() => {
+    toast.error("Admin access required")
+  }, [])
+  return <Navigate to="/" replace />
+}
 
 export function AdminRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, status, user } = useAuth()
@@ -14,8 +23,7 @@ export function AdminRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (user?.role !== "admin") {
-    // If authenticated but not admin, redirect to dashboard or home
-    return <Navigate to="/" replace />
+    return <AdminRedirect />
   }
 
   return <>{children}</>

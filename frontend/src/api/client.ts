@@ -87,14 +87,31 @@ export async function apiDownload(
     throw new ApiError(response.status, body)
   }
 
+  // Guard: ensure the server returned the expected file type
+  const contentType = response.headers.get('content-type') ?? ''
+  const expectedType = filename.endsWith('.pdf') ? 'application/pdf' : 'text/csv'
+  if (!contentType.includes(expectedType)) {
+    throw new ApiError(response.status, {
+      detail: `Server returned unexpected content type "${contentType}" — expected "${expectedType}".`,
+    })
+  }
+
+  // Prefer filename from Content-Disposition header (now CORS-exposed by backend)
+  // Fall back to the filename argument if the header is absent or unparseable
+  const disposition = response.headers.get('content-disposition') ?? ''
+  const match = disposition.match(/filename=([^;]+)/)
+  const downloadFilename = match ? match[1].trim().replace(/"/g, '') : filename
+
   const blob = await response.blob()
   const url = window.URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.style.display = 'none'
   a.href = url
-  a.download = filename
+  a.download = downloadFilename
   document.body.appendChild(a)
   a.click()
-  window.URL.revokeObjectURL(url)
   document.body.removeChild(a)
+  setTimeout(() => {
+    window.URL.revokeObjectURL(url)
+  }, 1000)
 }
