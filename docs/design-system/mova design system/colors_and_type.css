@@ -1,0 +1,207 @@
+/* ============================================================================
+   MOVA DESIGN SYSTEM — Tokens
+   Sourced 1:1 from frontend/src/index.css (shadcn theme @ E11D48 primary)
+   The frontend uses Tailwind v4 + shadcn/ui with these CSS variables.
+   ============================================================================ */
+
+/* Geist Variable — self-hosted from /fonts. Variable axis 100–900.
+   Split into three unicode ranges so browsers fetch only what they need. */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/geist-cyrillic-wght-normal.woff2') format('woff2-variations'),
+       url('fonts/geist-cyrillic-wght-normal.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/geist-latin-ext-wght-normal.woff2') format('woff2-variations'),
+       url('fonts/geist-latin-ext-wght-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/geist-latin-wght-normal.woff2') format('woff2-variations'),
+       url('fonts/geist-latin-wght-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* -------------------- LIGHT (default) -------------------- */
+  --background:           oklch(1 0 0);                  /* #ffffff   */
+  --foreground:           oklch(0.153 0.006 107.1);      /* near-black w/ warm tint */
+  --card:                 oklch(1 0 0);
+  --card-foreground:      oklch(0.153 0.006 107.1);
+  --popover:              oklch(1 0 0);
+  --popover-foreground:   oklch(0.153 0.006 107.1);
+
+  /* PRIMARY = signature crimson red */
+  --primary:              oklch(0.505 0.213 27.518);     /* ≈ #b51b3a — deep brand red */
+  --primary-foreground:   oklch(0.971 0.013 17.38);      /* warm off-white on red */
+
+  --secondary:            oklch(0.967 0.001 286.375);    /* neutral gray-100 */
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+
+  --muted:                oklch(0.966 0.005 106.5);      /* very subtle warm tint */
+  --muted-foreground:     oklch(0.58 0.031 107.3);
+
+  --accent:               oklch(0.966 0.005 106.5);
+  --accent-foreground:    oklch(0.228 0.013 107.4);
+
+  --destructive:          oklch(0.577 0.245 27.325);     /* ≈ #e11d48 — bright crimson */
+  --border:               oklch(0.93 0.007 106.5);
+  --input:                oklch(0.93 0.007 106.5);
+  --ring:                 oklch(0.737 0.021 106.9);
+
+  /* Chart palette — warm red ramp */
+  --chart-1: oklch(0.808 0.114 19.571);                  /* light pink   */
+  --chart-2: oklch(0.637 0.237 25.331);                  /* coral-red    */
+  --chart-3: oklch(0.577 0.245 27.325);                  /* primary red  */
+  --chart-4: oklch(0.505 0.213 27.518);                  /* deep red     */
+  --chart-5: oklch(0.444 0.177 26.899);                  /* darker red   */
+
+  /* Sidebar surface — slightly warmer than background */
+  --sidebar:                       oklch(0.988 0.003 106.5);
+  --sidebar-foreground:            oklch(0.153 0.006 107.1);
+  --sidebar-primary:               oklch(0.577 0.245 27.325);
+  --sidebar-primary-foreground:    oklch(0.971 0.013 17.38);
+  --sidebar-accent:                oklch(0.966 0.005 106.5);
+  --sidebar-accent-foreground:     oklch(0.228 0.013 107.4);
+  --sidebar-border:                oklch(0.93 0.007 106.5);
+  --sidebar-ring:                  oklch(0.737 0.021 106.9);
+
+  /* Radii */
+  --radius: 0.45rem;                                     /* 7.2px base */
+  --radius-sm: calc(var(--radius) * 0.6);                /* 4.3px */
+  --radius-md: calc(var(--radius) * 0.8);                /* 5.8px */
+  --radius-lg: var(--radius);                            /* 7.2px */
+  --radius-xl: calc(var(--radius) * 1.4);                /* 10px  — cards */
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);               /* 18.7px — pill badges */
+
+  /* Type */
+  --font-sans: 'Geist', 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* -------------------- SEMANTIC TYPE -------------------- */
+  --display-size: 3rem;          /* 48px — hero headlines "Progress." */
+  --display-weight: 700;
+  --display-tracking: -0.025em;
+  --display-leading: 1.05;
+
+  --h1-size: 2.25rem;            /* 36px — page titles */
+  --h1-weight: 700;
+  --h1-tracking: -0.02em;
+
+  --h2-size: 1.5rem;             /* 24px — section headers */
+  --h2-weight: 600;
+  --h2-tracking: -0.01em;
+
+  --h3-size: 1.125rem;           /* 18px — card titles */
+  --h3-weight: 600;
+
+  --eyebrow-size: 0.75rem;       /* 12px — uppercase pretitles "PERFORMANCE INSIGHTS" */
+  --eyebrow-weight: 500;
+  --eyebrow-tracking: 0.1em;
+  --eyebrow-transform: uppercase;
+
+  --body-size: 0.875rem;         /* 14px — default body */
+  --body-weight: 400;
+  --body-leading: 1.5;
+
+  --small-size: 0.75rem;         /* 12px — meta + supporting */
+  --small-weight: 400;
+
+  --stat-size: 3rem;             /* 48px — big stat numerals "128" "78.4" */
+  --stat-weight: 700;
+  --stat-tracking: -0.03em;
+
+  /* -------------------- SPACING (rhythm) -------------------- */
+  --space-0: 0;
+  --space-1: 0.25rem;            /* 4  */
+  --space-2: 0.5rem;             /* 8  */
+  --space-3: 0.75rem;            /* 12 */
+  --space-4: 1rem;               /* 16 */
+  --space-5: 1.25rem;            /* 20 */
+  --space-6: 1.5rem;             /* 24 */
+  --space-8: 2rem;               /* 32 */
+  --space-10: 2.5rem;            /* 40 */
+  --space-12: 3rem;              /* 48 */
+  --space-16: 4rem;              /* 64 */
+
+  /* -------------------- ELEVATION -------------------- */
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 30px rgb(0 0 0 / 0.08);
+  --ring-card: 0 0 0 1px oklch(0.153 0.006 107.1 / 0.10); /* fg/10 — card rim */
+}
+
+.dark {
+  --background:           oklch(0.153 0.006 107.1);
+  --foreground:           oklch(0.988 0.003 106.5);
+  --card:                 oklch(0.228 0.013 107.4);
+  --card-foreground:      oklch(0.988 0.003 106.5);
+  --popover:              oklch(0.228 0.013 107.4);
+  --popover-foreground:   oklch(0.988 0.003 106.5);
+  --primary:              oklch(0.444 0.177 26.899);
+  --primary-foreground:   oklch(0.971 0.013 17.38);
+  --secondary:            oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted:                oklch(0.286 0.016 107.4);
+  --muted-foreground:     oklch(0.737 0.021 106.9);
+  --accent:               oklch(0.286 0.016 107.4);
+  --accent-foreground:    oklch(0.988 0.003 106.5);
+  --destructive:          oklch(0.704 0.191 22.216);
+  --border:               oklch(1 0 0 / 10%);
+  --input:                oklch(1 0 0 / 15%);
+  --ring:                 oklch(0.58 0.031 107.3);
+  --sidebar:              oklch(0.228 0.013 107.4);
+}
+
+/* ============================================================================
+   SEMANTIC HELPERS — apply directly to elements
+   ============================================================================ */
+.mova-body  { font-family: var(--font-sans); color: var(--foreground); background: var(--background); }
+.mova-display { font-family: var(--font-heading); font-size: var(--display-size); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); line-height: var(--display-leading); }
+.mova-h1      { font-family: var(--font-heading); font-size: var(--h1-size);      font-weight: var(--h1-weight);      letter-spacing: var(--h1-tracking);      line-height: 1.1; }
+.mova-h2      { font-family: var(--font-heading); font-size: var(--h2-size);      font-weight: var(--h2-weight);      letter-spacing: var(--h2-tracking); }
+.mova-h3      { font-family: var(--font-heading); font-size: var(--h3-size);      font-weight: var(--h3-weight); }
+.mova-eyebrow { font-size: var(--eyebrow-size); font-weight: var(--eyebrow-weight); letter-spacing: var(--eyebrow-tracking); text-transform: var(--eyebrow-transform); color: var(--muted-foreground); }
+.mova-stat    { font-family: var(--font-heading); font-size: var(--stat-size);    font-weight: var(--stat-weight);    letter-spacing: var(--stat-tracking); line-height: 1; }
+.mova-body-sm { font-size: var(--small-size); color: var(--muted-foreground); }
+.mova-mono    { font-family: var(--font-mono); }
+
+/* Cards */
+.mova-card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--ring-card);
+  padding: var(--space-4);
+}
+
+/* Primary CTA */
+.mova-btn-primary {
+  background: var(--destructive); /* the bright crimson — used as CTA in mockups */
+  color: var(--primary-foreground);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 0;
+  cursor: pointer;
+  transition: filter 120ms ease, transform 60ms ease;
+}
+.mova-btn-primary:hover  { filter: brightness(0.92); }
+.mova-btn-primary:active { transform: translateY(1px); }

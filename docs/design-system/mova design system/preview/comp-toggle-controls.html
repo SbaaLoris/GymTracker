@@ -1,0 +1,31 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/><title>Toggle controls</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../ui_kits/mova-app/shadcn-components.css">
+<link rel="stylesheet" href="_preview-common.css">
+<style>
+  .row { display: flex; gap: 10px; align-items: center; }
+  .lbl { font-size: 13px; }
+</style>
+</head><body class="preview"><div class="preview-root">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px;">
+    <div class="preview-col">
+      <div class="preview-label">Checkbox</div>
+      <div class="row"><button class="checkbox" role="checkbox" aria-checked="true" data-state="checked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button><span class="lbl">Set completed</span></div>
+      <div class="row"><button class="checkbox" role="checkbox" aria-checked="false" data-state="unchecked"></button><span class="lbl">Add to favorites</span></div>
+      <div class="row"><button class="checkbox" role="checkbox" aria-checked="false" data-state="unchecked" disabled style="opacity: 0.5"></button><span class="lbl" style="opacity: 0.5">Disabled option</span></div>
+    </div>
+    <div class="preview-col">
+      <div class="preview-label">Switch</div>
+      <div class="row"><button class="switch" role="switch" aria-checked="true" data-state="checked"><span class="switch-thumb"></span></button><span class="lbl">Workout reminders</span></div>
+      <div class="row"><button class="switch" role="switch" aria-checked="false" data-state="unchecked"><span class="switch-thumb"></span></button><span class="lbl">Public profile</span></div>
+    </div>
+    <div class="preview-col" style="grid-column: span 2">
+      <div class="preview-label">Radio group · "Preferred units"</div>
+      <div class="radio-group">
+        <div class="row"><button class="radio" role="radio" aria-checked="true" data-state="checked"><span class="radio-dot"></span></button><span class="lbl">Kilograms (kg)</span></div>
+        <div class="row"><button class="radio" role="radio" aria-checked="false" data-state="unchecked"></button><span class="lbl">Pounds (lb)</span></div>
+      </div>
+    </div>
+  </div>
+</div></body></html>

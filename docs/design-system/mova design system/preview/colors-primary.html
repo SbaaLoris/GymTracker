@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Colors / Primary</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: var(--background); color: var(--foreground); }
+  .root { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .row  { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .sw   { display: flex; flex-direction: column; gap: 6px; }
+  .chip { height: 78px; border-radius: 10px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06); }
+  .label{ font-size: 11px; font-weight: 500; color: var(--foreground); }
+  .meta { font-size: 10px; color: var(--muted-foreground); font-family: var(--font-mono); }
+  h2 { margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 500;}
+</style>
+</head>
+<body>
+  <div class="root">
+    <h2>Primary brand red — crimson ramp</h2>
+    <div class="row">
+      <div class="sw"><div class="chip" style="background: oklch(0.808 0.114 19.571)"></div><div class="label">chart-1</div><div class="meta">L 0.808</div></div>
+      <div class="sw"><div class="chip" style="background: oklch(0.637 0.237 25.331)"></div><div class="label">chart-2</div><div class="meta">L 0.637</div></div>
+      <div class="sw"><div class="chip" style="background: oklch(0.577 0.245 27.325)"></div><div class="label">destructive · #E11D48</div><div class="meta">L 0.577 — CTA red</div></div>
+      <div class="sw"><div class="chip" style="background: oklch(0.505 0.213 27.518)"></div><div class="label">primary · #B51B3A</div><div class="meta">L 0.505 — deep</div></div>
+      <div class="sw"><div class="chip" style="background: oklch(0.444 0.177 26.899)"></div><div class="label">chart-5</div><div class="meta">L 0.444</div></div>
+    </div>
+  </div>
+</body>
+</html>

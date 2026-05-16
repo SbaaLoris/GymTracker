@@ -1,0 +1,28 @@
+/* Preview-only overrides that keep overlays visible inside static preview cards. */
+html, body { margin: 0; padding: 0; font-family: var(--font-sans); color: var(--foreground); background: var(--background); -webkit-font-smoothing: antialiased;}
+.preview-root { padding: 20px; }
+.preview-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.preview-col { display: flex; flex-direction: column; gap: 14px; }
+.preview-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Pin overlay-style panels inline for the preview (no animation, no fixed positioning) */
+.preview .select-content,
+.preview .dropdown,
+.preview .popover,
+.preview .hovercard {
+  position: relative;
+  top: auto; left: auto; right: auto; bottom: auto;
+  transform: none;
+  animation: none;
+  display: block;
+  margin-top: 4px;
+}
+.preview .tooltip {
+  position: relative;
+  top: auto; left: auto; right: auto; bottom: auto;
+  transform: none;
+  margin-left: 8px;
+  display: inline-block;
+}
+.preview .toaster { position: relative; right: auto; bottom: auto; top: auto; left: auto; max-width: 100%; }
+.preview .toast   { animation: none; }

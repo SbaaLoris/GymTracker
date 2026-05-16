@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mova — Type / Family</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); background: var(--background); color: var(--foreground); }
+  .root { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .name { display: flex; align-items: baseline; gap: 12px;}
+  .name b { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+  .name span { font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); }
+  .weights { display: flex; flex-direction: column; gap: 2px;}
+  .w { display: grid; grid-template-columns: 90px 1fr; gap: 12px; align-items: baseline; font-size: 18px; }
+  .w em { font-family: var(--font-mono); font-style: normal; font-size: 10px; color: var(--muted-foreground); text-transform: uppercase;}
+</style>
+</head>
+<body>
+  <div class="root">
+    <div class="name"><b>Geist</b><span>self-hosted variable · 100–900</span></div>
+    <div class="weights">
+      <div class="w"><em>400 regular</em><div style="font-weight: 400;">The quick brown fox jumps over 5 lazy dogs</div></div>
+      <div class="w"><em>500 medium</em><div style="font-weight: 500;">The quick brown fox jumps over 5 lazy dogs</div></div>
+      <div class="w"><em>600 semibold</em><div style="font-weight: 600;">The quick brown fox jumps over 5 lazy dogs</div></div>
+      <div class="w"><em>700 bold</em><div style="font-weight: 700;">The quick brown fox jumps over 5 lazy dogs</div></div>
+    </div>
+  </div>
+</body>
+</html>

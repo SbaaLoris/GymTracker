@@ -1,0 +1,44 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/><title>Select</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../ui_kits/mova-app/shadcn-components.css">
+<link rel="stylesheet" href="_preview-common.css">
+</head><body class="preview"><div class="preview-root">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+    <div>
+      <div class="preview-label" style="margin-bottom: 6px">Closed</div>
+      <div class="select">
+        <button class="select-trigger" type="button" aria-expanded="false">
+          <span class="select-value">Legs</span>
+          <svg class="select-trigger__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="preview-label" style="margin-bottom: 6px">Open · grouped + labels</div>
+      <div class="select" data-state="open">
+        <button class="select-trigger" type="button" aria-expanded="true" data-state="open">
+          <span class="select-value">Legs</span>
+          <svg class="select-trigger__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="select-content" role="listbox">
+          <div role="group" class="select-group">
+            <div class="select-label">Upper body</div>
+            <button class="select-item" role="option"><span class="select-item__check"></span><span class="select-item__label">Chest</span></button>
+            <button class="select-item" role="option"><span class="select-item__check"></span><span class="select-item__label">Back</span></button>
+            <button class="select-item" role="option"><span class="select-item__check"></span><span class="select-item__label">Shoulders</span></button>
+          </div>
+          <div role="separator" class="select-sep"></div>
+          <div role="group" class="select-group">
+            <div class="select-label">Lower body</div>
+            <button class="select-item" role="option" aria-selected="true" data-state="checked">
+              <span class="select-item__check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span class="select-item__label">Legs</span>
+            </button>
+            <button class="select-item" role="option"><span class="select-item__check"></span><span class="select-item__label">Glutes</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></body></html>

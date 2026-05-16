@@ -132,16 +132,17 @@ Handles authentication and identity. Served by the **User Service**. Classified 
 
 ### UI Mockups
 
-The following screens were designed using Google Stitch following shadcn/ui design principles with a clean, minimal aesthetic and red (#E11D48) as the accent color.
+> [!NOTE]
+> UI mockups are currently being regenerated. Placeholders will be replaced with new designs soon.
 
 | Screen | Description |
 |--------|-------------|
-| ![Dashboard](docs/mockups/screen-01-user-dashboard.png) | **User Dashboard** — Stats, body weight chart, recent sessions |
-| ![Logger](docs/mockups/screen-02-workout-logger.png) | **Workout Logger** — Active session with sets, reps and weight |
-| ![Plan](docs/mockups/screen-03-workout-plan-detail.png) | **Workout Plan Detail** — Plan overview with exercise order and targets |
-| ![Progress](docs/mockups/screen-04-progress-export.png) | **Progress & Export** — Charts, personal records, CSV/PDF export |
-| ![Library](docs/mockups/screen-05-exercise-library.png) | **Exercise Library** — Master list with filters and request form |
-| ![Admin](docs/mockups/screen-06-admin-dashboard.png) | **Admin Dashboard** — Exercise management table |
+| *[Placeholder]* | **User Dashboard** — Stats, body weight chart, recent sessions |
+| *[Placeholder]* | **Workout Logger** — Active session with sets, reps and weight |
+| *[Placeholder]* | **Workout Plan Detail** — Plan overview with exercise order and targets |
+| *[Placeholder]* | **Progress & Export** — Charts, personal records, CSV/PDF export |
+| *[Placeholder]* | **Exercise Library** — Master list with filters and request form |
+| *[Placeholder]* | **Admin Dashboard** — Exercise management table |
 
 ---
 
