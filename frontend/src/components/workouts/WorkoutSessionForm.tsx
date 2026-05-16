@@ -32,12 +32,21 @@ export function WorkoutSessionForm({ defaultValues, exercises, onSubmit, isPendi
   })
 
   const handleAddSet = () => {
-    append({
-      type: 'strength',
-      exercise_id: exercises[0]?.id || 0,
-      reps: 10,
-      weight: 0,
-    })
+    const first = exercises[0]
+    if (first?.is_cardio) {
+      append({
+        type: 'cardio',
+        exercise_id: first.id,
+        duration: 15,
+      })
+    } else {
+      append({
+        type: 'strength',
+        exercise_id: first?.id || 0,
+        reps: 10,
+        weight: 0,
+      })
+    }
   }
 
   // Handle exercise change to correctly switch between strength and cardio
