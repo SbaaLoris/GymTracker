@@ -2,6 +2,7 @@ import { Route, Routes, Navigate } from 'react-router-dom'
 import { ProtectedRoute } from '@/auth/ProtectedRoute'
 import { AdminRoute } from '@/auth/AdminRoute'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { Toaster } from '@/components/ui/sonner'
 import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
 import ExercisesPage from '@/pages/ExercisesPage'
@@ -50,6 +51,7 @@ function App() {
         <Route path="/admin/requests" element={<AdminRoute><AdminRequestsPage /></AdminRoute>} />
         <Route path="/admin/templates" element={<AdminRoute><AdminTemplatesPage /></AdminRoute>} />
       </Routes>
+      <Toaster />
     </TooltipProvider>
   )
 }
