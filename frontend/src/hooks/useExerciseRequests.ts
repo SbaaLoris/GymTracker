@@ -12,10 +12,10 @@ import type { ExerciseRequestCreateSchema } from '@/schemas'
 import { z } from 'zod'
 
 export function useExerciseRequests(status?: string) {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   
   return useQuery({
-    queryKey: ['exercise-requests', status],
+    queryKey: ['exercise-requests', user?.id, status],
     queryFn: () => {
       if (!credentials) throw new Error('Unauthorized')
       return listExerciseRequests(credentials, status)
@@ -25,10 +25,10 @@ export function useExerciseRequests(status?: string) {
 }
 
 export function useExerciseRequest(id: number) {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   
   return useQuery({
-    queryKey: ['exercise-requests', id],
+    queryKey: ['exercise-requests', user?.id, id],
     queryFn: () => {
       if (!credentials) throw new Error('Unauthorized')
       return getExerciseRequest(id, credentials)
@@ -38,7 +38,7 @@ export function useExerciseRequest(id: number) {
 }
 
 export function useCreateExerciseRequest() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -47,13 +47,13 @@ export function useCreateExerciseRequest() {
       return createExerciseRequest(payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercise-requests'] })
+      queryClient.invalidateQueries({ queryKey: ['exercise-requests', user?.id] })
     },
   })
 }
 
 export function useDeleteExerciseRequest() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -62,13 +62,13 @@ export function useDeleteExerciseRequest() {
       return deleteExerciseRequest(id, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercise-requests'] })
+      queryClient.invalidateQueries({ queryKey: ['exercise-requests', user?.id] })
     },
   })
 }
 
 export function useApproveExerciseRequest() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -77,14 +77,14 @@ export function useApproveExerciseRequest() {
       return approveExerciseRequest(id, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercise-requests'] })
+      queryClient.invalidateQueries({ queryKey: ['exercise-requests', user?.id] })
       queryClient.invalidateQueries({ queryKey: ['exercises'] })
     },
   })
 }
 
 export function useDenyExerciseRequest() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -93,7 +93,7 @@ export function useDenyExerciseRequest() {
       return denyExerciseRequest(id, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercise-requests'] })
+      queryClient.invalidateQueries({ queryKey: ['exercise-requests', user?.id] })
     },
   })
 }

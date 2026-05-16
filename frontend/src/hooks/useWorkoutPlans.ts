@@ -11,10 +11,10 @@ import type { WorkoutPlanCreateSchema } from '@/schemas'
 import { z } from 'zod'
 
 export function useWorkoutPlans(isTemplate?: boolean) {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   
   return useQuery({
-    queryKey: ['workout-plans', isTemplate],
+    queryKey: ['workout-plans', user?.id, isTemplate],
     queryFn: () => {
       if (!credentials) throw new Error('Unauthorized')
       return listWorkoutPlans(credentials, isTemplate)
@@ -24,10 +24,10 @@ export function useWorkoutPlans(isTemplate?: boolean) {
 }
 
 export function useWorkoutPlan(id: number) {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   
   return useQuery({
-    queryKey: ['workout-plans', id],
+    queryKey: ['workout-plans', user?.id, id],
     queryFn: () => {
       if (!credentials) throw new Error('Unauthorized')
       return getWorkoutPlan(id, credentials)
@@ -37,7 +37,7 @@ export function useWorkoutPlan(id: number) {
 }
 
 export function useCreateWorkoutPlan() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -46,13 +46,13 @@ export function useCreateWorkoutPlan() {
       return createWorkoutPlan(payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans', user?.id] })
     },
   })
 }
 
 export function useUpdateWorkoutPlan() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -61,13 +61,13 @@ export function useUpdateWorkoutPlan() {
       return updateWorkoutPlan(id, payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans', user?.id] })
     },
   })
 }
 
 export function useDeleteWorkoutPlan() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -76,7 +76,7 @@ export function useDeleteWorkoutPlan() {
       return deleteWorkoutPlan(id, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout-plans'] })
+      queryClient.invalidateQueries({ queryKey: ['workout-plans', user?.id] })
     },
   })
 }
