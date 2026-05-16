@@ -147,7 +147,7 @@ export default function ProgressPage() {
               <BodyWeightChart data={metrics} onLogClick={handleCreateClick} />
 
               {/* Weight History Table */}
-              <div className="space-y-3">
+              <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Scale className="size-4 text-primary" />

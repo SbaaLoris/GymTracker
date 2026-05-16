@@ -1,5 +1,6 @@
 import * as React from "react"
 import { AppLayout } from "@/components/layout/AppLayout"
+import { PageHeader } from "@/components/layout/PageHeader"
 import { ExerciseList } from "@/components/exercises/ExerciseList"
 import { ExerciseFormDialog } from "@/components/exercises/ExerciseFormDialog"
 import { Button } from "@/components/ui/button"
@@ -11,19 +12,15 @@ export default function AdminExercisesPage() {
   return (
     <AppLayout>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-row items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Exercise Catalogue</h1>
-            <p className="text-muted-foreground mt-1">
-              Maintain the global list of strength and cardio exercises.
-            </p>
-          </div>
-          <div>
+        <PageHeader
+          title="Exercise Catalogue"
+          description="Maintain the global list of strength and cardio exercises."
+          actions={
             <Button onClick={() => setIsFormOpen(true)} className="gap-2">
-              <PlusIcon className="h-4 w-4" /> Add Exercise
+              <PlusIcon data-icon="inline-start" /> Add Exercise
             </Button>
-          </div>
-        </div>
+          }
+        />
 
         {/* Reuses the admin-aware list */}
         <ExerciseList />

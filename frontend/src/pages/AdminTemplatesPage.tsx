@@ -1,4 +1,5 @@
 import { AppLayout } from "@/components/layout/AppLayout"
+import { PageHeader } from "@/components/layout/PageHeader"
 import { Button } from "@/components/ui/button"
 import { Plus, LayoutGrid } from "lucide-react"
 import { Link } from "react-router-dom"
@@ -11,18 +12,18 @@ export default function AdminTemplatesPage() {
   return (
     <AppLayout>
       <div className="flex flex-col gap-8">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-1">
-            <h1 className="text-3xl font-bold tracking-tight">System Templates</h1>
-            <p className="text-muted-foreground">Manage public workout templates available to all users.</p>
-          </div>
-          <Button asChild className="gap-2">
-            <Link to="/plans/new?template=true">
-              <Plus className="size-4" data-icon />
-              Create Template
-            </Link>
-          </Button>
-        </div>
+        <PageHeader
+          title="System Templates"
+          description="Manage public workout templates available to all users."
+          actions={
+            <Button asChild className="gap-2">
+              <Link to="/plans/new?template=true">
+                <Plus className="size-4" data-icon />
+                Create Template
+              </Link>
+            </Button>
+          }
+        />
 
         {isLoading ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

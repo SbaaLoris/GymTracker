@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Link } from "react-router-dom"
-import { Dumbbell, Inbox, Copy, RefreshCw, ArrowRight } from "lucide-react"
+import { Dumbbell, FileQuestion, Files, RefreshCw, ArrowRight } from "lucide-react"
 import { AppLayout } from "@/components/layout/AppLayout"
 import { PageHeader } from "@/components/layout/PageHeader"
 import { StatCard } from "@/components/shared/StatCard"
@@ -172,7 +172,7 @@ export default function AdminDashboardPage() {
                   <CardDescription>Approve or deny custom exercise requests.</CardDescription>
                 </div>
                 <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                  <Inbox className="h-5 w-5" />
+                  <FileQuestion className="h-5 w-5" />
                 </div>
               </CardHeader>
               <CardContent className="pt-4">
@@ -193,7 +193,7 @@ export default function AdminDashboardPage() {
                   <CardDescription>Publish official workout plans for all users.</CardDescription>
                 </div>
                 <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                  <Copy className="h-5 w-5" />
+                  <Files className="h-5 w-5" />
                 </div>
               </CardHeader>
               <CardContent className="pt-4">

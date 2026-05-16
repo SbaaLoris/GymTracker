@@ -86,14 +86,19 @@ export default function NewWorkoutPage() {
   return (
     <AppLayout>
       <div className="flex flex-col gap-6 max-w-3xl mx-auto w-full">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/workouts")}>
+        <div className="flex items-start gap-4">
+          <Button variant="ghost" size="icon" className="mt-1" onClick={() => navigate("/workouts")}>
             <ArrowLeft className="size-4" />
             <span className="sr-only">Back</span>
           </Button>
-          <h1 className="text-3xl font-bold tracking-tight">
-            {plan ? `Log: ${plan.name}` : "Log Freestyle Workout"}
-          </h1>
+          <div className="flex flex-col gap-1">
+            <h1 className="text-3xl font-bold tracking-tight">
+              {plan ? `Log: ${plan.name}` : "Log Freestyle Workout"}
+            </h1>
+            <p className="text-muted-foreground">
+              {plan ? "Record your sets, reps, weights or duration for this plan's exercises." : "Perform exercises on the fly and record your sets."}
+            </p>
+          </div>
         </div>
         
         {exercises && (

@@ -1,4 +1,5 @@
 import { AppLayout } from "@/components/layout/AppLayout"
+import { PageHeader } from "@/components/layout/PageHeader"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
@@ -24,18 +25,18 @@ export default function PlansPage() {
   return (
     <AppLayout>
       <div className="flex flex-col gap-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Workout Plans</h1>
-            <p className="text-muted-foreground">Manage your routines or browse community templates.</p>
-          </div>
-          <Button asChild className="gap-2">
-            <Link to="/plans/new">
-              <Plus className="size-4" data-icon />
-              Create Plan
-            </Link>
-          </Button>
-        </div>
+        <PageHeader
+          title="Workout Plans"
+          description="Manage your routines or browse community templates."
+          actions={
+            <Button asChild className="gap-2">
+              <Link to="/plans/new">
+                <Plus className="size-4" data-icon />
+                Create Plan
+              </Link>
+            </Button>
+          }
+        />
 
         <Tabs defaultValue="my-plans" className="w-full">
           <TabsList className="grid w-full max-w-[400px] grid-cols-2">

@@ -1,4 +1,5 @@
 import { AppLayout } from "@/components/layout/AppLayout"
+import { PageHeader } from "@/components/layout/PageHeader"
 import { useWorkoutSessions } from "@/hooks/useWorkoutSessions"
 import { SessionCard } from "@/components/workouts/SessionCard"
 import { Button } from "@/components/ui/button"
@@ -12,15 +13,18 @@ export default function WorkoutsPage() {
   return (
     <AppLayout>
       <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Workouts</h1>
-          <Button asChild>
-            <Link to="/workouts/new">
-              <Plus data-icon="inline-start" />
-              Log Workout
-            </Link>
-          </Button>
-        </div>
+        <PageHeader
+          title="Workouts"
+          description="View and manage all your logged workout sessions."
+          actions={
+            <Button asChild>
+              <Link to="/workouts/new">
+                <Plus data-icon="inline-start" />
+                Log Workout
+              </Link>
+            </Button>
+          }
+        />
 
         {isLoading ? (
           <div className="flex flex-col gap-4">

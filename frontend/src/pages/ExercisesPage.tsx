@@ -1,5 +1,6 @@
 import * as React from "react"
 import { AppLayout } from "@/components/layout/AppLayout"
+import { PageHeader } from "@/components/layout/PageHeader"
 import { ExerciseList } from "@/components/exercises/ExerciseList"
 import { ExerciseFormDialog } from "@/components/exercises/ExerciseFormDialog"
 import { ExerciseRequestDialog } from "@/components/exercises/ExerciseRequestDialog"
@@ -17,25 +18,21 @@ export default function ExercisesPage() {
   return (
     <AppLayout>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-row items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Exercises</h1>
-            <p className="text-muted-foreground mt-1">
-              Browse the master catalogue of exercises.
-            </p>
-          </div>
-          <div>
-            {isAdmin ? (
+        <PageHeader
+          title="Exercises"
+          description="Browse the master catalogue of exercises."
+          actions={
+            isAdmin ? (
               <Button onClick={() => setIsFormOpen(true)}>
-                <PlusIcon className="mr-2 h-4 w-4" /> Add Exercise
+                <PlusIcon data-icon="inline-start" /> Add Exercise
               </Button>
             ) : (
               <Button onClick={() => setIsRequestOpen(true)}>
-                <PlusIcon className="mr-2 h-4 w-4" /> Request Exercise
+                <PlusIcon data-icon="inline-start" /> Request Exercise
               </Button>
-            )}
-          </div>
-        </div>
+            )
+          }
+        />
 
         <ExerciseList />
 
