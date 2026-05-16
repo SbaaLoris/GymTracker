@@ -11,10 +11,10 @@ import type { ExerciseCreateSchema } from '@/schemas'
 import { z } from 'zod'
 
 export function useExercises(filters?: Parameters<typeof listExercises>[1]) {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   
   return useQuery({
-    queryKey: ['exercises', filters],
+    queryKey: ['exercises', user?.id, filters],
     queryFn: () => {
       if (!credentials) throw new Error('Unauthorized')
       return listExercises(credentials, filters)
@@ -24,10 +24,10 @@ export function useExercises(filters?: Parameters<typeof listExercises>[1]) {
 }
 
 export function useExercise(id: number) {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   
   return useQuery({
-    queryKey: ['exercises', id],
+    queryKey: ['exercises', user?.id, id],
     queryFn: () => {
       if (!credentials) throw new Error('Unauthorized')
       return getExercise(id, credentials)
@@ -37,7 +37,7 @@ export function useExercise(id: number) {
 }
 
 export function useCreateExercise() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -46,13 +46,13 @@ export function useCreateExercise() {
       return createExercise(payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercises'] })
+      queryClient.invalidateQueries({ queryKey: ['exercises', user?.id] })
     },
   })
 }
 
 export function useUpdateExercise() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -61,13 +61,13 @@ export function useUpdateExercise() {
       return updateExercise(id, payload, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercises'] })
+      queryClient.invalidateQueries({ queryKey: ['exercises', user?.id] })
     },
   })
 }
 
 export function useDeleteExercise() {
-  const { credentials } = useAuth()
+  const { credentials, user } = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
@@ -76,7 +76,7 @@ export function useDeleteExercise() {
       return deleteExercise(id, credentials)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['exercises'] })
+      queryClient.invalidateQueries({ queryKey: ['exercises', user?.id] })
     },
   })
 }
