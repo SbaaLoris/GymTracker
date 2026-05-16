@@ -1,243 +1,340 @@
-# Gym Tracker Project
+# 🏋️ Mova — Gym Tracker
 
-## Project Description
+> A full-stack web application for planning, logging, and reviewing gym workouts.
 
-The Gym Tracker (Mova) is a comprehensive web application designed to help fitness enthusiasts log their workouts, track their body metrics, and follow structured training plans. To maintain data consistency, only an Administrator can manage the master list of available exercises. Users can utilize Admin-created templates, save their own custom workout plans, log daily sessions (manual weightlifting and cardio entries), track progress, and export their historical data.
-
----
-
-## Analysis
-
-### Scenario
-
-A fitness enthusiast wants a single app to plan, log, and review every gym session. They need to:
-- Browse a curated master list of exercises maintained by an Admin
-- Build and save their own custom workout plans or use Admin-provided templates
-- Log each gym session by recording sets, reps, weight, or cardio duration
-- Track body weight over time and export all data as CSV or PDF
-- Request new exercises to be added to the platform if their preferred movement is missing
-
-An Admin manages the platform's integrity: creating and maintaining the exercise master list, approving or denying user exercise requests, and managing standardized workout templates.
+[![Live App](https://img.shields.io/badge/Live_App-mova--lake.vercel.app-000?style=for-the-badge&logo=vercel)](https://mova-lake.vercel.app)
+[![API Docs](https://img.shields.io/badge/API_Docs-Swagger_UI-85EA2D?style=for-the-badge&logo=swagger)](https://mova-backend-05ic.onrender.com/docs)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 
 ---
 
-### User Stories
+## Table of Contents
 
-**Admin**
-
-1. As an Admin, I want to have a responsive web app so I can comfortably manage the platform on mobile devices while walking the gym floor, or on a desktop computer.
-2. As an Admin, I want to see a consistent visual appearance to navigate the backend easily without confusion.
-3. As an Admin, I want to use list views to explore the master database of exercises, review user-submitted exercise requests, and manage standardized workout templates (e.g., "Beginner Leg Day").
-4. As an Admin, I want to use edit and create views to add new exercises (specifying targeted muscle groups), approve/deny user requests, and maintain the platform's business data.
-5. As an Admin, I want to log in securely so that I can authenticate myself and ensure only authorized staff can alter the master exercise database.
-
-**User**
-
-1. As a User, I want to use list views to browse available workout templates and the master exercise list before I commit to a workout.
-2. As a User, I want to authenticate myself so that I can access my private dashboard, log my personal workout sessions, and track my confidential body metrics.
-3. As a User, I want to track my progress over time and export my logged data (workouts and body metrics) into a PDF or CSV file for personal record-keeping or sharing with a coach.
-4. As a User, I want to save my own customized workout routines based on the master exercise list, so I don't have to rebuild my workout from scratch every time.
-5. As a User, I want to be able to request a new exercise to be added to the platform, so that I can track specific movements not currently in the master list.
-
----
-
-### Use Cases
-
-| ID | Title | Actor | Description |
-|----|-------|-------|-------------|
-| UC-1 | Manage Master Exercises | Admin | Admin can create, read, update, and soft-delete exercises from the master database. |
-| UC-2 | Manage Plans & Templates | Admin & User | Admin can bundle exercises into reusable workout templates. Users can also save custom workout routines to their personal profiles. |
-| UC-3 | Log Workout | User | User can select a template or build a session from the master exercise list, manually logging weightlifting (reps/weight) or cardio (duration/distance). |
-| UC-4 | Track & Export Progress | User | User can view historical data of their logged workouts and body metrics, and export this data as CSV/PDF. |
-| UC-5 | Request Exercises | User | User can submit a request for a new exercise, which the Admin can review and approve. |
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Project Structure](#project-structure)
+- [Domain Model](#domain-model)
+- [Business Rules](#business-rules)
+- [API Documentation](#api-documentation)
+- [Deployment](#deployment)
+- [Team](#team)
+- [Milestones](#milestones)
+- [License](#license)
 
 ---
 
-## Design
+## Overview
 
-### Domain Design
+**Mova** is a gym tracking web application built for the _Internet Technology_ module at FHNW. It enables fitness enthusiasts to browse a curated exercise catalogue, build custom workout plans, log gym sessions with detailed set data, track body weight over time, and export historical data as CSV or PDF.
 
-Our domain model is organized into **4 subdomains** following Domain-Driven Design (DDD) principles. Each subdomain contains one or more **Aggregates**, which are clusters of domain objects treated as a single unit of consistency.
+The platform implements **role-based access control** with two roles:
 
-![Mova Domain Model](docs/DDD%20Mova.png)
-
-#### Subdomains & Aggregates
-
-**Subdomain: Workout Logging (Core)**
-This is the heart of the application — the primary reason Mova exists. It is served by the **Workout Service**.
-
-- **WorkoutSession Aggregate**
-  - `WorkoutSession` *(Aggregate Root)*: Represents one gym visit. Holds the date, the owning user, and an optional reference to the plan that was followed.
-  - `WorkoutSet` *(Child Entity)*: Represents one individual set performed inside a session (exercise performed, reps, weight, or cardio duration). Cannot exist without its parent session.
-
-- **WorkoutPlan Aggregate**
-  - `WorkoutPlan` *(Aggregate Root)*: A reusable, named workout template (e.g., "Leg Day A"). Can be created by an Admin as a global template or by a User as a personal routine.
-  - `PlanExercise` *(Child Entity)*: One exercise slot inside a plan. Stores which exercise, in which order, and with which target sets/reps. Cannot exist without its parent plan. Resolves the N:M relationship between `WorkoutPlan` and `Exercise` while carrying real business attributes (order, targets).
-
-**Subdomain: Exercise Management (Supporting)**
-Manages the master exercise catalogue and the exercise request lifecycle. Served by the **Exercise Service**.
-
-- **Exercise Aggregate**
-  - `Exercise` *(Aggregate Root)*: The master definition of a movement (name, muscle group, cardio flag, active flag). Strictly managed by Admin. Soft-deleted to preserve historical workout data.
-
-- **ExerciseRequest Aggregate**
-  - `ExerciseRequest` *(Aggregate Root)*: A user's submission to request a new exercise be added to the master list. Has its own lifecycle (PENDING → APPROVED / DENIED). On approval, the Admin creates a new `Exercise` record.
-
-**Subdomain: Progress Tracking (Supporting)**
-Tracks body composition data over time. Served by the **Metrics Service**.
-
-- **BodyMetric Aggregate**
-  - `BodyMetric` *(Aggregate Root)*: A single body weight measurement on a specific date, belonging to one user.
-
-**Subdomain: User Management (Generic)**
-Handles authentication and identity. Served by the **User Service**. Classified as Generic because this capability could be sourced from an off-the-shelf solution.
-
-- **User Aggregate**
-  - `User` *(Aggregate Root)*: The authenticated actor. Holds credentials and a role (Admin or User). Owns all sessions, plans, metrics, and exercise requests.
+| Role | Capabilities |
+|------|-------------|
+| **Admin** | Manage the master exercise catalogue, review user-submitted exercise requests, create global workout templates |
+| **User** | Browse exercises, build personal workout plans, log sessions, track body metrics, export data, request new exercises |
 
 ---
 
-#### Domain Model Entities
+## Features
 
-| Entity | Type | Aggregate | Attributes |
-|--------|------|-----------|------------|
-| `User` | Aggregate Root | User | id, username, password (hashed), role: Admin\|User [VO] |
-| `Exercise` | Aggregate Root | Exercise | id, name, muscle_group, is_cardio, is_active |
-| `ExerciseRequest` | Aggregate Root | ExerciseRequest | id, user_id, suggested_name, muscle_group, status: Enum [VO] |
-| `WorkoutPlan` | Aggregate Root | WorkoutPlan | id, name, creator_id, is_template |
-| `PlanExercise` | Child Entity | WorkoutPlan | id, plan_id, exercise_id, order_index, target_sets, target_reps |
-| `WorkoutSession` | Aggregate Root | WorkoutSession | id, date, user_id, plan_id (nullable) |
-| `WorkoutSet` | Child Entity | WorkoutSession | id, session_id, exercise_id, reps [VO], weight [VO], duration [VO] |
-| `BodyMetric` | Aggregate Root | BodyMetric | id, user_id, date, body_weight [VO] |
-
-*[VO] = Value Object: a field whose identity is defined by its value, not by a database ID.*
+- **Exercise Library** — Admin-managed master catalogue with muscle-group filtering and search
+- **Exercise Requests** — Users can suggest new exercises; Admins approve or deny (max 5 pending per user)
+- **Workout Plans** — Reusable templates (Admin) and personal routines (User) with ordered exercise slots
+- **Workout Logger** — Log freestyle or plan-based sessions with strength (reps × weight) and cardio (duration) sets
+- **Body Metrics** — Track body weight over time with date-based entries
+- **Progress Dashboard** — At-a-glance stats, body weight chart, and recent session history
+- **Data Export** — Download workout history and body metrics as CSV or PDF
+- **Authentication** — HTTP Basic Auth with secure password hashing (bcrypt)
+- **Responsive UI** — Mobile-first design built with shadcn/ui and Tailwind CSS
 
 ---
 
-#### Relationships
+## Tech Stack
 
-| Relationship | Crow's Foot Notation | Rule |
-|---|---|---|
-| `User` → `WorkoutSession` | One and Only One to Zero or Many | A user can have zero or many sessions |
-| `User` → `WorkoutPlan` | One and Only One to Zero or Many | A user can own zero or many plans |
-| `User` → `BodyMetric` | One and Only One to Zero or Many | A user can log zero or many body metrics |
-| `User` → `ExerciseRequest` | One and Only One to Zero or Many | A user can submit zero or many requests (max 5 pending — enforced in backend) |
-| `WorkoutSession` → `WorkoutSet` | One and Only One to One or More | A session must contain at least one set (Business Rule 3) |
-| `WorkoutSession` → `WorkoutPlan` | Zero or Many to Zero or One | A session can optionally follow a plan; a user can train freestyle |
-| `WorkoutPlan` → `PlanExercise` | One and Only One to One or More | A plan must contain at least one exercise slot |
-| `PlanExercise` → `Exercise` | Zero or Many to One and Only One | Each slot references exactly one master exercise |
-| `WorkoutSet` → `Exercise` | Zero or Many to One and Only One | Each set records exactly one exercise performed |
+### Backend
 
----
+| Technology | Purpose |
+|-----------|---------|
+| [FastAPI](https://fastapi.tiangolo.com/) | Web framework & REST API |
+| [SQLAlchemy](https://www.sqlalchemy.org/) | ORM & database access |
+| [Alembic](https://alembic.sqlalchemy.org/) | Database migrations |
+| [Pydantic](https://docs.pydantic.dev/) | Data validation & serialization |
+| [PostgreSQL](https://www.postgresql.org/) | Production database (via Supabase) |
 
-### UI Mockups
+### Frontend
 
-> [!NOTE]
-> UI mockups are currently being regenerated. Placeholders will be replaced with new designs soon.
-
-| Screen | Description |
-|--------|-------------|
-| *[Placeholder]* | **User Dashboard** — Stats, body weight chart, recent sessions |
-| *[Placeholder]* | **Workout Logger** — Active session with sets, reps and weight |
-| *[Placeholder]* | **Workout Plan Detail** — Plan overview with exercise order and targets |
-| *[Placeholder]* | **Progress & Export** — Charts, personal records, CSV/PDF export |
-| *[Placeholder]* | **Exercise Library** — Master list with filters and request form |
-| *[Placeholder]* | **Admin Dashboard** — Exercise management table |
+| Technology | Purpose |
+|-----------|---------|
+| [React 19](https://react.dev/) | UI library |
+| [TypeScript](https://www.typescriptlang.org/) | Static typing |
+| [Vite](https://vite.dev/) | Build tool & dev server |
+| [Tailwind CSS 4](https://tailwindcss.com/) | Utility-first styling |
+| [shadcn/ui](https://ui.shadcn.com/) | Accessible UI components |
+| [TanStack Query 5](https://tanstack.com/query) | Data fetching & caching |
+| [React Router 7](https://reactrouter.com/) | Client-side routing |
+| [Zod](https://zod.dev/) | Schema validation |
+| [Recharts](https://recharts.org/) | Data visualization |
 
 ---
 
-### Business Rules
+## Architecture
 
-The following strict business rules are enforced in the backend:
+Mova follows a clean client–server architecture with strict separation of concerns.
 
-- **Rule 1 — Exercise Authority Integrity:** Users cannot create custom exercises on the fly — they must select from the Admin's master list. If an Admin deletes an exercise, it is only *soft-deleted* (marked as `is_active = false`). It becomes unavailable for future workouts but remains visible in users' past logs so historical data is preserved.
-- **Rule 2 — Anti-Spam Security:** To prevent database spam, a standard User can only have a maximum of **5 Pending** exercise requests in the system at any given time.
-- **Rule 3 — Data Validation:** A `WorkoutSession` cannot be saved unless it contains at least one completed `WorkoutSet`.
+```
+┌───────────────┐       REST / Basic Auth       ┌───────────────┐       SQLAlchemy       ┌─────────────┐
+│  React SPA    │  ──────────────────────────▶   │  FastAPI      │  ──────────────────▶   │  PostgreSQL │
+│  (Vercel)     │  ◀──────────────────────────   │  (Render)     │  ◀──────────────────   │  (Supabase) │
+└───────────────┘                                └───────────────┘                        └─────────────┘
+```
 
----
+> **Rule:** The frontend never connects directly to the database. All data access, authentication, and business logic is handled by the FastAPI backend.
 
----
-
-## Documentation
-
-- [Architecture Documentation](docs/architecture.md) — High-level overview, tech stack, and design principles.
-- [Deployment Documentation](docs/deployment.md) — Production setup for Backend (Render) and Frontend (Vercel).
-- [OpenAPI Specification](docs/openapi.yaml) — Full REST API definition.
+For a detailed breakdown, see [docs/architecture.md](docs/architecture.md).
 
 ---
 
-## Configuration
+## Getting Started
 
-The backend supports the following environment variables.
+### Prerequisites
 
-| Variable | Default | Description |
-|---|---|---|
-| `DATABASE_URL` | `sqlite:///./mova.db` | Connection string for the database. Render automatically provides this for PostgreSQL. If not set, app will exit unless `MOVA_DEV_MODE=1`. |
-| `MOVA_DEV_MODE` | `0` | Set to `1` to bypass strict `DATABASE_URL` checks and allow local SQLite databases. |
-| `MOVA_CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated list of allowed CORS origins. |
-| `MOVA_BOOTSTRAP_ADMIN_USERNAME` | *(none)* | Username for the initial admin account (bootstrap). |
-| `MOVA_BOOTSTRAP_ADMIN_PASSWORD` | *(none)* | Password for the initial admin account (bootstrap). |
-| `MOVA_SEED_DEMO_USERS` | `0` | Set to `1` to seed demo users (`nicokoechli`, `lorissbaa`, `patrickzobrist`) and body metrics. |
-| `MOVA_SEED_STARTER_DATA` | `0` | Set to `1` to seed 15 starter exercises and a beginner workout template. |
+- **Python 3.11** — Backend runtime
+- **Node.js 20+** — Frontend tooling
+- **Git** — Version control
 
-### Local Development
-To run the backend locally with full demo data:
+### 1. Clone the repository
+
 ```bash
+git clone https://github.com/SbaaLoris/GymTracker.git
+cd GymTracker
+```
+
+### 2. Backend setup
+
+```bash
+# Create and activate a virtual environment
+python3.11 -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r backend/requirements.txt
+
+# Configure local development
 export MOVA_DEV_MODE=1
 export MOVA_SEED_DEMO_USERS=1
 export MOVA_SEED_STARTER_DATA=1
+
+# Run database migrations
 cd backend && alembic upgrade head && cd ..
+
+# Start the API server
 uvicorn backend.main:app --reload
 ```
 
-### Deployment
+The API will be available at `http://localhost:8000`. Interactive docs at `http://localhost:8000/docs`.
 
-For detailed production setup instructions, environment variables, and build settings, please refer to the [Deployment Documentation](docs/deployment.md).
+### 3. Frontend setup
 
----
+```bash
+cd frontend
 
-## Implementation
+# Install dependencies
+npm install
 
-### Backend Technology
+# Configure the API endpoint
+echo "VITE_API_URL=http://localhost:8000" > .env
 
-> **Note:** Following a discussion with and approval from our lecturer, our backend will be implemented using Python (e.g., FastAPI/Flask) rather than the default Spring Boot/Java stack.
+# Start the dev server
+npm run dev
+```
 
-This web application relies on:
-- **Python (FastAPI/Flask)** for the backend service layer
-- **SQLite or PostgreSQL** for the relational database management
-- **OpenAPI 3.0 / Swagger** for API endpoint documentation
-
-### Frontend Technology
-
-The frontend is a single-page application (SPA) developed with:
-- **Vite + React 19**
-- **TypeScript**
-- **Tailwind CSS 4 + shadcn/ui**
-- **TanStack Query 5** (Data fetching)
-- **React Router 7** (Navigation)
-
-See the [Architecture Documentation](docs/architecture.md) for a full breakdown.
+The app will be available at `http://localhost:5173`.
 
 ---
 
-## Project Management
+## Environment Variables
 
-### Team Roles
+### Backend
 
-> **Note:** As beginners, we are utilizing a highly collaborative, cross-functional approach where all team members share responsibilities across the stack.
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DATABASE_URL` | `sqlite:///./mova.db` | Database connection string. If unset, the app exits unless `MOVA_DEV_MODE=1`. |
+| `MOVA_DEV_MODE` | `0` | Set to `1` to allow local SQLite databases. |
+| `MOVA_CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated list of allowed CORS origins. |
+| `MOVA_BOOTSTRAP_ADMIN_USERNAME` | — | Username for the initial admin account. |
+| `MOVA_BOOTSTRAP_ADMIN_PASSWORD` | — | Password for the initial admin account. |
+| `MOVA_SEED_DEMO_USERS` | `0` | Set to `1` to seed demo user accounts and body metrics. |
+| `MOVA_SEED_STARTER_DATA` | `0` | Set to `1` to seed 15 starter exercises and a beginner template. |
 
-- **Loris** — Cross-Functional Full-Stack Developer
-- **Patrick** — Cross-Functional Full-Stack Developer
-- **Nico** — Cross-Functional Full-Stack Developer
+### Frontend
 
-### Milestones
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `VITE_API_URL` | — | Backend API base URL. Baked into the build at compile time. |
+
+---
+
+## Project Structure
+
+```
+GymTracker/
+├── backend/
+│   ├── alembic/            # Database migration scripts
+│   ├── models/             # SQLAlchemy ORM models
+│   ├── routers/            # FastAPI route handlers
+│   ├── schemas/            # Pydantic request/response schemas
+│   ├── services/           # Business logic layer
+│   ├── tests/              # Integration tests
+│   ├── auth.py             # Authentication helpers
+│   ├── database.py         # DB engine, session, and seeding
+│   ├── main.py             # Application entry point
+│   └── requirements.txt    # Python dependencies
+├── frontend/
+│   └── src/
+│       ├── api/            # API client & endpoint functions
+│       ├── auth/           # Auth context & route guards
+│       ├── components/     # Reusable UI components (+ shadcn/ui primitives)
+│       ├── hooks/          # TanStack Query data hooks
+│       ├── lib/            # Utilities, constants, formatters
+│       ├── pages/          # Top-level route components
+│       ├── schemas/        # Zod validation schemas
+│       ├── App.tsx          # Application shell & routing
+│       └── main.tsx         # React entry point
+├── docs/
+│   ├── architecture.md     # Architecture overview
+│   ├── deployment.md       # Production deployment guide
+│   ├── openapi.yaml        # OpenAPI 3.0 specification
+│   └── DDD Mova.png        # Domain model diagram
+└── README.md
+```
+
+---
+
+## Domain Model
+
+The domain is organized into **four subdomains** following Domain-Driven Design (DDD) principles.
+
+![Domain Model Diagram](docs/DDD%20Mova.png)
+
+| Subdomain | Aggregate Roots | Description |
+|-----------|----------------|-------------|
+| **Workout Logging** _(Core)_ | `WorkoutSession`, `WorkoutPlan` | Session logging with sets; reusable plans with exercise slots |
+| **Exercise Management** _(Supporting)_ | `Exercise`, `ExerciseRequest` | Master catalogue and user suggestion lifecycle |
+| **Progress Tracking** _(Supporting)_ | `BodyMetric` | Body weight measurements over time |
+| **User Management** _(Generic)_ | `User` | Authentication, identity, and role assignment |
+
+<details>
+<summary><strong>Entity Reference Table</strong></summary>
+
+| Entity | Type | Aggregate | Key Attributes |
+|--------|------|-----------|----------------|
+| `User` | Aggregate Root | User | id, username, password (hashed), role |
+| `Exercise` | Aggregate Root | Exercise | id, name, muscle_group, is_cardio, is_active |
+| `ExerciseRequest` | Aggregate Root | ExerciseRequest | id, user_id, suggested_name, muscle_group, status |
+| `WorkoutPlan` | Aggregate Root | WorkoutPlan | id, name, creator_id, is_template |
+| `PlanExercise` | Child Entity | WorkoutPlan | id, plan_id, exercise_id, order_index, target_sets, target_reps |
+| `WorkoutSession` | Aggregate Root | WorkoutSession | id, date, user_id, plan_id (nullable) |
+| `WorkoutSet` | Child Entity | WorkoutSession | id, session_id, exercise_id, reps, weight, duration |
+| `BodyMetric` | Aggregate Root | BodyMetric | id, user_id, date, body_weight |
+
+</details>
+
+<details>
+<summary><strong>Relationship Table</strong></summary>
+
+| Relationship | Cardinality | Rule |
+|---|---|---|
+| `User` → `WorkoutSession` | 1:0..* | A user can have zero or many sessions |
+| `User` → `WorkoutPlan` | 1:0..* | A user can own zero or many plans |
+| `User` → `BodyMetric` | 1:0..* | A user can log zero or many body metrics |
+| `User` → `ExerciseRequest` | 1:0..* | A user can submit zero or many requests (max 5 pending) |
+| `WorkoutSession` → `WorkoutSet` | 1:1..* | A session must contain at least one set |
+| `WorkoutSession` → `WorkoutPlan` | 0..*:0..1 | A session can optionally follow a plan |
+| `WorkoutPlan` → `PlanExercise` | 1:1..* | A plan must contain at least one exercise slot |
+| `PlanExercise` → `Exercise` | 0..*:1 | Each slot references exactly one master exercise |
+| `WorkoutSet` → `Exercise` | 0..*:1 | Each set records exactly one exercise performed |
+
+</details>
+
+---
+
+## Business Rules
+
+| # | Rule | Enforcement |
+|---|------|-------------|
+| 1 | **Exercise Authority** — Users must select from the Admin's master list. Deleted exercises are soft-deleted (`is_active = false`) to preserve historical data. | Backend |
+| 2 | **Anti-Spam** — A user can have at most **5 pending** exercise requests at any time. | Backend |
+| 3 | **Data Integrity** — A `WorkoutSession` cannot be saved without at least one `WorkoutSet`. | Backend |
+
+---
+
+## API Documentation
+
+The full REST API is defined in the [OpenAPI 3.0 specification](docs/openapi.yaml).
+
+**Interactive documentation** is available at:
+- **Local:** http://localhost:8000/docs
+- **Production:** https://mova-backend-05ic.onrender.com/docs
+
+### API Endpoints Overview
+
+| Tag | Endpoints | Description |
+|-----|-----------|-------------|
+| Auth | `POST /auth/register`, `GET /auth/me` | Registration and authentication |
+| Exercises | `GET/POST /exercises`, `GET/PUT/DELETE /exercises/{id}` | Master exercise catalogue (Admin-managed) |
+| Exercise Requests | `GET/POST /exercise-requests`, `POST .../approve`, `POST .../deny` | User exercise suggestions |
+| Workout Plans | `GET/POST /workout-plans`, `GET/PUT/DELETE /workout-plans/{id}` | Templates and personal routines |
+| Workout Sessions | `GET/POST /users/{id}/workout-sessions`, `GET/PUT/DELETE .../sessions/{id}` | Logged gym sessions |
+| Body Metrics | `GET/POST /users/{id}/body-metrics`, `GET/PUT/DELETE .../body-metrics/{id}` | Body weight tracking |
+| Export | `GET /users/{id}/export/csv`, `GET /users/{id}/export/pdf` | Data export |
+
+---
+
+## Deployment
+
+| Component | Provider | URL |
+|-----------|----------|-----|
+| Frontend | Vercel | [mova-lake.vercel.app](https://mova-lake.vercel.app) |
+| Backend | Render | [mova-backend-05ic.onrender.com](https://mova-backend-05ic.onrender.com) |
+| Database | Supabase | PostgreSQL (private) |
+| Keep-alive | cron-job.org | Pings `/health` every 15 min |
+
+For the complete production deployment guide, see [docs/deployment.md](docs/deployment.md).
+
+---
+
+## Team
+
+> **Internet Technology** module — FHNW School of Business
+
+| Name | Role |
+|------|------|
+| Loris | Full-Stack Developer |
+| Patrick | Full-Stack Developer |
+| Nico | Full-Stack Developer |
+
+---
+
+## Milestones
 
 | # | Milestone | Status |
 |---|-----------|--------|
-| 1 | Analysis: Scenario ideation, use case analysis and user story writing | ✅ Completed |
-| 2 | Domain Design: Definition of domain model | ✅ Completed |
-| 3 | Frontend Implementation: Design, prototyping and realization of frontend functionality | ✅ Completed |
-| 4 | Business Logic and API Design: Definition of business logic and API | ✅ Completed |
-| 5 | Data and API Implementation: Implementation of data access and business logic layers and API | ✅ Completed |
-| 6 | Security: Implementation of API-level security (Basic Auth) | ✅ Completed |
-| 7 | Demonstrator: Integration of frontend and backend to realize an end-to-end application | 🔄 In Progress |
+| 1 | Analysis — Scenario ideation, use cases, user stories | ✅ Completed |
+| 2 | Domain Design — Domain model definition | ✅ Completed |
+| 3 | Frontend — Design, prototyping, and implementation | ✅ Completed |
+| 4 | Business Logic & API Design — API specification | ✅ Completed |
+| 5 | Data & API Implementation — Backend development | ✅ Completed |
+| 6 | Security — HTTP Basic Auth implementation | ✅ Completed |
+| 7 | Demonstrator — End-to-end integration | ✅ Completed |
+
+---
+
+## License
+
+This project was created for educational purposes as part of the Internet Technology module at FHNW.
