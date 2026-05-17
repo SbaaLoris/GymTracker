@@ -35,7 +35,7 @@ Authorization: Basic bG9yaXNzYmFhOjEyMzQ1Njc4
 ```
 
 ### Backend Credentials Verification
-The backend intercepts these credentials using FastAPI's built-in `HTTPBasic` security dependency. Inside `get_current_user` ([auth.py](file:///Users/lorissbaa/Desktop/GymTracker/backend/auth.py)), the database session and raw credentials are verified:
+The backend intercepts these credentials using FastAPI's built-in `HTTPBasic` security dependency. Inside `get_current_user` ([auth.py](../backend/auth.py)), the database session and raw credentials are verified:
 ```python
 _basic = HTTPBasic(auto_error=True)
 

@@ -22,7 +22,7 @@ graph TD;
 ### Client-Side Validation (Zod)
 The React frontend uses **Zod** to validate form inputs before sending request payloads. This prevents unnecessary HTTP roundtrips for obviously malformed inputs.
 - Schemas are defined in `frontend/src/schemas/`.
-- Example schema from [workout-plan.ts](file:///Users/lorissbaa/Desktop/GymTracker/frontend/src/schemas/workout-plan.ts):
+- Example schema from [workout-plan.ts](../frontend/src/schemas/workout-plan.ts):
 ```typescript
 import { z } from 'zod'
 
@@ -36,7 +36,7 @@ export const WorkoutPlanCreateSchema = z.object({
 ### Server-Side Validation (Pydantic v2)
 The backend FastAPI service uses **Pydantic v2** to rigorously parse and validate incoming payloads on receipt. Any mismatch automatically throws an HTTP `422 Unprocessable Entity` response with detail payloads showing the failed fields.
 - Schemas are defined in `backend/schemas/`.
-- Example schema from [workout_plan.py](file:///Users/lorissbaa/Desktop/GymTracker/backend/schemas/workout_plan.py):
+- Example schema from [workout_plan.py](../backend/schemas/workout_plan.py):
 ```python
 from pydantic import BaseModel, Field
 
@@ -102,7 +102,7 @@ When updates are pushed to production, the following manual and automated steps 
 ### 1. Endpoint Availability Check
 Ping the public `/health` endpoint to verify that the backend process has booted successfully on Render and database connections are established:
 ```bash
-curl -s https://your-backend-render-url.onrender.com/health
+curl -s https://mova-backend-05ic.onrender.com/health
 ```
 **Expected Response:**
 ```json

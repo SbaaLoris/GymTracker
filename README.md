@@ -23,6 +23,7 @@
 - [Business Rules](#business-rules)
 - [API Documentation](#api-documentation)
 - [Deployment](#deployment)
+- [Presentation Video](#presentation-video)
 - [Team](#team)
 - [Milestones](#milestones)
 - [License](#license)
@@ -326,6 +327,12 @@ For the complete production deployment guide, see [docs/deployment.md](docs/depl
 
 ---
 
+## Presentation Video
+
+Presentation Video: To be added before Moodle submission.
+
+---
+
 ## Team
 
 > **Internet Technology** module — FHNW School of Business
@@ -335,6 +342,7 @@ For the complete production deployment guide, see [docs/deployment.md](docs/depl
 | Loris | Full-Stack Developer |
 | Patrick | Full-Stack Developer |
 | Nico | Full-Stack Developer |
+| Walther | Full-Stack Developer |
 
 ---
 

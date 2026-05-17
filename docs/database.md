@@ -117,28 +117,28 @@ erDiagram
 
 ### Key Models & Properties
 
-#### 1. User ([user.py](file:///Users/lorissbaa/Desktop/GymTracker/backend/models/user.py))
+#### 1. User ([user.py](../backend/models/user.py))
 - `username`: String(50), Unique, Indexed.
 - `role`: SQLAlchemy Enum mapping to `RoleEnum` (`admin` or `user`).
 
-#### 2. BodyMetric ([body_metric.py](file:///Users/lorissbaa/Desktop/GymTracker/backend/models/body_metric.py))
+#### 2. BodyMetric ([body_metric.py](../backend/models/body_metric.py))
 - Enforces a unique composite constraint `uq_body_metric_user_date` on `(user_id, date)`. This prevents duplicate weight entries for a user on the same calendar day.
 
-#### 3. Exercise ([exercise.py](file:///Users/lorissbaa/Desktop/GymTracker/backend/models/exercise.py))
+#### 3. Exercise ([exercise.py](../backend/models/exercise.py))
 - `name`: String(100), Case-insensitive Unique Index using standard lowercase conversion `func.lower('name')`.
 - `muscle_group`: Enum representing focus area (Chest, Back, Legs, etc.).
 - `is_active`: Boolean flag supporting soft-deletes.
 
-#### 4. ExerciseRequest ([exercise_request.py](file:///Users/lorissbaa/Desktop/GymTracker/backend/models/exercise_request.py))
+#### 4. ExerciseRequest ([exercise_request.py](../backend/models/exercise_request.py))
 - `status`: Enum containing `pending`, `approved`, or `denied`.
 - Users submit requests, and only an admin user can flag them as approved or denied. Once approved, the backend automatically spawns the respective global exercise.
 
-#### 5. WorkoutPlan ([workout_plan.py](file:///Users/lorissbaa/Desktop/GymTracker/backend/models/workout_plan.py))
+#### 5. WorkoutPlan ([workout_plan.py](../backend/models/workout_plan.py))
 - Represents workout split configs.
 - `is_template`: Identifies standard global plans designed by an admin (available to everyone for copying/use) versus custom user plans.
 - Contains a cascade delete orphan mapping to `PlanExercise`.
 
-#### 6. WorkoutSession ([workout_session.py](file:///Users/lorissbaa/Desktop/GymTracker/backend/models/workout_session.py))
+#### 6. WorkoutSession ([workout_session.py](../backend/models/workout_session.py))
 - Captures workout days. Gathers multiple logs (`WorkoutSet`) mapping back to active users and optional starting `WorkoutPlan`.
 
 ---
