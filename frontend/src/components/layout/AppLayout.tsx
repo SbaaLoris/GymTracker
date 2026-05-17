@@ -1,5 +1,6 @@
 import { AppSidebar } from "./AppSidebar"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
+import { PageTransition } from "./PageTransition"
 
 interface AppLayoutProps {
   children: React.ReactNode
@@ -14,9 +15,12 @@ export function AppLayout({ children }: AppLayoutProps) {
           <SidebarTrigger />
         </header>
         <main className="flex-1 p-4 md:p-6 overflow-auto">
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
         </main>
       </SidebarInset>
     </SidebarProvider>
   )
 }
+
