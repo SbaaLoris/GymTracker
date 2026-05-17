@@ -10,6 +10,7 @@ import { toast } from "sonner"
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { MuscleGroupBadge } from "@/components/shared/MuscleGroupIcon"
 
 export default function WorkoutDetailPage() {
   const { sessionId } = useParams<{ sessionId: string }>()
@@ -134,11 +135,9 @@ export default function WorkoutDetailPage() {
                         </div>
                         <div>
                           <p className="font-medium">{exercise?.name || 'Unknown Exercise'}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {exercise?.muscle_group ? (
-                              <span className="capitalize">{exercise.muscle_group.replace('_', ' ')}</span>
-                            ) : null}
-                          </p>
+                          {exercise?.muscle_group ? (
+                            <MuscleGroupBadge muscleGroup={exercise.muscle_group} className="mt-1" />
+                          ) : null}
                         </div>
                       </div>
                       

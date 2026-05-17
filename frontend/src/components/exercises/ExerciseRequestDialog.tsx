@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { FieldGroup, Field, FieldLabel, FieldError } from "@/components/ui/field"
+import { MuscleGroupIcon } from "@/components/shared/MuscleGroupIcon"
 import { toast } from "sonner"
 
 interface ExerciseRequestDialogProps {
@@ -119,6 +120,7 @@ export function ExerciseRequestDialog({
                 <SelectContent>
                   {MuscleGroupSchema.options.map((option) => (
                     <SelectItem key={option} value={option}>
+                      <MuscleGroupIcon muscleGroup={option} className="size-4" />
                       {option}
                     </SelectItem>
                   ))}
