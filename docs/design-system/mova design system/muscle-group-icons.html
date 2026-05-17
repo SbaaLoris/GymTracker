@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Mova — Muscle Group Icons</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<style>
+  :root { color-scheme: light; }
+  html, body { margin: 0; padding: 0; font-family: var(--font-sans); color: var(--foreground); background: var(--background); }
+  body { padding: 48px 56px 96px; }
+  header { max-width: 1100px; margin: 0 auto 40px; }
+  h1 { font-size: var(--h1-size); font-weight: var(--h1-weight); letter-spacing: var(--h1-tracking); margin: 0 0 6px; line-height: 1.1; }
+  .lede { color: var(--muted-foreground); font-size: var(--body-size); max-width: 60ch; line-height: 1.55; margin: 0; }
+
+  section { max-width: 1100px; margin: 0 auto; }
+  .eyebrow { font-size: var(--eyebrow-size); font-weight: var(--eyebrow-weight); letter-spacing: var(--eyebrow-tracking); text-transform: uppercase; color: var(--muted-foreground); margin: 36px 0 14px; }
+
+  /* Color-context chips */
+  .palette { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .swatch { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px 6px 6px; border: 1px solid var(--border); border-radius: var(--radius-4xl); background: var(--card); font-size: 12px; }
+  .swatch .dot { width: 16px; height: 16px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06); }
+
+  /* Icon grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--ring-card);
+    padding: 20px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .frame {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--muted);
+    border-radius: var(--radius-lg);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .frame img { width: 84%; height: 84%; object-fit: contain; display: block; }
+  .label { font-size: var(--h3-size); font-weight: var(--h3-weight); letter-spacing: -0.01em; }
+  .tag { font-size: var(--eyebrow-size); font-weight: var(--eyebrow-weight); letter-spacing: var(--eyebrow-tracking); text-transform: uppercase; color: var(--muted-foreground); }
+
+  /* Context strip — what these look like in product chrome */
+  .context-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .ctx-card {
+    background: var(--card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--ring-card);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .ctx-icon {
+    width: 48px; height: 48px;
+    background: var(--muted);
+    border-radius: var(--radius-md);
+    flex: 0 0 48px;
+    display: grid; place-items: center;
+    overflow: hidden;
+  }
+  .ctx-icon img { width: 90%; height: 90%; object-fit: contain; }
+  .ctx-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .ctx-title { font-weight: 600; font-size: 14px; }
+  .ctx-meta { font-size: 12px; color: var(--muted-foreground); }
+
+  /* Dark surface preview */
+  .dark-preview {
+    margin-top: 8px;
+    background: oklch(0.153 0.006 107.1);
+    color: oklch(0.988 0.003 106.5);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+  }
+  .dark-preview .eyebrow { color: oklch(0.737 0.021 106.9); margin-top: 0; }
+  .dark-preview .grid .card { background: oklch(0.228 0.013 107.4); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06); }
+  .dark-preview .frame { background: oklch(0.286 0.016 107.4); }
+
+  /* Pill (badge) variant */
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px 4px 4px;
+    background: var(--muted);
+    border-radius: var(--radius-4xl);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--foreground);
+  }
+  .badge .b-icon { width: 22px; height: 22px; border-radius: 999px; background: var(--card); display: grid; place-items: center; }
+  .badge .b-icon img { width: 18px; height: 18px; }
+
+  .footnote { color: var(--muted-foreground); font-size: 12px; margin-top: 28px; max-width: 70ch; line-height: 1.55; }
+  code { font-family: var(--font-mono); font-size: 12px; padding: 1px 5px; background: var(--muted); border-radius: 4px; }
+</style>
+</head>
+<body class="mova-body">
+
+<header>
+  <div class="mova-eyebrow" style="margin-bottom: 8px;">Mova design system · Iconography</div>
+  <h1>Muscle group icons</h1>
+  <p class="lede">Seven uploaded silhouettes recolored to match Mova: warm-neutral body, crimson-red highlight. Background flattened to transparent so the icons sit on any surface in the system.</p>
+</header>
+
+<section>
+  <div class="eyebrow">Palette mapping</div>
+  <div class="palette">
+    <span class="swatch"><span class="dot" style="background: oklch(0.808 0.114 19.571)"></span>chart-1 · light pink</span>
+    <span class="swatch"><span class="dot" style="background: oklch(0.637 0.237 25.331)"></span>chart-2 · coral</span>
+    <span class="swatch"><span class="dot" style="background: oklch(0.577 0.245 27.325)"></span>chart-3 · primary red</span>
+    <span class="swatch"><span class="dot" style="background: oklch(0.505 0.213 27.518)"></span>chart-4 · deep red</span>
+    <span class="swatch"><span class="dot" style="background: oklch(0.444 0.177 26.899)"></span>chart-5 · oxblood</span>
+    <span class="swatch"><span class="dot" style="background: oklch(0.93 0.007 106.5)"></span>border · warm 7</span>
+    <span class="swatch"><span class="dot" style="background: oklch(0.58 0.031 107.3)"></span>muted-fg · warm 60</span>
+    <span class="swatch"><span class="dot" style="background: oklch(0.153 0.006 107.1)"></span>foreground</span>
+  </div>
+
+  <div class="eyebrow">Icon set</div>
+  <div class="grid">
+    <div class="card"><div class="frame"><img src="assets/icons/muscle-arms.svg" alt="Arms"/></div><span class="label">Arms</span><span class="tag">Biceps · Triceps</span></div>
+    <div class="card"><div class="frame"><img src="assets/icons/muscle-back.svg" alt="Back"/></div><span class="label">Back</span><span class="tag">Lats · Traps</span></div>
+    <div class="card"><div class="frame"><img src="assets/icons/muscle-chest.svg" alt="Chest"/></div><span class="label">Chest</span><span class="tag">Pectoralis</span></div>
+    <div class="card"><div class="frame"><img src="assets/icons/muscle-shoulder.svg" alt="Shoulder"/></div><span class="label">Shoulders</span><span class="tag">Deltoids</span></div>
+    <div class="card"><div class="frame"><img src="assets/icons/muscle-core.svg" alt="Core"/></div><span class="label">Core</span><span class="tag">Abs · Obliques</span></div>
+    <div class="card"><div class="frame"><img src="assets/icons/muscle-legs.svg" alt="Legs"/></div><span class="label">Legs</span><span class="tag">Quads · Hams · Glutes</span></div>
+    <div class="card"><div class="frame"><img src="assets/icons/muscle-cardio.svg" alt="Cardio"/></div><span class="label">Cardio</span><span class="tag">Heart · Conditioning</span></div>
+  </div>
+
+  <div class="eyebrow">In context · Exercise rows</div>
+  <div class="context-row">
+    <div class="ctx-card">
+      <div class="ctx-icon"><img src="assets/icons/muscle-chest.svg" alt=""/></div>
+      <div class="ctx-body"><span class="ctx-title">Bench press</span><span class="ctx-meta">Chest · 4 × 8 · 80 kg</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-icon"><img src="assets/icons/muscle-legs.svg" alt=""/></div>
+      <div class="ctx-body"><span class="ctx-title">Back squat</span><span class="ctx-meta">Legs · 5 × 5 · 110 kg</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-icon"><img src="assets/icons/muscle-back.svg" alt=""/></div>
+      <div class="ctx-body"><span class="ctx-title">Barbell row</span><span class="ctx-meta">Back · 4 × 10 · 60 kg</span></div>
+    </div>
+  </div>
+
+  <div class="eyebrow">In context · Filter pills</div>
+  <div class="badges">
+    <span class="badge"><span class="b-icon"><img src="assets/icons/muscle-arms.svg" alt=""/></span>Arms</span>
+    <span class="badge"><span class="b-icon"><img src="assets/icons/muscle-back.svg" alt=""/></span>Back</span>
+    <span class="badge"><span class="b-icon"><img src="assets/icons/muscle-chest.svg" alt=""/></span>Chest</span>
+    <span class="badge"><span class="b-icon"><img src="assets/icons/muscle-shoulder.svg" alt=""/></span>Shoulders</span>
+    <span class="badge"><span class="b-icon"><img src="assets/icons/muscle-core.svg" alt=""/></span>Core</span>
+    <span class="badge"><span class="b-icon"><img src="assets/icons/muscle-legs.svg" alt=""/></span>Legs</span>
+    <span class="badge"><span class="b-icon"><img src="assets/icons/muscle-cardio.svg" alt=""/></span>Cardio</span>
+  </div>
+
+  <div class="dark-preview">
+    <div class="eyebrow">Dark surface check · uses <code style="color: inherit; background: oklch(1 0 0 / 0.08);">muscle-*-dark.svg</code></div>
+    <div class="grid">
+      <div class="card"><div class="frame"><img src="assets/icons/muscle-arms-dark.svg" alt=""/></div><span class="label">Arms</span></div>
+      <div class="card"><div class="frame"><img src="assets/icons/muscle-back-dark.svg" alt=""/></div><span class="label">Back</span></div>
+      <div class="card"><div class="frame"><img src="assets/icons/muscle-chest-dark.svg" alt=""/></div><span class="label">Chest</span></div>
+      <div class="card"><div class="frame"><img src="assets/icons/muscle-shoulder-dark.svg" alt=""/></div><span class="label">Shoulders</span></div>
+      <div class="card"><div class="frame"><img src="assets/icons/muscle-core-dark.svg" alt=""/></div><span class="label">Core</span></div>
+      <div class="card"><div class="frame"><img src="assets/icons/muscle-legs-dark.svg" alt=""/></div><span class="label">Legs</span></div>
+      <div class="card"><div class="frame"><img src="assets/icons/muscle-cardio-dark.svg" alt=""/></div><span class="label">Cardio</span></div>
+    </div>
+  </div>
+
+  <p class="footnote">
+    The originals are auto-traced bitmaps (~1100 paths, ~800 unique fills each). Each fill is reclassified by HSL — chromatic oranges/reds map to the Mova crimson ramp at the same luminance; grays map to the warm-neutral ramp; the off-white sheet is dropped to <code>fill="none"</code>. Upper luminance is clipped at 0.86 so highlights don't bleed to white. Each icon ships in two variants: <code>muscle-*.svg</code> for light surfaces and <code>muscle-*-dark.svg</code> for dark surfaces, where the warm-gray body luminance is inverted while crimson highlights stay constant.
+  </p>
+</section>
+
+</body>
+</html>

@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select'
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { useExercises } from '@/hooks/useExercises'
+import { MuscleGroupIcon } from '@/components/shared/MuscleGroupIcon'
 import type { WorkoutPlanCreate, PlanExerciseInput } from '@/schemas/workout-plan'
 import { WorkoutPlanCreateSchema } from '@/schemas/workout-plan'
 import { formatZodError } from '@/lib/error-utils'
@@ -161,7 +162,11 @@ export function PlanEditor({
                           <SelectGroup>
                             {availableExercises?.map((item) => (
                               <SelectItem key={item.id} value={String(item.id)}>
+                                <MuscleGroupIcon muscleGroup={item.muscle_group} className="size-4" />
                                 {item.name}
+                                <span className="text-xs text-muted-foreground">
+                                  {item.muscle_group}
+                                </span>
                               </SelectItem>
                             ))}
                           </SelectGroup>

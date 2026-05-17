@@ -1,6 +1,7 @@
 <!doctype html>
 <html><head><meta charset="utf-8"/><title>Dialog</title>
 <link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../ui_kits/mova-app/kit.css">
 <link rel="stylesheet" href="../ui_kits/mova-app/shadcn-components.css">
 <link rel="stylesheet" href="_preview-common.css">
 <style>
@@ -9,15 +10,20 @@
     position: static; transform: none; max-height: none;
     animation: none;
     width: 100%;
-    max-width: 28rem;
+    max-width: 26.5625rem;   /* sm:max-w-[425px] — canonical ui.shadcn.com example */
     margin: 0 auto;
   }
+  /* Canonical shadcn form layout inside the dialog: grid-cols-4 + items-center + gap-4 */
+  .dlg-form { display: grid; gap: 1rem; padding: 1rem 0; }
+  .dlg-row  { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center; gap: 1rem; }
+  .dlg-row .field__label { text-align: right; margin: 0; }
+  .dlg-row .input { grid-column: span 3 / span 3; }
 </style>
 </head><body class="preview" style="background: oklch(0.988 0.003 106.5);">
 <div class="preview-root">
 
   <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-t" aria-describedby="dlg-d">
-    <!-- Close X — matches shadcn: absolute top-4 right-4, opacity-70, size-4 -->
+    <!-- Close X — absolute top-4 right-4, opacity-70 -->
     <button class="dialog__close" aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12M6 18 18 6"/></svg>
     </button>
@@ -28,22 +34,21 @@
       <p class="dialog__desc" id="dlg-d">Make changes to your profile here. Click save when you're done.</p>
     </div>
 
-    <!-- Body: FieldGroup -->
-    <div class="field-group">
-      <div class="field">
+    <!-- Body: canonical shadcn grid-cols-4 form -->
+    <div class="dlg-form">
+      <div class="dlg-row">
         <label class="field__label" for="dlg-name">Name</label>
         <input class="input" id="dlg-name" value="Loris Sbaa"/>
       </div>
-      <div class="field">
+      <div class="dlg-row">
         <label class="field__label" for="dlg-user">Username</label>
         <input class="input" id="dlg-user" value="@loris.sbaa"/>
       </div>
     </div>
 
-    <!-- DialogFooter: flex-col-reverse gap-2 sm:flex-row sm:justify-end -->
+    <!-- DialogFooter: single primary action, justify-end -->
     <div class="dialog__footer">
-      <button class="btn btn--outline">Cancel</button>
-      <button class="btn btn--default">Save changes</button>
+      <button class="btn btn--default" type="submit">Save changes</button>
     </div>
   </div>
 

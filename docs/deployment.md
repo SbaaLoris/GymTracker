@@ -53,7 +53,7 @@ This prevents Render from using a newer default Python version that can break de
 
 | Item | Value |
 |---|---|
-| Production URL | `https://mova-gym-tracker.vercel.app` (example) |
+| Production URL | `https://mova-lake.vercel.app` |
 | Framework | Vite / React |
 | Root Directory | `frontend` |
 | Build Command | `npm run build` |

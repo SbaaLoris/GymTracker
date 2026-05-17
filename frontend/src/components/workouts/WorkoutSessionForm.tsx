@@ -8,6 +8,7 @@ import { Trash2, Plus } from 'lucide-react'
 import { WorkoutSessionCreateSchema, type WorkoutSessionCreate } from '@/schemas'
 import type { Exercise } from '@/schemas'
 import { Card, CardContent } from '@/components/ui/card'
+import { MuscleGroupIcon } from '@/components/shared/MuscleGroupIcon'
 
 interface WorkoutSessionFormProps {
   defaultValues?: Partial<WorkoutSessionCreate>
@@ -132,7 +133,11 @@ export function WorkoutSessionForm({ defaultValues, exercises, onSubmit, isPendi
                         <SelectContent>
                           {exercises.map((ex) => (
                             <SelectItem key={ex.id} value={ex.id.toString()}>
+                              <MuscleGroupIcon muscleGroup={ex.muscle_group} className="size-4" />
                               {ex.name}
+                              <span className="text-xs text-muted-foreground">
+                                {ex.muscle_group}
+                              </span>
                             </SelectItem>
                           ))}
                         </SelectContent>

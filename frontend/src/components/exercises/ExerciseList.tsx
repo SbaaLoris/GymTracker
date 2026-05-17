@@ -5,6 +5,7 @@ import { MuscleGroupSchema } from "@/schemas"
 import { ExerciseCard } from "./ExerciseCard"
 import { ExerciseFormDialog } from "./ExerciseFormDialog"
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog"
+import { MuscleGroupIcon } from "@/components/shared/MuscleGroupIcon"
 import { useAuth } from "@/auth/AuthContext"
 import { Input } from "@/components/ui/input"
 import {
@@ -100,7 +101,10 @@ export function ExerciseList() {
           <SelectContent>
             <SelectItem value="all">All Muscles</SelectItem>
             {MuscleGroupSchema.options.map((m) => (
-              <SelectItem key={m} value={m}>{m}</SelectItem>
+              <SelectItem key={m} value={m}>
+                <MuscleGroupIcon muscleGroup={m} className="size-4" />
+                {m}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -118,9 +122,9 @@ export function ExerciseList() {
 
       {/* List */}
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 xl:grid-cols-2 2xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-[120px] w-full rounded-xl" />
+            <Skeleton key={i} className="h-20 w-full rounded-xl" />
           ))}
         </div>
       ) : exercises?.length === 0 ? (
@@ -128,7 +132,7 @@ export function ExerciseList() {
           <p className="text-muted-foreground">No exercises found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 xl:grid-cols-2 2xl:grid-cols-3">
           {exercises?.map((ex) => (
             <ExerciseCard
               key={ex.id}

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { MuscleGroupBadge } from '@/components/shared/MuscleGroupIcon'
 import { 
   ChevronLeft, 
   Edit, 
@@ -163,9 +164,13 @@ export default function PlanDetailPage() {
                     
                     <div className="flex flex-1 flex-col gap-1">
                       <h3 className="text-lg font-bold">{exercise?.name || 'Unknown Exercise'}</h3>
-                      <p className="text-sm text-muted-foreground uppercase tracking-wider font-medium">
-                        {exercise?.muscle_group || 'General'}
-                      </p>
+                      {exercise?.muscle_group ? (
+                        <MuscleGroupBadge muscleGroup={exercise.muscle_group} />
+                      ) : (
+                        <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+                          General
+                        </p>
+                      )}
                     </div>
 
                     <div className="flex gap-8">

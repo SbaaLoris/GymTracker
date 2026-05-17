@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog"
+import { MuscleGroupBadge } from "@/components/shared/MuscleGroupIcon"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Check, X, Trash2, HeartPulse, Inbox } from "lucide-react"
@@ -155,9 +156,7 @@ export function AdminRequestsTable() {
                         {request.suggested_name}
                       </TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className="font-normal">
-                          {request.muscle_group}
-                        </Badge>
+                        <MuscleGroupBadge muscleGroup={request.muscle_group} />
                       </TableCell>
                       <TableCell className="text-center">
                         {request.is_cardio ? (
