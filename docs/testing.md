@@ -10,10 +10,10 @@ To guarantee complete consistency and safety across the API boundary, Mova imple
 
 ```mermaid
 graph TD;
-    subgraph Client (Vercel)
+    subgraph client ["Client (Vercel)"]
         UI[User Input Form] -->|Validates via Zod| FE[React Client]
     end
-    subgraph Server (Render)
+    subgraph server ["Server (Render)"]
         FE -->|HTTP Payload| BE[FastAPI Endpoint]
         BE -->|Validates via Pydantic| DB[PostgreSQL]
     end
