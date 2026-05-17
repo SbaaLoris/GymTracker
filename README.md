@@ -18,6 +18,7 @@
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [Project Structure](#project-structure)
+- [Documentation](#documentation)
 - [Domain Model](#domain-model)
 - [Business Rules](#business-rules)
 - [API Documentation](#api-documentation)
@@ -207,12 +208,28 @@ GymTracker/
 │       ├── App.tsx          # Application shell & routing
 │       └── main.tsx         # React entry point
 ├── docs/
+│   ├── adr/                # Architecture Decision Records (ADRs 0001 - 0015)
 │   ├── architecture.md     # Architecture overview
+│   ├── database.md         # Database schema, engines, and seeding
+│   ├── decisions.md        # Architecture Decisions index page
 │   ├── deployment.md       # Production deployment guide
 │   ├── openapi.yaml        # OpenAPI 3.0 specification
+│   ├── security.md         # Security, authentication, and CORS
+│   ├── testing.md          # Multi-tier validation and integration test runner
 │   └── DDD Mova.png        # Domain model diagram
 └── README.md
 ```
+
+---
+
+## Documentation
+
+To assist reviewers, developers, and team members in auditing or extending the system, Mova includes a comprehensive, production-grade documentation suite:
+
+- **[Architecture Decisions (ADR Index)](docs/decisions.md)** — Access detailed design, hosting, framework, security, and interface decision records (0001 to 0015).
+- **[Database Architecture](docs/database.md)** — In-depth details on SQLAlchemy models, engine connectivity adapters, SQLite pragma enforcements, soft-delete engines, and seeding systems.
+- **[Security & Authentication](docs/security.md)** — Explanations of HTTP Basic Auth flow, bcrypt timing-safe password hashing, permission-based role gating, and cross-origin (CORS) security guidelines.
+- **[Verification & Testing](docs/testing.md)** — Guide on multi-tier schema checks (Zod / Pydantic v2) and full execution instructions for the custom shell integration test runner (`integration_test.sh`).
 
 ---
 
