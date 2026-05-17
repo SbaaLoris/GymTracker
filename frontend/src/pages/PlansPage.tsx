@@ -31,7 +31,7 @@ export default function PlansPage() {
           actions={
             <Button asChild className="gap-2">
               <Link to="/plans/new">
-                <Plus className="size-4" data-icon />
+                <Plus data-icon="inline-start" />
                 Create Plan
               </Link>
             </Button>

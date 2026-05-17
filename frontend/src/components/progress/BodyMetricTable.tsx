@@ -89,19 +89,19 @@ export function BodyMetricTable({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="size-8 text-muted-foreground hover:text-foreground"
+                      className="text-muted-foreground hover:text-foreground"
                       onClick={() => onEdit(metric)}
                     >
-                      <Edit2 className="size-4" />
+                      <Edit2 />
                       <span className="sr-only">Edit</span>
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="size-8 text-muted-foreground hover:text-destructive"
+                      className="text-muted-foreground hover:text-destructive"
                       onClick={() => onDelete(metric)}
                     >
-                      <Trash2 className="size-4" />
+                      <Trash2 />
                       <span className="sr-only">Delete</span>
                     </Button>
                   </div>

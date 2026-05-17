@@ -90,7 +90,7 @@ export default function AdminDashboardPage() {
             There was a problem communicating with the GymTracker backend. Please check your credentials and connection.
           </p>
           <Button onClick={handleRetry} className="gap-2">
-            <RefreshCw className="h-4 w-4" /> Try Again
+            <RefreshCw data-icon="inline-start" /> Try Again
           </Button>
         </div>
       </AppLayout>
@@ -158,7 +158,7 @@ export default function AdminDashboardPage() {
                 <Button asChild variant="outline" className="w-full justify-between group">
                   <Link to="/admin/exercises">
                     Manage Exercises
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight data-icon="inline-end" className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
               </CardContent>
@@ -179,7 +179,7 @@ export default function AdminDashboardPage() {
                 <Button asChild variant="outline" className="w-full justify-between group">
                   <Link to="/admin/requests">
                     Open Review Queue
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight data-icon="inline-end" className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
               </CardContent>
@@ -200,7 +200,7 @@ export default function AdminDashboardPage() {
                 <Button asChild variant="outline" className="w-full justify-between group">
                   <Link to="/admin/templates">
                     Manage Templates
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight data-icon="inline-end" className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
               </CardContent>
