@@ -14,8 +14,6 @@ For deeper context on the product, browse the repo directly: it includes archite
 | File | What it is |
 | --- | --- |
 | `README.md` | this file — overview, voice, visual foundations, iconography |
-| `SKILL.md` | Agent Skill entry-point — load this if you're an LLM picking up the system. Layers Mova brand on top of the official shadcn skill |
-| `reference/shadcn-skill.md` | the official shadcn agent skill (uploaded) — the source of all the composition / forms / icons / styling rules SKILL.md references |
 | `colors_and_type.css` | All design tokens as CSS variables, plus semantic helpers (`.mova-h1`, `.mova-stat`, `.mova-card`, …) |
 | `fonts/geist-*.woff2` | Self-hosted Geist Variable (3 unicode-range subsets) |
 | `assets/logo.svg` | Mova wordmark — uses `currentColor` for the wordmark and `--mova-dot` CSS var (default `#E13636`) for the red dot |

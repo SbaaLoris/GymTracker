@@ -36,3 +36,13 @@ mova.db
 review/
 implementationplans
 
+# AI assistant skill files
+SKILL.md
+
+# Design assets
+design-assets/
+*.drawio
+
+# Broken environments
+.venv_broken/
+
