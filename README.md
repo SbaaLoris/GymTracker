@@ -329,7 +329,7 @@ For the complete production deployment guide, see [docs/deployment.md](docs/depl
 
 ## Presentation Video
 
-Presentation Video: To be added before Moodle submission.
+[![Watch presentation video](https://img.shields.io/badge/Watch_Video-OneDrive-0078D4?style=for-the-badge)](https://1drv.ms/v/c/aecd340923ec1557/IQAHu5H8UEHnQaFSsISQa6UNAa2WdapL5hoXcblmF3Tr8go?e=eGcwzL)
 
 ---
 
